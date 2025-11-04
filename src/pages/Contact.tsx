@@ -39,7 +39,7 @@ const ContactSection = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-1xl mx-auto text-center space-y-6">
               <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-                Let’s <span className="text-primary">Connect</span> and <span className="text-primary">Collaborate</span>
+                Let's <span className="text-primary">Connect</span> and <span className="text-primary">Collaborate</span>
               </h2>
             </div>
           </div>
@@ -90,7 +90,7 @@ const ContactSection = () => {
                 </a>
 
                 <a 
-                href="https://wa.me/yourwhatsappgroup" 
+                href="https://wa.me/0900000001" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-background border-2 border-foreground rounded-2xl p-6 hover:bg-accent transition-colors group"

@@ -10,7 +10,7 @@ import NotFound from "./pages/NotFound";
 import Speakers from "./pages/Speakers";
 import CreateDP from "./pages/CreateDP";
 import Payment from "./pages/Payment";
-import { Contact } from "lucide-react";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
