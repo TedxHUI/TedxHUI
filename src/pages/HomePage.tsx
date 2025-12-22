@@ -1,4 +1,6 @@
 import { Button } from '../components/ui/button';
+import { motion } from 'framer-motion';
+import Typewriter from 'typewriter-effect';
 import { 
   MapPin, 
   Calendar, 
@@ -86,58 +88,89 @@ const HomePage = () => {
   return (
     <>
       <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden pb-[80px]">
-        {/* Bottom decorative gift boxes pattern */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 md:h-24 flex items-end justify-around pointer-events-none overflow-hidden z-[2]">
-          <img className='' src={HeroTEDImage} alt="Hero TED Image" />
+        {/* MOVING GIFT BOXES PATTERN (Infinite Loop) */}
+        <div className="absolute bottom-0 left-0 right-0 h-20 md:h-24 flex items-end pointer-events-none overflow-hidden z-[2]">
+          <motion.div 
+            className="flex whitespace-nowrap"
+            animate={{ x: [0, -1000] }} // Adjust based on image width
+            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+          >
+            <img src={HeroTEDImage} alt="Hero TED" className="h-full" />
+            <img src={HeroTEDImage} alt="Hero TED" className="h-full" /> {/* Duplicate for seamless loop */}
+          </motion.div>
         </div>
 
-        {/* Top right crystal decoration */}
-        <div className="absolute top-[-30px] right-[-30px] md:top-[-30px] md:right-[-30px] w-[150px] h-[150px] w-20 h-20 md:w-[250px] md:h-[250px] opacity-30 md:opacity-80">
-          <img src={tedxCrystal} alt="" className="w-full h-full object-contain" />
-        </div>
+        {/* 2. ROTATING CRYSTAL (Slow Loop) */}
+        <motion.div 
+          className="absolute top-[-30px] right-[-30px] w-[150px] h-[150px] md:w-[250px] md:h-[250px] opacity-30 md:opacity-80 z-[1]"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        >
+          <img src={tedxCrystal} alt="Crystal" className="w-full h-full object-contain" />
+        </motion.div>
 
         {/* Decorative circles */}
-        <div className="absolute top-0 left-0 w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56">
+        <div className="absolute top-0 left-0 w-32 h-32 md:w-48 md:h-48 lg:w-[14rem] lg:h-[5rem]">
           <img src={Elipse2} alt="Elipse" />
         </div>
         <div className="absolute bottom-0 right-0 w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
           <img src={Elipse1} alt="Elipse" />
         </div>
 
-        <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
-          <div className="max-w-5xl mx-auto text-center sm:text-start space-y-6 md:space-y-8">
-            {/* Badge */}
-            <div className="inline-block">
-              <span className="text-xs md:text-sm text-primary font-bold px-5 py-2 bg-white/10 backdrop-blur-sm border border-white/30 rounded-full">
+        <div className="container px-[3.5rem] py-[7rem] relative z-10">
+          <div className="max-w-5xl text-center sm:text-start ">
+            {/* Badge (Added Fade-in) */}
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-block"
+            >
+              <span className="text-xs md:text-sm text-[#EA1D2C] font-bold px-5 py-[0.23rem] bg-white/10 opacity-70 backdrop-blur-sm rounded-full">
                 TEDxHUI 2026
               </span>
-            </div>
+            </motion.div>
 
-            {/* Main Heading */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              Ideas Worth Spreading
+            {/* 3. TYPEWRITER HEADING */}
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mt-6 min-h-[70px]">
+              <Typewriter
+                options={{
+                  strings: ['Ideas Worth Spreading', 'Inspiring Change', 'Uniting Thinkers'],
+                  autoStart: true,
+                  loop: true,
+                  deleteSpeed: 50,
+                }}
+              />
             </h1>
 
-            {/* Subheading */}
-            <p className="text-[#A1A1A1] md:text-xl text-gray-200 max-w-2xl leading-relaxed">
+            {/* Subheading (Smooth slide up) */}
+            <motion.p 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-[#A1A1A1] lg:text-[1.2rem] md:text-xl max-w-[34rem] leading-relaxed font-medium mt-4"
+            >
               An independently organized TED event uniting thinkers, leaders, and creatives to share stories that inspire change.
-            </p>
+            </motion.p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-start items-center pt-4">
-              <Button 
-                size="lg"
-                className="bg-white hover:bg-gray-100 text-black font-bold md:px-10 md:py-6 text-base rounded-full shadow-lg"
-              >
-                Be a Sponsors
-              </Button>
-              <Button 
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-white font-bold md:px-10 md:py-6 text-base rounded-full shadow-lg"
-              >
-                Get Your Ticket
-              </Button>
-            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-start items-center pt-[2.5rem]">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button 
+                  size="lg"
+                  className="bg-white hover:bg-gray-100 transition-colors text-[#EA1D2C] md:px-7 md:py-5 text-[0.8rem] rounded-full shadow-lg"
+                >
+                  Be a Sponsor
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button 
+                  size="lg"
+                  className="bg-[#EA1D2C] hover:bg-[#ff2b3a] transition-colors text-white md:px-7 md:py-5 text-[0.8rem] rounded-full shadow-lg"
+                >
+                  Get Your Ticket
+                </Button>
+              </motion.div>
+          </div>
           </div>
         </div>
       </section>
