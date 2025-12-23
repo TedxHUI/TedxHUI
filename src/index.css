@@ -115,3 +115,18 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+
+.custom-pagination .swiper-pagination-bullet {
+  background: #d1d1d1;
+  opacity: 1;
+  width: 8px;
+  height: 8px;
+  transition: all 0.3s;
+}
+.custom-pagination .swiper-pagination-bullet-active {
+  background: #EA1D2C;
+  width: 24px;
+  border-radius: 4px;
+}
+

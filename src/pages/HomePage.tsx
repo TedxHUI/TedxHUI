@@ -1,6 +1,16 @@
 import { Button } from '../components/ui/button';
 import { motion } from 'framer-motion';
 import Typewriter from 'typewriter-effect';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-coverflow';
+
 import { 
   MapPin, 
   Calendar, 
@@ -23,20 +33,14 @@ import {
   AccordionTrigger,
 } from "../components/ui/accordion";
 
+
 const HomePage = () => {
 
-  
   const speakers = [
-    {
-      name: "Ibrahim Abdul-Matin",
-      title: "Environmentalist & Author",
-      image: speaker1,
-    },
-    {
-      name: "Speaker Name",
-      title: "Title & Profession",
-      image: speaker1,
-    },
+    { name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", img: speaker1 },
+    { name: "Speaker Two", role: "Innovator", img: speaker1 },
+    { name: "Speaker Three", role: "Creative Lead", img: speaker1 },
+    // Add more speakers here
   ];
 
   const sponsors = [
@@ -84,6 +88,21 @@ const HomePage = () => {
     },
   ];
 
+  // Animation variants for the text container
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2, // Delay between each text element
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+  };
 
   return (
     <>
@@ -175,38 +194,67 @@ const HomePage = () => {
         </div>
       </section>
 
-
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container max-w-4xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
-            {/* Left Content */}
-            <div className="space-y-6">
-              <h2 className="text-3xl md:text-5xl font-bold text-black leading-tight">
-                The First Ever <span className="text-primary">TEDx</span>HUI
-              </h2>
-              <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-                TEDxHUI 2025 is the first-ever TEDx event hosted at HUI. It’s more than a conference, it’s a platform where our community comes together to share bold ideas, celebrate local voices, and connect with global conversations. From inspiring talks to unforgettable stories, TEDxHUI is set to ignite a culture of innovation, creativity, and change right here at Moot Court Atere.”
-              </p>
-              <Button 
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full"
+      <section className="py-[3rem] md:py-[4rem] bg-white overflow-hidden">
+        <div className="max-w-[74.8rem] lg:px-[5rem] px-[1.56rem] mx-auto">
+          <div className="flex flex-row flex-wrap lg:flex-nowrap gap-8 md:gap-[4rem] items-center justify-center lg:justify-between">
+            {/* Left Content with Staggered Entrance */}
+            <motion.div 
+              className="w-full lg:w-[36rem]"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }} // Triggers when 30% of the element is visible
+            >
+              <motion.h2 
+                variants={itemVariants}
+                className="text-3xl md:text-5xl font-semibold text-[#040001] leading-tight lg:mb-[1.4rem] mb-[0.7rem] "
               >
-                See More
-              </Button>
-            </div>
+                The First Ever <span className="text-[#EA1D2C]">TEDx</span>HUI
+              </motion.h2>
 
-            {/* Right Logo */}
-            <div className="flex justify-center items-center">
-              <img 
+              <motion.p 
+                variants={itemVariants}
+                className="lg:text-[1rem] text-[0.8rem] text-[#040001] leading-relaxed"
+              >
+                TEDxHUI 2025 is the first-ever TEDx event hosted at HUI. It’s more than a conference, it’s a platform where our community comes together to share bold ideas, celebrate local voices, and connect with global conversations. From inspiring talks to unforgettable stories, TEDxHUI is set to ignite a culture of innovation, creativity, and change right here at Moot Court Atere.
+              </motion.p>
+
+              <motion.div variants={itemVariants}>
+                <Button 
+                  size="lg"
+                  className="bg-[#EA1D2C] text-[0.8rem] mt-[1.5rem] hover:bg-[#ff2b3a] transition-all hover:scale-105 active:scale-95 text-white font-medium px-8 py-4 rounded-full shadow-md"
+                >
+                  See More
+                </Button>
+              </motion.div>
+            </motion.div>
+
+            {/* Right Logo with Floating & Scale-in Animation */}
+            <motion.div 
+              className="flex justify-center items-center"
+              initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
+            >
+              <motion.img 
                 src={tedxGiftLogo} 
                 alt="TEDx Gift Logo" 
-                className="w-full max-w-sm md:max-w-md object-contain"
+                className="w-[19rem] object-contain drop-shadow-2xl"
+                // The "Floating" effect
+                animate={{
+                  y: [0, -15, 0],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
               />
-            </div>
+            </motion.div> 
           </div>
         </div>
       </section>
-
 
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
@@ -277,36 +325,93 @@ const HomePage = () => {
 
       <section className="py-16 md:py-24 bg-gradient-to-br from-[#1A0404] to-[#2C0808]">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-12 text-center">
+          <div className="container mx-auto px-4">
+            {/* Animated Heading */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-5xl font-bold text-white mb-12 text-center"
+            >
               Meet Our <span className="text-primary">Seasoned Speakers</span>
-            </h2>
+            </motion.h2>
 
-            <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-8">
-              {speakers.map((speaker, index) => (
-                <div 
-                  key={index}
-                  className="relative group overflow-hidden rounded-xl bg-black/40"
-                >
-                  <div className="aspect-[3/2] md:aspect-[4/3] overflow-hidden">
-                    <img 
-                      src={speaker.image} 
-                      alt={speaker.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/90 to-transparent p-6">
-                    <h3 className="text-xl md:text-2xl font-bold text-white mb-1">{speaker.name}</h3>
-                    <p className="text-gray-300 text-sm md:text-base">{speaker.title}</p>
-                  </div>
-                </div>
-              ))}
+            <div className="relative group max-w-6xl mx-auto">
+              <Swiper
+                modules={[Navigation, Pagination, Autoplay, EffectCoverflow]}
+                effect={'coverflow'}
+                grabCursor={true}
+                centeredSlides={true}
+                loop={true}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
+                slidesPerView={'auto'}
+                coverflowEffect={{
+                  rotate: 0,
+                  stretch: 0,
+                  depth: 100,
+                  modifier: 2.5,
+                  slideShadows: false,
+                }}
+                pagination={{ 
+                  clickable: true, 
+                  el: '.custom-pagination' 
+                }}
+                navigation={{
+                  nextEl: '.swiper-button-next-custom',
+                  prevEl: '.swiper-button-prev-custom',
+                }}
+                breakpoints={{
+                  320: { slidesPerView: 1, spaceBetween: 20 },
+                  768: { slidesPerView: 1.5, spaceBetween: 40 },
+                  1024: { slidesPerView: 2, spaceBetween: 50 },
+                }}
+                className="speaker-swiper"
+              >
+                {speakers.map((speaker, index) => (
+                  <SwiperSlide key={index} className="max-w-[500px]">
+                    <div className="bg-[#1A0B0C] rounded-[2rem] overflow-hidden flex flex-col md:flex-row items-center p-6 md:p-0 h-full shadow-xl">
+                      {/* Speaker Info */}
+                      <div className="flex-1 p-8 text-white order-2 md:order-1">
+                        <h3 className="text-2xl font-bold mb-1">{speaker.name}</h3>
+                        <p className="text-gray-400 text-sm">{speaker.role}</p>
+                      </div>
+                      {/* Speaker Image */}
+                      <div className="w-full md:w-1/2 h-64 md:h-full order-1 md:order-2">
+                        <img 
+                          src={speaker.img} 
+                          alt={speaker.name} 
+                          className="w-full h-full object-cover rounded-[1.5rem] md:rounded-none"
+                        />
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+              {/* Custom Navigation Arrows */}
+              <button className="swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg w-10 h-10 rounded-full flex items-center justify-center text-[#EA1D2C] hover:bg-[#EA1D2C] hover:text-white transition-all">
+                &#10094;
+              </button>
+              <button className="swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white shadow-lg w-10 h-10 rounded-full flex items-center justify-center text-[#EA1D2C] hover:bg-[#EA1D2C] hover:text-white transition-all">
+                &#10095;
+              </button>
             </div>
 
-            <div className="text-center">
-              <button className="bg-primary hover:bg-primary/90 text-white font-bold px-8 py-3 rounded-full transition-colors">
-                View All Speakers
-              </button>
+            {/* Custom Dots (Pagination) */}
+            <div className="custom-pagination flex justify-center mt-10 gap-2"></div>
+
+            {/* CTA Button */}
+            <div className="flex justify-center mt-12">
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-[#EA1D2C] text-white px-10 py-3 rounded-full font-semibold shadow-lg"
+              >
+                See Speakers
+              </motion.button>
             </div>
           </div>
         </div>
