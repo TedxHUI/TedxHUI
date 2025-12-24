@@ -1,5 +1,5 @@
 import { Button } from '../components/ui/button';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Typewriter from 'typewriter-effect';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -20,7 +20,10 @@ import tedxCrystal from "../assets/Component 35.png";
 import tedxGiftLogo from "../assets/Facebook cover photo.png";
 import speaker1 from "../assets/Frame 163.png";
 import kfcLogo from "../assets/Group@2x.png";
+import AmazonLogo from "../assets/amazon.png";
+import GoogleLogo from "../assets/google.png"
 import kudaLogo from "../assets/Group 3.png";
+import CNNLogo from "../assets/cnn.png";
 import giftThemeBanner from "../assets/Frame 35.png";
 import HeroTEDImage from "../assets/Component 26.png";
 import Elipse1 from "../assets/Ellipse 1.png";
@@ -45,13 +48,16 @@ const HomePage = () => {
 
   const sponsors = [
     { name: "KFC", logo: kfcLogo },
-    { name: "Amazon", logo: kfcLogo },
-    { name: "Google", logo: kfcLogo },
-    { name: "CNN", logo: kfcLogo },
+    { name: "Amazon", logo: AmazonLogo },
+    { name: "Google", logo: GoogleLogo },
+    { name: "CNN", logo: CNNLogo },
     { name: "Kuda", logo: kudaLogo },
     { name: "KFC", logo: kfcLogo },
-    { name: "Amazon", logo: kfcLogo },
+    { name: "Amazon", logo: AmazonLogo },
   ];
+
+  // Duplicate the list to create a seamless infinite loop
+  const tickerSponsors = [...sponsors, ...sponsors, ...sponsors];
 
   const faqs = [
     {
@@ -102,6 +108,19 @@ const HomePage = () => {
   const itemVariants = {
     hidden: { opacity: 0, x: -30 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+  };
+
+  const cardVariants: Variants = { // Add the type here
+    hidden: { opacity: 0, y: 30 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+        ease: "easeOut", // TypeScript will now accept this
+      },
+    }),
   };
 
   return (
@@ -322,7 +341,6 @@ const HomePage = () => {
         </div>
       </section>
 
-
       <section className="py-16 md:py-24 bg-gradient-to-br from-[#1A0404] to-[#2C0808]">
         <div className="container mx-auto px-4">
           <div className="container mx-auto px-4">
@@ -331,9 +349,9 @@ const HomePage = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold text-white mb-12 text-center"
+              className="text-3xl md:text-5xl font-bold text-white mb-12 lg:text-start text-center px-[6rem]"
             >
-              Meet Our <span className="text-primary">Seasoned Speakers</span>
+              Meet Our <span className="text-primary">Seasoned </span> Speakers
             </motion.h2>
 
             <div className="relative group max-w-6xl mx-auto">
@@ -417,74 +435,122 @@ const HomePage = () => {
         </div>
       </section>
 
-
-      <section className="py-16 md:py-24 bg-white">
+      <section className="pt-16 md:pt-[3rem] bg-white overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold text-center mb-12 text-black">
-              Our <span className="text-primary">Amazing</span> Sponsors and Partners
-            </h2>
+            {/* Section Heading */}
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-5xl font-bold text-center mb-16 text-black font-glancyr"
+            >
+              Our <span className="text-[#EA1D2C]">Amazing</span> Sponsors and Partners
+            </motion.h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 md:gap-8 items-center justify-items-center">
-              {sponsors.map((sponsor, index) => (
-                <div 
-                  key={index}
-                  className="w-full flex items-center justify-center p-4 hover:scale-110 transition-transform duration-300"
-                >
-                  <img 
-                    src={sponsor.logo} 
-                    alt={sponsor.name}
-                    className="w-full h-auto max-w-[80px] md:max-w-[100px] object-contain grayscale-0 transition-all"
-                  />
-                </div>
-              ))}
+            {/* Infinite Scroll Container */}
+            <div className="relative flex overflow-x-hidden">
+              <motion.div 
+                className="flex whitespace-nowrap"
+                animate={{ x: [0, -1920] }} // Adjust number based on total width of 1 set of logos
+                transition={{
+                  repeat: Infinity,
+                  duration: 30, // Higher number = slower scroll
+                  ease: "linear",
+                }}
+              >
+                {tickerSponsors.map((sponsor, index) => (
+                  <motion.div 
+                    key={index}
+                    // "Pop Out" Animation on Hover
+                    whileHover={{ 
+                      scale: 1.2, 
+                      margin: "0 40px", // Adds space around the "popping" logo
+                      filter: "drop-shadow(0px 10px 15px rgba(234, 29, 44, 0.2))" 
+                    }}
+                    className="flex-shrink-0 flex items-center justify-center px-12 py-4 transition-all duration-300"
+                  >
+                    <img 
+                      src={sponsor.logo} 
+                      alt={sponsor.name}
+                      className="h-10 md:h-14 w-auto object-contain cursor-pointer"
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {/* Faded edges to make it look premium (Optional) */}
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white to-transparent z-10"></div>
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white to-transparent z-10"></div>
             </div>
           </div>
         </div>
       </section>
 
-
-      <section className="py-16 md:py-24 bg-">
+      <section className="py-16 md:py-24 bg-white overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold text-start mb-12 text-primary">
+            
+            {/* Section Heading with slide-in from left */}
+            <motion.h2 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-5xl font-bold font-glancyr text-start mb-12 text-[#EA1D2C]"
+            >
               Event <span className="text-black">Details</span>
-            </h2>
+            </motion.h2>
 
-            {/* Theme Banner */}
-            <div className="mb-12 rounded-2xl overflow-hidden">
+            {/* Theme Banner with a soft "Scale & Fade" */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="mb-12 rounded-2xl overflow-hidden shadow-2xl relative group"
+            >
               <img 
                 src={giftThemeBanner} 
                 alt="The Gift Theme" 
-                className="w-full mx-auto h-auto object-cover"
+                className="w-full mx-auto h-auto object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
-            </div>
+              {/* Subtle Overlay Shimmer */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
+                animate={{ x: ['-200%', '200%'] }}
+                transition={{ repeat: Infinity, duration: 3, ease: "linear", delay: 1 }}
+              />
+            </motion.div>
 
             {/* Details Grid */}
             <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-              <div className="bg- rounded-xl p-6 md:p-8 border border-primary/20 hover:border-primary/60 transition-colors text-start">
-                {/* <MapPin className="w-10 h-10 md:w-12 md:h-12 text-primary mb-4 mx-auto" /> */}
-                <h3 className="text-base md:text-lg font-bold mb-3 text-black">Location</h3>
-                <p className="text-gray-700 text-sm md:text-base">
-                  AL-Hikmah University, Ilorin
-                </p>
-              </div>
-
-              <div className="bg- rounded-xl p-6 md:p-8 border border-primary/20 hover:border-primary/60 transition-colors text-start">
-                {/* <Calendar className="w-10 h-10 md:w-12 md:h-12 text-primary mb-4 mx-auto" /> */}
-                <h3 className="text-base md:text-lg font-bold mb-3 text-black">Date</h3>
-                <p className="text-gray-700 text-sm md:text-base">
-                  Saturday, 17th January 2026
-                </p>
-              </div>
-
-              <div className="bg- rounded-xl p-6 md:p-8 border border-primary/20 hover:border-primary/60 transition-colors text-start">
-                {/* <Clock className="w-10 h-10 md:w-12 md:h-12 text-primary mb-4 mx-auto" /> */}
-                <h3 className="text-base md:text-lg font-bold mb-3 text-black">Time</h3>
-                <p className="text-gray-700 text-sm md:text-base">
-                  10:00 AM - 4:00 PM WAT
-                </p>
-              </div>
+              {[
+                { title: "Location", detail: "AL-Hikmah University, Ilorin" },
+                { title: "Date", detail: "Saturday, 17th January 2026" },
+                { title: "Time", detail: "10:00 AM - 4:00 PM WAT" }
+              ].map((item, i) => (
+                <motion.div 
+                  key={i}
+                  custom={i}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={cardVariants}
+                  whileHover={{ 
+                    y: -10, 
+                    backgroundColor: "#fffafa",
+                    borderColor: "#EA1D2C" 
+                  }}
+                  className="bg-white rounded-xl p-6 md:p-8 border border-gray-200 transition-all text-start shadow-sm"
+                >
+                  <h3 className="text-base md:text-lg font-bold font-glancyr mb-3 text-black">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-700 text-sm md:text-base">
+                    {item.detail}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
