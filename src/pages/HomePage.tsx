@@ -1,5 +1,7 @@
 import { Button } from '../components/ui/button';
-import { motion, Variants } from 'framer-motion';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { Plus, Minus } from 'lucide-react';
 import Typewriter from 'typewriter-effect';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -61,12 +63,12 @@ const HomePage = () => {
 
   const faqs = [
     {
-      question: "What does TED stand for?",
-      answer: "TED stands for Technology, Entertainment, and Design. It's a global community focused on ideas worth spreading through short, powerful talks.",
+      question: "How can I purchase a ticket?",
+      answer: "Tickets can be purchased directly on our website through our secure Paystack payment system using your debit/credit card or bank transfer."
     },
     {
-      question: "What is TEDx?",
-      answer: "TEDx is a program of local, self-organized events that bring people together to share a TED-like experience. At TEDx events, a screening of TED Talks videos — or a combination of live presenters and TED Talks videos — sparks deep conversation and connections.",
+      question: "When and where will TEDxHUI 2025 take place?",
+      answer: "The event is scheduled for Saturday, 17th January 2026, at Moot Court Atere, Al-Hikmah University, Ilorin."
     },
     {
       question: "Do I need to register?",
@@ -93,6 +95,8 @@ const HomePage = () => {
       answer: "Each ticket is for one person. If you'd like to bring guests, please register them separately.",
     },
   ];
+
+  const [activeId, setActiveId] = useState<number | null>(0); // Default first one open
 
   // Animation variants for the text container
   const containerVariants = {
@@ -557,33 +561,55 @@ const HomePage = () => {
       </section>
 
 
-      <section className="py-16 md:py-24 bg-[#F5F1ED]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold text-center mb-12 text-black">
-              Frequently Asked <span className="text-primary">Questions</span>
-            </h2>
+      <section className="py-16 md:py-24 bg-white">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <h2 className="text-4xl md:text-5xl font-bold mb-16 font-glancyr">
+          Frequently <span className="text-[#EA1D2C]">Asked</span> Questions
+        </h2>
 
-            <Accordion type="single" collapsible className="space-y-3">
-              {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="bg-black text-white rounded-full px-6 border-none overflow-hidden"
+        <div className="flex flex-col space-y-8">
+          {faqs.map((faq, index) => (
+            <div key={index} className="flex flex-col space-y-4">
+              {/* Question Bubble (Left Aligned) */}
+              <div className="flex items-center space-x-3">
+                <motion.button
+                  onClick={() => setActiveId(activeId === index ? null : index)}
+                  className={`px-6 py-3 rounded-full text-sm md:text-base font-medium transition-colors flex items-center space-x-3 shadow-sm ${
+                    activeId === index 
+                    ? 'bg-[#FEEBEC] text-[#EA1D2C]' 
+                    : 'bg-[#040001] text-white hover:bg-gray-800'
+                  }`}
                 >
-                  <AccordionTrigger className="text-left text-sm md:text-base font-medium hover:no-underline py-4">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-300 text-xs md:text-sm pb-4">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </div>
-      </section>
+                  <span>{faq.question}</span>
+                  {activeId === index ? <Minus size={18} /> : <Plus size={18} />}
+                </motion.button>
+              </div>
 
+              {/* Answer Bubble (Right Aligned / Chat Style) */}
+              <AnimatePresence>
+                {activeId === index && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: 20, scale: 0.9 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    className="flex justify-end w-full"
+                  >
+                    <div className="max-w-[80%] md:max-w-[60%] bg-[#040001] text-white p-5 rounded-2xl rounded-tr-none shadow-lg relative">
+                      <p className="text-sm md:text-[1rem] leading-relaxed text-gray-200">
+                        {faq.answer}
+                      </p>
+                      {/* Optional: Chat tail/triangle */}
+                      <div className="absolute top-0 -right-2 w-0 h-0 border-t-[10px] border-t-[#040001] border-r-[10px] border-r-transparent" />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
       
       <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
 
