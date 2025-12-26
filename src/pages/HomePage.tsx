@@ -68,31 +68,35 @@ const HomePage = () => {
     },
     {
       question: "When and where will TEDxHUI 2025 take place?",
-      answer: "The event is scheduled for Saturday, 17th January 2026, at Moot Court Atere, Al-Hikmah University, Ilorin."
+      answer: "The event is scheduled for Saturday, 17th January 2026, at Moot Court Atere, Al-Hikmah University, Ilorin. A detailed agenda will be available closer to the event date."
     },
     {
-      question: "Do I need to register?",
-      answer: "Yes, registration is required to attend TEDxHUI. You can register through our ticketing platform to secure your spot.",
+      question: "What is the dress code?",
+      answer: "Smart casual or business casual is recommended. Be comfortable but polished.",
     },
     {
-      question: "How much are tickets?",
-      answer: "Ticket prices vary by category. Early bird tickets offer the best value. Check our registration page for current pricing.",
+      question: "Will food and refreshments be provided?",
+      answer: " Yes. Snacks and refreshments will be available, with special perks for Inspire and Legacy ticket holders.",
     },
     {
-      question: "Can I get a refund?",
-      answer: "Refund policies vary. Please check our terms and conditions or contact our support team for specific refund requests.",
+      question: "Why should I attend TEDxHUI?",
+      answer: "Because TEDxHUI is more than just an event, it’s an experience. You’ll connect with brilliant minds, hear powerful stories, and walk away with fresh perspectives that can spark change in your own life and community.",
     },
     {
-      question: "What should I wear?",
-      answer: "We recommend smart casual attire. Come comfortable and ready to engage with ideas!",
+      question: "What inspires the theme “The Gift”?",
+      answer: "Our theme, “The Gift,” reflects the idea that every idea, every story, and every individual has something unique to offer the world. TEDxHUI is about unwrapping those gifts, sharing knowledge, experiences, and insights that can inspire transformation.",
     },
     {
-      question: "Will there be food?",
-      answer: "Yes! Light refreshments and meals will be provided throughout the event day.",
+      question: "Who can attend TEDxHUI?",
+      answer: "Anyone who believes in the power of ideas! Students, professionals, entrepreneurs, creatives, and community members are all welcome.",
     },
     {
-      question: "Can I bring a guest?",
-      answer: "Each ticket is for one person. If you'd like to bring guests, please register them separately.",
+      question: "What will I gain from attending?",
+      answer: "Expect to gain new insights, meet like-minded people, discover opportunities for collaboration, and leave inspired to take action in your personal or professional life.",
+    },
+    {
+      question: "How does TEDxHUI benefit our community?",
+      answer: "By showcasing voices and ideas from within and beyond our community, TEDxHUI serves as a catalyst for dialogue, growth, and innovation that ripple far beyond the event itself.",
     },
   ];
 
@@ -173,7 +177,7 @@ const HomePage = () => {
             </motion.div>
 
             {/* 3. TYPEWRITER HEADING */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mt-6 min-h-[70px]">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mt-6 min-h-[70px] font-glancyr ">
               <Typewriter
                 options={{
                   strings: ['Ideas Worth Spreading', 'Inspiring Change', 'Uniting Thinkers'],
@@ -230,7 +234,7 @@ const HomePage = () => {
             >
               <motion.h2 
                 variants={itemVariants}
-                className="text-3xl md:text-5xl font-semibold text-[#040001] leading-tight lg:mb-[1.4rem] mb-[0.7rem] "
+                className="text-3xl md:text-5xl font-semibold text-[#040001] leading-tight lg:mb-[1.4rem] mb-[0.7rem] font-glancyr"
               >
                 The First Ever <span className="text-[#EA1D2C]">TEDx</span>HUI
               </motion.h2>
@@ -282,7 +286,7 @@ const HomePage = () => {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold text-black mb-3 text-center md:text-left">
+            <h2 className="text-3xl md:text-5xl font-bold text-black mb-3 text-center md:text-left font-glancyr">
               Why You Should <span className="text-primary">Attend</span>
             </h2>
               
@@ -353,7 +357,7 @@ const HomePage = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold text-white mb-12 lg:text-start text-center px-[6rem]"
+              className="text-3xl md:text-5xl font-bold text-white mb-12 lg:text-start text-center px-[6rem] font-glancyr"
             >
               Meet Our <span className="text-primary">Seasoned </span> Speakers
             </motion.h2>
@@ -500,7 +504,7 @@ const HomePage = () => {
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold font-glancyr text-start mb-12 text-[#EA1D2C]"
+              className="text-3xl md:text-5xl font-bold font-glancyr text-start mb-12 text-[#EA1D2C] font-glancyr"
             >
               Event <span className="text-black">Details</span>
             </motion.h2>
@@ -560,56 +564,56 @@ const HomePage = () => {
         </div>
       </section>
 
-
+      {/* FAQ */}
       <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4 max-w-5xl">
-        <h2 className="text-4xl md:text-5xl font-bold mb-16 font-glancyr">
-          Frequently <span className="text-[#EA1D2C]">Asked</span> Questions
-        </h2>
+        <div className="container mx-auto px-4 max-w-5xl">
+          <h2 className="text-4xl md:text-5xl font-bold mb-16 font-glancyr">
+            Frequently <span className="text-[#EA1D2C]">Asked</span> Questions
+          </h2>
 
-        <div className="flex flex-col space-y-8">
-          {faqs.map((faq, index) => (
-            <div key={index} className="flex flex-col space-y-4">
-              {/* Question Bubble (Left Aligned) */}
-              <div className="flex items-center space-x-3">
-                <motion.button
-                  onClick={() => setActiveId(activeId === index ? null : index)}
-                  className={`px-6 py-3 rounded-full text-sm md:text-base font-medium transition-colors flex items-center space-x-3 shadow-sm ${
-                    activeId === index 
-                    ? 'bg-[#FEEBEC] text-[#EA1D2C]' 
-                    : 'bg-[#040001] text-white hover:bg-gray-800'
-                  }`}
-                >
-                  <span>{faq.question}</span>
-                  {activeId === index ? <Minus size={18} /> : <Plus size={18} />}
-                </motion.button>
-              </div>
-
-              {/* Answer Bubble (Right Aligned / Chat Style) */}
-              <AnimatePresence>
-                {activeId === index && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20, scale: 0.9 }}
-                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                    exit={{ opacity: 0, x: 20, scale: 0.9 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    className="flex justify-end w-full"
+          <div className="flex flex-col space-y-8">
+            {faqs.map((faq, index) => (
+              <div key={index} className="flex flex-col space-y-4">
+                {/* Question Bubble (Left Aligned) */}
+                <div className="flex items-center space-x-3">
+                  <motion.button
+                    onClick={() => setActiveId(activeId === index ? null : index)}
+                    className={`px-6 py-3 rounded-full text-sm md:text-base font-medium transition-colors flex items-center space-x-3 shadow-sm ${
+                      activeId === index 
+                      ? 'bg-[#FEEBEC] text-[#EA1D2C]' 
+                      : 'bg-[#040001] text-white hover:bg-gray-800'
+                    }`}
                   >
-                    <div className="max-w-[80%] md:max-w-[60%] bg-[#040001] text-white p-5 rounded-2xl rounded-tr-none shadow-lg relative">
-                      <p className="text-sm md:text-[1rem] leading-relaxed text-gray-200">
-                        {faq.answer}
-                      </p>
-                      {/* Optional: Chat tail/triangle */}
-                      <div className="absolute top-0 -right-2 w-0 h-0 border-t-[10px] border-t-[#040001] border-r-[10px] border-r-transparent" />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
+                    <span>{faq.question}</span>
+                    {activeId === index ? <Minus size={18} /> : <Plus size={18} />}
+                  </motion.button>
+                </div>
+
+                {/* Answer Bubble (Right Aligned / Chat Style) */}
+                <AnimatePresence>
+                  {activeId === index && (
+                    <motion.div
+                      initial={{ opacity: 0, x: 20, scale: 0.9 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      exit={{ opacity: 0, x: 20, scale: 0.9 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                      className="flex justify-end w-full"
+                    >
+                      <div className="max-w-[80%] md:max-w-[60%] bg-[#040001] text-white p-5 rounded-2xl rounded-tr-none shadow-lg relative">
+                        <p className="text-sm md:text-[1rem] leading-relaxed text-gray-200">
+                          {faq.answer}
+                        </p>
+                        {/* Optional: Chat tail/triangle */}
+                        <div className="absolute top-0 -right-2 w-0 h-0 border-t-[10px] border-t-[#040001] border-r-[10px] border-r-transparent" />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
       
       <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
 
