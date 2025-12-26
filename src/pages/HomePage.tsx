@@ -564,21 +564,23 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16 md:py-24 bg-white">
+      {/* FAQ Section */}
+      <section className="py-16 md:py-24 bg-white overflow-hidden">
         <div className="container mx-auto px-4 max-w-5xl">
           <h2 className="text-4xl md:text-5xl font-bold mb-16 font-glancyr">
             Frequently <span className="text-[#EA1D2C]">Asked</span> Questions
           </h2>
 
-          <div className="flex flex-col space-y-8">
+          <div className="flex flex-col space-y-10">
             {faqs.map((faq, index) => (
               <div key={index} className="flex flex-col space-y-4">
-                {/* Question Bubble (Left Aligned) */}
-                <div className="flex items-center space-x-3">
+                
+                {/* Question Bubble (Left Aligned Chat Style) */}
+                <div className="flex justify-start w-full relative">
                   <motion.button
                     onClick={() => setActiveId(activeId === index ? null : index)}
-                    className={`px-6 py-3 rounded-full text-sm md:text-base font-medium transition-colors flex items-center space-x-3 shadow-sm ${
+                    whileTap={{ scale: 0.98 }}
+                    className={`relative px-6 py-4 rounded-2xl rounded-tl-none text-sm md:text-base font-medium transition-all flex items-center space-x-3 shadow-md ${
                       activeId === index 
                       ? 'bg-[#FEEBEC] text-[#EA1D2C]' 
                       : 'bg-[#040001] text-white hover:bg-gray-800'
@@ -586,24 +588,30 @@ const HomePage = () => {
                   >
                     <span>{faq.question}</span>
                     {activeId === index ? <Minus size={18} /> : <Plus size={18} />}
+                    
+                    {/* Question Chat Tail (Top Left) */}
+                    <div className={`absolute top-0 -left-2 w-0 h-0 border-t-[10px] border-r-[10px] border-r-transparent ${
+                      activeId === index ? 'border-t-[#FEEBEC]' : 'border-t-[#040001]'
+                    }`} />
                   </motion.button>
                 </div>
 
-                {/* Answer Bubble (Right Aligned / Chat Style) */}
+                {/* Answer Bubble (Right Aligned Chat Style) */}
                 <AnimatePresence>
                   {activeId === index && (
                     <motion.div
-                      initial={{ opacity: 0, x: 20, scale: 0.9 }}
+                      initial={{ opacity: 0, x: 30, scale: 0.9 }}
                       animate={{ opacity: 1, x: 0, scale: 1 }}
-                      exit={{ opacity: 0, x: 20, scale: 0.9 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                      exit={{ opacity: 0, x: 30, scale: 0.9 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       className="flex justify-end w-full"
                     >
-                      <div className="max-w-[80%] md:max-w-[60%] bg-[#040001] text-white p-5 rounded-2xl rounded-tr-none shadow-lg relative">
+                      <div className="max-w-[85%] md:max-w-[70%] bg-[#040001] text-white p-6 rounded-2xl rounded-tr-none shadow-lg relative border border-white/10">
                         <p className="text-sm md:text-[1rem] leading-relaxed text-gray-200">
                           {faq.answer}
                         </p>
-                        {/* Optional: Chat tail/triangle */}
+                        
+                        {/* Answer Chat Tail (Top Right) */}
                         <div className="absolute top-0 -right-2 w-0 h-0 border-t-[10px] border-t-[#040001] border-r-[10px] border-r-transparent" />
                       </div>
                     </motion.div>
@@ -615,52 +623,120 @@ const HomePage = () => {
         </div>
       </section>
       
-      <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
+      {/* Be Part Section */}
+      <section className="relative min-h-[60vh] flex items-center bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
+      
+        {/* Animated Decorative Elipse */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.6, 0.3] 
+          }}
+          transition={{ 
+            duration: 8, 
+            repeat: Infinity, 
+            ease: "easeInOut" 
+          }}
+          className="absolute bottom-0 right-0 w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 pointer-events-none"
+        >
+          <img src={Elipse1} alt="Elipse" className="w-full h-full object-contain" />
+        </motion.div>
 
-        {/* Decorative circles */}
-        <div className="absolute bottom-0 right-0 w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
-          <img src={Elipse1} alt="Elipse" />
-        </div>
+        {/* Background Radial Glow Effect */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-from)_0%,_transparent_70%)] from-[#EA1D2C]/10 to-transparent pointer-events-none" />
 
-        <div className="py-16 md:py-24">
+        <div className="py-16 md:py-24 w-full relative z-10">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-                Be Part of the First TEDxHUI Experience
-              </h2>
-              <p className="text-base md:text-lg text-gray-300 leading-relaxed">
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="max-w-[36rem] mx-auto text-center space-y-[1.5rem]"
+            >
+              {/* Heading with a subtle scale-up */}
+              <motion.h2 
+                initial={{ scale: 0.9 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 1 }}
+                className="text-3xl md:text-[3rem] font-semibold text-white leading-tight font-glancyr"
+              >
+                Be Part of the First <span className="text-[#EA1D2C]">TEDx</span>HUI Experience
+              </motion.h2>
+
+              <p className="text-base md:text-[1.3rem] text-[#FFFFFF]/90 leading-relaxed font-normal">
                 Seats are limited, reserve yours today and witness history in the making.
               </p>
-              <button className="bg-white hover:bg-primary/90 text-black font-bold px-10 py-4 text-base rounded-full mt-6 transition-colors">
-                Get Your Ticket
-              </button>
-            </div>
+
+              {/* Pulsing "Heartbeat" Button */}
+              <motion.div
+                className="inline-block pt-6"
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+              >
+                <button className="bg-white hover:bg-[#EA1D2C] hover:text-white text-[#EA1D2C] font-bold px-[2rem] py-[1rem] text-[0.9rem] rounded-full transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(234,29,44,0.5)]">
+                  Get Your Ticket
+                </button>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
-
       </section>
 
+      {/* Community Section */}
+      <section className="py-16 md:py-[3rem] bg-white overflow-hidden">
+        <div className="container mx-auto px-4 max-w-6xl">
+          {/* Rounded Image Container with Animation */}
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative rounded-[2.5rem] overflow-hidden min-h-[400px] flex items-center justify-center text-center p-8 md:p-16"
+          >
+            {/* Background Image with Dark Overlay */}
+            <div 
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105"
+              style={{
+                backgroundImage: `linear-gradient(rgba(23, 3, 3, 0.8), rgba(23, 3, 3, 0.8)), url("${LastImg}")`,
+              }}
+            />
 
-      <section className="py-16 md:py-24 relative overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${LastImg}")`,
-          }}
-        />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-              Be Part of the <span className="text-primary">TEDxHUI Community</span>
-            </h2>
-            <p className="text-base md:text-lg text-gray-200 leading-relaxed">
-              Join a growing network of thinkers, creators, and changemakers. Stay updated 
-              with the latest news, speaker announcements, and exclusive content.
-            </p>
-            <button className="bg-white hover:bg-gray-100 text-black font-bold px-10 py-4 text-base rounded-full mt-6 transition-colors">
-              Join Community
-            </button>
-          </div>
+            {/* Content Overlay */}
+            <div className="relative z-10 max-w-[30rem] space-y-6">
+              <motion.h2 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="text-3xl md:text-[2.6rem] font-semibold text-white leading-tight font-glancyr"
+              >
+                Be Part of the <span className="text-white">TEDxHUI Community</span>
+              </motion.h2>
+
+              <motion.p 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="text-base md:text-[1.1rem] text-gray-100 leading-relaxed font-normal"
+              >
+                Be part of a vibrant network of thinkers and innovators shaping tomorrow's ideas today.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+              >
+                <button className="bg-white hover:bg-[#EA1D2C] hover:text-white text-[#EA1D2C] font-bold px-10 py-4 text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-[#EA1D2C]/40 active:scale-95">
+                  Join the Community
+                </button>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
