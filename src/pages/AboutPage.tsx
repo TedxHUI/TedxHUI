@@ -19,6 +19,15 @@ import TedwhiteSpeaker from "../assets/2d0ce2fb734db790a93563a83d7299d6126715ac.
 import Building from "../assets/978a49b1f977f1e722458c378b42e7bfa6e13b75.jpg";
 import Unknown from "../assets/unknown.jpg";
 
+const TEAM_MEMBERS = [
+    { id: 1, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
+    { id: 2, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
+    { id: 3, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
+    { id: 4, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
+    { id: 5, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
+    { id: 6, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
+  ];
+
 const AboutPage = () => {
 
   const sentence = "Discover the Story Behind TEDxHUI";
@@ -91,6 +100,26 @@ const AboutPage = () => {
         ease: "backOut" 
       } 
     }
+  };
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Delay between each card
+      },
+    },
+  };
+
+  const cardVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.8, y: 20 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      y: 0,
+      transition: { type: "spring", stiffness: 100, damping: 15 } // Smooth pop
+    },
   };
 
   return (
@@ -196,7 +225,7 @@ const AboutPage = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
-          className="lg:space-y-[1.25rem] space-y-[1rem] lg:py-[5rem] py-[3rem]"
+          className="lg:space-y-[1.25rem] space-y-[1rem] lg:pt-[5rem] pt-[3rem]"
         >
           {/* Header with "The Gift" in Red */}
           <motion.h4 variants={contentVariants} className="text-3xl md:text-[2.2rem] font-medium leading-tight font-glancyr">
@@ -245,67 +274,51 @@ const AboutPage = () => {
 
       {/*Meet the Brilliant Minds Section*/}
       <section className="brilliant-minds bg-[#EA1D2C0D] lg:p-[4rem] p-[3rem]">
-        <div className="max-w-4xl mx-auto p-2">
-          
-          <h2 className="text-3xl max-w-2xl md:text-5xl font-bold text-black mb-12 text-start">
-            Meet the <span className="text-primary">Brilliant Minds</span> Behind TEDxHUI
-          </h2>
+      <div className="max-w-4xl mx-auto p-2">
+        
+        <motion.h2 
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="text-3xl max-w-2xl md:text-[3.75rem] font-medium text-[#040001] mb-12 text-start font-glancyr"
+        >
+          Meet the <span className="text-[#EA1D2C]">Brilliant Minds</span> Behind TEDxHUI
+        </motion.h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* 3. Wrap the grid in the container motion div */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {TEAM_MEMBERS.map((member) => (
+            <motion.div 
+              key={member.id} 
+              variants={cardVariants}
+              whileHover={{ y: -10 }} // Subtle lift on hover
+              className="p-2"
+            >
+              <div className="img-container border-4 border-[#EA1D2C] rounded-[30px] overflow-hidden bg-white shadow-lg">
+                <img 
+                  className="w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-500" 
+                  src={member.image} 
+                  alt={member.name} 
+                />
+              </div>
+              <h2 className='md:text-2xl font-bold text-black leading-tight pt-4 font-glancyr'>
+                {member.name}
+              </h2>
+              <h4 className='pt-1 text-[#EA1D2C] font-medium'>
+                {member.role}
+              </h4>
+            </motion.div>
+          ))}
+        </motion.div>
 
-            <div className="bg-grey-200 p-4">
-              <div className="img-container border border-4 border-[#EA1D2C] rounded-[30px] overflow-hidden">
-                <img src={Unknown} alt="Unknown" />
-              </div>
-              <h2 className='md:text-2xl font-bold text-black leading-tight pt-1'>Ibrahim Abdulrauf</h2>
-              <h4 className='pt-2'>TEDxHUI Organizer</h4>
-            </div>
-
-            <div className="bg-grey-200 p-4">
-              <div className="img-container border border-4 border-[#EA1D2C] rounded-[30px] overflow-hidden">
-                <img src={Unknown} alt="Unknown" />
-              </div>
-              <h2 className='md:text-2xl font-bold text-black leading-tight pt-1'>Ibrahim Abdulrauf</h2>
-              <h4 className='pt-2'>TEDxHUI Organizer</h4>
-            </div>
-            
-            <div className="bg-grey-200 p-4">
-              <div className="img-container border border-4 border-[#EA1D2C] rounded-[30px] overflow-hidden">
-                <img src={Unknown} alt="Unknown" />
-              </div>
-              <h2 className='md:text-2xl font-bold text-black leading-tight pt-1'>Ibrahim Abdulrauf</h2>
-              <h4 className='pt-2'>TEDxHUI Organizer</h4>
-            </div>
-            
-            <div className="bg-grey-200 p-4">
-              <div className="img-container border border-4 border-[#EA1D2C] rounded-[30px] overflow-hidden">
-                <img src={Unknown} alt="Unknown" />
-              </div>
-              <h2 className='md:text-2xl font-bold text-black leading-tight pt-1'>Ibrahim Abdulrauf</h2>
-              <h4 className='pt-2'>TEDxHUI Organizer</h4>
-            </div>
-            
-            <div className="bg-grey-200 p-4">
-              <div className="img-container border border-4 border-[#EA1D2C] rounded-[30px] overflow-hidden">
-                <img src={Unknown} alt="Unknown" />
-              </div>
-              <h2 className='md:text-2xl font-bold text-black leading-tight pt-1'>Ibrahim Abdulrauf</h2>
-              <h4 className='pt-2'>TEDxHUI Organizer</h4>
-            </div>
-            
-            <div className="bg-grey-200 p-4">
-              <div className="img-container border border-4 border-[#EA1D2C] rounded-[30px] overflow-hidden">
-                <img src={Unknown} alt="Unknown" />
-              </div>
-              <h2 className='md:text-2xl font-bold text-black leading-tight pt-1'>Ibrahim Abdulrauf</h2>
-              <h4 className='pt-2'>TEDxHUI Organizer</h4>
-            </div>
-
-          </div>
-
-
-        </div>
-      </section>
+      </div>
+    </section>
       
       <section className="py-16 md:py-24 bg-white">
         <div className="container max-w-4xl mx-auto px-4">
