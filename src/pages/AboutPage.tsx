@@ -1,3 +1,5 @@
+import React from 'react';
+import { motion, Variants, TargetAndTransition } from 'framer-motion';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { 
@@ -19,75 +21,230 @@ import Unknown from "../assets/unknown.jpg";
 
 const AboutPage = () => {
 
+  const sentence = "Discover the Story Behind TEDxHUI";
+  const words = sentence.split(" ");
+  // Variants for the container to stagger the words
+  const container: Variants = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.04 * i },
+    }),
+  };
+
+  // Variants for each individual word
+  const child: Variants = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring", 
+        damping: 12,
+        stiffness: 100,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+  };
+
+  // Animation for the text paragraphs to fade in one by one
+  const textVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.6, ease: "easeOut" } 
+    }
+  };
+
+  // Infinite subtle zoom for the image
+  const imageAnimation: TargetAndTransition = {
+    scale: [1, 1.05, 1],
+    transition: {
+      duration: 10,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  };
+
+  // Staggered fade-up for paragraphs
+  const contentVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: "easeOut" } 
+    }
+  };
+
+  // Special "Pulse" animation for the final challenge question
+  const challengeVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { 
+        delay: 0.5,
+        duration: 0.8,
+        ease: "backOut" 
+      } 
+    }
+  };
+
   return (
     <div className="">
       {/* Hero Section */}
-      <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
+      <section className="relative min-h-[50vh] flex items-center bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
+    
+        {/* Shimmer/Glow Background Effect */}
+        <motion.div 
+          animate={{ 
+            opacity: [0.2, 0.4, 0.2],
+            scale: [1, 1.1, 1] 
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#EA1D2C_0%,_transparent_50%)] opacity-20 pointer-events-none"
+        />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.h2 
+              className="text-4xl md:text-6xl font-bold text-white leading-tight font-glancyr flex flex-wrap justify-center gap-x-4"
+              variants={container}
+              initial="hidden"
+              animate="visible"
+            >
+              {words.map((word, index) => (
+                <motion.span
+                  variants={child}
+                  key={index}
+                  className={word === "Story" ? "text-[#EA1D2C]" : "text-white"}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.h2>
+            
+            {/* Subtle underline for the "Story" word */}
+            <motion.div 
+              initial={{ width: 0 }}
+              animate={{ width: "100px" }}
+              transition={{ delay: 1, duration: 0.8 }}
+              className="h-1 bg-[#EA1D2C] mx-auto mt-4 rounded-full"
+            />
+          </div>
+        </div>
+      </section>
 
-        <div className="py-24 md:py-36">
-          <div className="container mx-auto px-4">
-            <div className="max-w-1xl mx-auto text-center space-y-6">
-              <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-                Discover the <span className="text-primary">Story</span> Behind TEDxHUI
-              </h2>
+      {/*About TedxHUI Section*/}
+      <section className="about-story lg:mt-16 mt-[2rem] px-[2.5rem] p-2 lg:px-[5.6rem] ">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="mx-auto text-[#040001] lg:text-[1.2rem]"
+        >
+          {/* Section Heading */}
+          <motion.h4 
+            variants={textVariants}
+            className='text-2xl md:text-[2.2rem] font-medium leading-tight font-glancyr mb-6'
+          >
+            About TedxHUI
+          </motion.h4>
+
+          {/* Staggered Paragraphs */}
+          <div className="lg:space-y-2 space-y-2">
+            {[
+              "Every great university has a defining moment, a spark that sets it apart, a story that echoes beyond its walls. For Al-Hikmah University, that moment is here.",
+              "TEDxHUI is the official TEDx event hosted by Al-Hikmah University, Ilorin, Nigeria. It is part of the globally recognized TEDx program, which brings the spirit of TED ideas worth spreading to local communities around the world.",
+              "At TEDxHUI, we aim to create a stage where thinkers, innovators, performers, and storytellers can share ideas that challenge perspectives, spark conversations, and inspire positive action.",
+              "Rooted in the values of curiosity, creativity, and community impact, TEDxHUI is more than just an event, it is a movement within Al-Hikmah University to highlight voices that matter.",
+              "By organizing TEDxHUI, we not only celebrate groundbreaking ideas but also nurture a culture of learning and collaboration that extends beyond the stage."
+            ].map((text, i) => (
+              <motion.div key={i} variants={textVariants} className="py-2 leading-relaxed">
+                {text}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Gradient Border Image Container */}
+          <motion.div 
+            variants={textVariants}
+            className="relative lg:mt-16 mt-[2rem] p-[4px] rounded-[35px] overflow-hidden"
+            style={{
+              background: "linear-gradient(to bottom right, #040001, #EA1D2C)"
+            }}
+          >
+            <div className="bg-white rounded-[31px] overflow-hidden">
+              <motion.img 
+                animate={imageAnimation}
+                className='w-full h-[400px] object-cover' 
+                src={Building} 
+                alt="A Building in Al-Hikmah" 
+              />
             </div>
-          </div>
-        </div>
+          </motion.div>
 
-      </section>
-
-      <section className="about-story mt-16 p-2">
-        <div className="max-w-4xl mx-auto">
-
-          <h4 className='text-2xl md:text-3xl font-bold text-black leading-tight'>About TedxHUI</h4>
-
-          <div className="p1 py-3">
-            Every great university has a defining moment, a spark that sets it apart, a story that echoes beyond its walls. For Al-Hikmah University, that moment is here.
-          </div>
-          <div className="p2 py-3">
-            TEDxHUI is the official TEDx event hosted by Al-Hikmah University, Ilorin, Nigeria. It is part of the globally recognized TEDx program, which brings the spirit of TED ideas worth spreading to local communities around the world.
-          </div>
-          <div className="p3 py-3">
-            At TEDxHUI, we aim to create a stage where thinkers, innovators, performers, and storytellers can share ideas that challenge perspectives, spark conversations, and inspire positive action. Although independently organized, TEDxHUI operates under license from TED and adheres to its rules and guidelines.
-          </div>
-          <div className="p4 py-3">
-            Rooted in the values of curiosity, creativity, and community impact, TEDxHUI is more than just an event, it is a movement within Al-Hikmah University to highlight voices that matter. Our team of student leaders, faculty supporters, and volunteers work passionately to build a platform that connects our university with the wider world.
-          </div>
-          <div className="p5 py-3">
-            By organizing TEDxHUI, we not only celebrate groundbreaking ideas but also nurture a culture of learning and collaboration that extends beyond the stage. Over time, we envision TEDxHUI becoming a recognized hub of inspiration at Al-Hikmah University and across Kwara State.
-          </div>
-
-          <div className="img-container flex border border-4 border-[#EA1D2C] rounded-[30px] overflow-hidden mt-12">
-            <img className='w-full object-cover' src={Building} alt="" />
-          </div>
 
           
-          <h4 className='text-2xl md:text-3xl font-bold text-black leading-tight mt-12'>Theme: <span className="text-primary">The Gift</span> </h4>
 
-          
-          <div className="p1 py-3">
-            Every one of us carries a gift. Some gifts are loud and visible, others are quiet and hidden, waiting for the right moment to be unwrapped.
-          </div>
-          <div className="p2 py-3">
-            At TEDxHUI 2025, our theme “The Gift” is a call to recognize and celebrate these treasures. Gifts of knowledge. Gifts of creativity. Gifts of resilience. Gifts of perspective. Life itself is a gift, and within it, each individual has something unique to offer the world. The question is not whether you have a gift, but how you choose to share it.
-          </div>
-          <div className="p3 py-3">
-            Through thought-provoking talks, performances, and ideas worth spreading, TEDxHUI will unwrap stories of ordinary people doing extraordinary things with the gifts they carry. From the spark of an idea to the ripple of impact, we will explore how gifts when shared can transform individuals, communities, and even the world. 
-            This theme is more than a word. It's a movement. A reminder that what you hold inside of you could be the very thing the world has been waiting for.
-          </div>
-          <div className="p4 py-3">
-            At TEDxHUI, we don't just ask: “What is your gift?”
-          </div>
-          <div className="p5 py-3">
-            We challenge you: “Will you give it?”
+        </motion.div> 
+
+        {/*The Gift Section*/}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          className="lg:space-y-[1.25rem] space-y-[1rem] lg:py-[5rem] py-[3rem]"
+        >
+          {/* Header with "The Gift" in Red */}
+          <motion.h4 variants={contentVariants} className="text-3xl md:text-[2.2rem] font-medium leading-tight font-glancyr">
+            Theme: <span className="text-[#EA1D2C]">The Gift</span>
+          </motion.h4>
+
+          {/* Body Paragraphs */}
+          <div className="space-y-6 text-base md:text-lg leading-relaxed text-[#040001] max-w-[75rem]">
+            <motion.div variants={contentVariants}>
+              Every one of us carries a gift. Some gifts are loud and visible, others are quiet and hidden, 
+              waiting for the right moment to be unwrapped.
+            </motion.div>
+
+            <motion.div variants={contentVariants}>
+              At TEDxHUI 2025, our theme “The Gift” is a call to recognize and celebrate these treasures. 
+              Gifts of knowledge. Gifts of creativity. Gifts of resilience. Gifts of perspective. 
+              Life itself is a gift, and within it, each individual has something unique to offer the world. 
+              The question is not whether you have a gift, but how you choose to share it.
+            </motion.div>
+
+            <motion.div variants={contentVariants}>
+              Through thought-provoking talks, performances, and ideas worth spreading, TEDxHUI will unwrap 
+              stories of ordinary people doing extraordinary things with the gifts they carry. 
+              This theme is more than a word. It's a movement.
+            </motion.div>
           </div>
 
-
-        </div>
-        
+          {/* The Styled Rhetorical Questions */}
+          <div className="mt-12 pt-8 border-t border-gray-100">
+            <motion.p variants={contentVariants} className="text-xl md:text-2xl font-medium italic text-[#040001] mb-4">
+              At TEDxHUI, we don't just ask: <span className="text-black">“What is your gift?”</span>
+            </motion.p>
+            
+            <motion.div 
+              variants={challengeVariants}
+              className="bg-[#EA1D2C]/5 p-6 md:p-10 rounded-3xl border-l-8 border-[#EA1D2C]"
+            >
+              <h3 className="text-2xl md:text-4xl font-medium text-[#EA1D2C] leading-tight">
+                We challenge you: <br className="hidden md:block" />
+                <span className="text-3xl md:text-5xl uppercase tracking-tight">“Will you give it?”</span>
+              </h3>
+            </motion.div>
+          </div>
+        </motion.div>
       </section>
 
-      <section className="brilliant-minds bg-[#EA1D2C0D] py-16 md:py-24">
+      {/*Meet the Brilliant Minds Section*/}
+      <section className="brilliant-minds bg-[#EA1D2C0D] lg:p-[4rem] p-[3rem]">
         <div className="max-w-4xl mx-auto p-2">
           
           <h2 className="text-3xl max-w-2xl md:text-5xl font-bold text-black mb-12 text-start">
