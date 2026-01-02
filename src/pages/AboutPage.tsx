@@ -14,19 +14,23 @@ import {
   ArrowRight,
   CheckCircle
 } from 'lucide-react';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-coverflow';
+
 import Elipse1 from "../assets/Ellipse 1.png";
 import TedwhiteSpeaker from "../assets/2d0ce2fb734db790a93563a83d7299d6126715ac.jpg";
 import Building from "../assets/978a49b1f977f1e722458c378b42e7bfa6e13b75.jpg";
 import Unknown from "../assets/unknown.jpg";
+import { unknown } from 'zod';
 
-const TEAM_MEMBERS = [
-    { id: 1, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
-    { id: 2, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
-    { id: 3, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
-    { id: 4, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
-    { id: 5, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
-    { id: 6, name: "Ibrahim Abdulrauf", role: "TEDxHUI Organizer", image: Unknown },
-  ];
+import TeamSlider from '../components/About/TeamSlider';
 
 const AboutPage = () => {
 
@@ -122,6 +126,7 @@ const AboutPage = () => {
     },
   };
 
+
   return (
     <div className="">
       {/* Hero Section */}
@@ -167,7 +172,7 @@ const AboutPage = () => {
       </section>
 
       {/*About TedxHUI Section*/}
-      <section className="about-story lg:mt-16 mt-[2rem] px-[2.5rem] p-2 lg:px-[5.6rem] ">
+      <section className="about-story lg:my-16 mt-[2rem] px-[2.5rem] p-2 lg:px-[5.6rem] ">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -273,53 +278,8 @@ const AboutPage = () => {
       </section>
 
       {/*Meet the Brilliant Minds Section*/}
-      <section className="brilliant-minds bg-[#EA1D2C0D] lg:p-[4rem] p-[3rem]">
-      <div className="max-w-4xl mx-auto p-2">
-        
-        <motion.h2 
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="text-3xl max-w-2xl md:text-[3.75rem] font-medium text-[#040001] mb-12 text-start font-glancyr"
-        >
-          Meet the <span className="text-[#EA1D2C]">Brilliant Minds</span> Behind TEDxHUI
-        </motion.h2>
+      <TeamSlider />
 
-        {/* 3. Wrap the grid in the container motion div */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {TEAM_MEMBERS.map((member) => (
-            <motion.div 
-              key={member.id} 
-              variants={cardVariants}
-              whileHover={{ y: -10 }} // Subtle lift on hover
-              className="p-2"
-            >
-              <div className="img-container border-4 border-[#EA1D2C] rounded-[30px] overflow-hidden bg-white shadow-lg">
-                <img 
-                  className="w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-500" 
-                  src={member.image} 
-                  alt={member.name} 
-                />
-              </div>
-              <h2 className='md:text-2xl font-bold text-black leading-tight pt-4 font-glancyr'>
-                {member.name}
-              </h2>
-              <h4 className='pt-1 text-[#EA1D2C] font-medium'>
-                {member.role}
-              </h4>
-            </motion.div>
-          ))}
-        </motion.div>
-
-      </div>
-    </section>
-      
       <section className="py-16 md:py-24 bg-white">
         <div className="container max-w-4xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
