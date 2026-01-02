@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules';
 
-
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -17,19 +15,19 @@ const TEAM_DATA = [
 
 const TeamSlider = () => {
   return (
-    <section className="py-20 bg-black text-white overflow-hidden">
+    <section className="py-16 md:py-24 bg-gradient-to-br from-[#1A0404] to-[#2C0808] text-white overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-end mb-12">
-          <div>
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold text-white mb-12 lg:text-start text-center px-[6rem] font-glancyr max-w-[45rem]"
-            >
-              Meet The <span className="text-primary">Brilliant Minds</span> Behind TEDxHUI
-            </motion.h2>
-          </div>
+        <div className="flex flex-col justify-between items-end mb-12">
+            <div>
+                <motion.h2 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-5xl font-bold text-white lg:mb-[1rem] lg:text-start text-center lg:px-[4rem] font-glancyr max-w-[44rem]"
+                >
+                Meet The <span className="text-primary">Brilliant Minds</span> Behind TEDxHUI
+                </motion.h2>
+            </div>
           
           {/* Custom Navigation Arrows */}
           <div className="flex gap-4 mb-2">
@@ -53,7 +51,7 @@ const TeamSlider = () => {
             640: { slidesPerView: 2.2 },
             1024: { slidesPerView: 4 },
           }}
-          className="team-swiper"
+          className="team-swiper px-[3rem]"
         >
           {TEAM_DATA.map((member, index) => (
             <SwiperSlide key={index}>

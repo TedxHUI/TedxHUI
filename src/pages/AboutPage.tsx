@@ -279,7 +279,7 @@ const AboutPage = () => {
 
       {/*Meet the Brilliant Minds Section*/}
       <TeamSlider />
-
+      
       <section className="py-16 md:py-24 bg-white">
         <div className="container max-w-4xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
