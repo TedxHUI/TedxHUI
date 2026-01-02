@@ -9,13 +9,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const TEAM_DATA = [
-    { name: "Sherifat", role: "Co-Organiser", img: "/images/TeamMembers/Sherifat.jpeg", email: "sherifat@tedxhui.com" },
-    { name: "Abubakar Abdullahi", role: "Design Lead", img: "images/TeamMembers/Abubakar Abdullahi.jpeg", email: "abubakarabdullahi@tedxhui.com" },
-    { name: "Umar Yunusa", role: "Event Curators Lead", img: "/images/TeamMembers/UmarYunusa.jpeg", email: "Umar@tedxhui.com" },
-    { name: "Mustapha Olawale", role: "Asst. Event Curators Lead", img: "/images/TeamMembers/Momentum_Ace.jpg", email: "Umar@tedxhui.com" },
+    { name: "Sherifat", role: "Co-Organiser", img: "/images/TeamMembers/Sherifat.jpeg",},
+    { name: "Abubakar Abdullahi", role: "Design Lead", img: "images/TeamMembers/Abubakar Abdullahi.jpeg",},
+    { name: "Umar Yunusa", role: "Event Curators Lead", img: "/images/TeamMembers/UmarYunusa.jpeg",},
+    { name: "Mustapha Olawale", role: "Asst. Event Curators Lead", img: "/images/TeamMembers/Momentum_Ace.jpg",},
     { name: "Bashir Sultanat", role: "Technical Lead", img: "/images/TeamMembers/Bashir_Sultanat_Erinlola.png", email: "sultanat@tedxhui.com" },
-    { name: "Gbaiye Baliqees", role: "Communications Lead", img: "/images/TeamMembers/Gbaiye Baliqees.jpg", email: "sultanat@tedxhui.com" },
-    { name: "Akinnibi Adesewa Fahidat", role: "Asst. Communications Lead", img: "/images/TeamMembers/Fahidah.jpg", email: "sultanat@tedxhui.com" },
+    { name: "Marvellous Oluwatobiloba", role: "Ui/UX Designer", img: "/images/TeamMembers/Marvellous_Oluwatobiloba.jpg",},
+    { name: "Emmanuel Victor", role: "Backen Developer", img: "/images/TeamMembers/Emmanuel_Victor.png",},
+    { name: "Gbaiye Baliqees", role: "Communications Lead", img: "/images/TeamMembers/Gbaiye Baliqees.jpg",},
+    { name: "Akinnibi Adesewa Fahidat", role: "Asst. Communications Lead", img: "/images/TeamMembers/Fahidah.jpg",},
   
   // ... add more members
 ];
@@ -78,17 +80,12 @@ const TeamSlider = () => {
 
                 {/* Info Content - Bottom Left */}
                 <div className="absolute bottom-0 left-0 p-6 w-full">
-                  <h3 className="text-xl font-bold font-glancyr">{member.name}</h3>
-                  <p className="text-[#EA1D2C] text-sm font-medium uppercase tracking-wider">{member.role}</p>
-                  
-                  {/* Mail reveal on hover */}
-                  <motion.p 
-                    initial={{ opacity: 0, height: 0 }}
-                    whileHover={{ opacity: 1, height: 'auto' }}
-                    className="text-white text-xs mt-2 overflow-hidden"
-                  >
-                    {member.email}
-                  </motion.p>
+                  <h3 className="text-xl font-bold font-glancyr">
+                    {member.name}
+                  </h3>
+                  <p className="text-[#EA1D2C] text-sm font-medium uppercase tracking-wider">
+                    {member.role}
+                  </p>
                 </div>
               </motion.div>
             </SwiperSlide>
