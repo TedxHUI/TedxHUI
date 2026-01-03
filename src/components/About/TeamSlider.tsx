@@ -15,7 +15,7 @@ const TEAM_DATA = [
     { name: "Mustapha Olawale", role: "Asst. Event Curators Lead", img: "/images/TeamMembers/Momentum_Ace.jpg",},
     { name: "Bashir Sultanat", role: "Technical Lead", img: "/images/TeamMembers/Bashir_Sultanat_Erinlola.png", email: "sultanat@tedxhui.com" },
     { name: "Marvellous Oluwatobiloba", role: "Ui/UX Designer", img: "/images/TeamMembers/Marvellous_Oluwatobiloba.jpg",},
-    { name: "Emmanuel Victor", role: "Backen Developer", img: "/images/TeamMembers/Emmanuel_Victor.png",},
+    { name: "Emmanuel Victor", role: "Backend Developer", img: "/images/TeamMembers/Emmanuel_Victor.png",},
     { name: "Gbaiye Baliqees", role: "Communications Lead", img: "/images/TeamMembers/Gbaiye Baliqees.jpg",},
     { name: "Akinnibi Adesewa Fahidat", role: "Asst. Communications Lead", img: "/images/TeamMembers/Fahidah.jpg",},
   

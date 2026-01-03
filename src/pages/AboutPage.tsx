@@ -26,11 +26,11 @@ import 'swiper/css/effect-coverflow';
 
 import Elipse1 from "../assets/Ellipse 1.png";
 import TedwhiteSpeaker from "../assets/2d0ce2fb734db790a93563a83d7299d6126715ac.jpg";
-import Building from "../assets/978a49b1f977f1e722458c378b42e7bfa6e13b75.jpg";
 import Unknown from "../assets/unknown.jpg";
 import { unknown } from 'zod';
 
 import TeamSlider from '../components/About/TeamSlider';
+import Be_Part from '../components/Be_Part';
 
 const AboutPage = () => {
 
@@ -72,15 +72,16 @@ const AboutPage = () => {
     }
   };
 
-  // Infinite subtle zoom for the image
+  // Animation for the Moot Court image
   const imageAnimation: TargetAndTransition = {
-    scale: [1, 1.05, 1],
+    y: [0, -8, 0],
     transition: {
-      duration: 10,
+      duration: 6,
       repeat: Infinity,
-      ease: "easeInOut"
-    }
+      ease: "easeInOut",
+    },
   };
+
 
   // Staggered fade-up for paragraphs
   const contentVariants: Variants = {
@@ -203,26 +204,24 @@ const AboutPage = () => {
           </div>
 
           {/* Gradient Border Image Container */}
-          <motion.div 
-            variants={textVariants}
-            className="relative lg:mt-16 mt-[2rem] p-[4px] rounded-[35px] overflow-hidden"
-            style={{
-              background: "linear-gradient(to bottom right, #040001, #EA1D2C)"
+          <motion.img
+            src="/images/About/Moot_Court.jpg"
+            alt="A Building in Al-Hikmah"
+            className="lg:rounded-[24px] rounded-2xl"
+            animate={{
+              y: [0, -6, 0],
+              boxShadow: [
+                "0 10px 30px rgba(234, 29, 44, 0.15)",
+                "0 18px 40px rgba(234, 29, 44, 0.25)",
+                "0 10px 30px rgba(234, 29, 44, 0.15)",
+              ],
             }}
-          >
-            <div className="bg-white rounded-[31px] overflow-hidden">
-              <motion.img 
-                animate={imageAnimation}
-                className='w-full h-[400px] object-cover' 
-                src={Building} 
-                alt="A Building in Al-Hikmah" 
-              />
-            </div>
-          </motion.div>
-
-
-          
-
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
         </motion.div> 
 
         {/*The Gift Section*/}
@@ -280,66 +279,67 @@ const AboutPage = () => {
       {/*Meet the Brilliant Minds Section*/}
       <TeamSlider />
       
-      <section className="py-16 md:py-24 bg-white">
-        <div className="container max-w-4xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
-            {/* Left Content */}
-            <div className="flex justify-center items-center h-full">
-              <img 
-                src={TedwhiteSpeaker} 
-                alt="TEDx" 
-                className="w-full h-full max-w-sm md:max-w-md object-cover rounded-lg"
-              />
-            </div>
+      {/*About TEDX*/}
+      <section className="py-[2rem] md:py-[5rem] bg-white overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-[2rem] md:gap-[4rem] mx-auto">
+            
+            {/* Left Content - Image with Slide from Left */}
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="w-full max-w-sm md:max-w-[40rem]"
+            >
+              <div className="relative group">
+                <img 
+                  src="/images/About/TEDx.jpg" 
+                  alt="TEDx Audience" 
+                  className="w-full h-auto object-cover rounded-3xl shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]" 
+                />
+                {/* Subtle Red Glow behind image to match branding */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-[#EA1D2C] to-transparent rounded-3xl blur opacity-20 -z-10 group-hover:opacity-40 transition-opacity" />
+              </div>
+            </motion.div>
 
-
-            {/* Right content */}
-            <div className="space-y-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-black leading-tight">
-                About TEDx
+            {/* Right Content - Text with Slide from Right */}
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              className="space-y-6 max-w-[32.4rem]"
+            >
+              <h2 className="text-3xl md:text-[2rem] font-medium text-[#040001] leading-tight font-glancyr">
+                About <span className='text-[#EA1D2C]'>TEDx</span>
               </h2>
-              <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-                TEDx is a program of local, self-organized events that bring people together to share a TED-like experience.
-                In a TEDx event, live speakers and recorded TED Talks combine to spark deep discussions and connections within a community. 
-                The “x” in TEDx stands for independently organized. While TED provides general guidance for the program, each TEDx event is planned and coordinated independently by a local team that is passionate about ideas worth spreading in their own environment.
+              
+              <p className="text-base md:text-[1rem] text-gray-700 font-normal leading-relaxed">
+                <span className='text-[#EA1D2C] font-glancyr font-bold'>TEDx</span> is a program of local, self-organized events that bring people together to share a TED-like experience.
+                In a <span className='text-[#EA1D2C] font-glancyr font-bold'>TEDx</span> event, live speakers and recorded TED Talks combine to spark deep discussions and connections within a community. 
+                The “x” in <span className='text-[#EA1D2C] font-glancyr font-bold'>TEDx</span> stands for independently organized. While TED provides general guidance for the program, each TEDx event is planned and coordinated independently by a local team that is passionate about ideas worth spreading in their own environment.
               </p>
-              <Button 
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 rounded-full"
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                See More
-              </Button>
-            </div>
+                <Button 
+                  size="lg"
+                  className="bg-[#EA1D2C] hover:bg-[#FF2E3D] text-white font-medium px-8 py-6 rounded-3xl text-[1rem] shadow-lg shadow-[#EA1D2C]/20 transition-all"
+                >
+                  Learn More
+                </Button>
+              </motion.div>
+            </motion.div>
 
           </div>
         </div>
       </section>
 
-      <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
-
-        {/* Decorative circles */}
-        <div className="absolute bottom-0 right-0 w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
-          <img src={Elipse1} alt="Elipse" />
-        </div>
-
-        <div className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-                Be Part of the First TEDxHUI Experience
-              </h2>
-              <p className="text-base md:text-lg text-gray-300 leading-relaxed">
-                Seats are limited, reserve yours today and witness history in the making.
-              </p>
-              <button className="bg-white hover:bg-primary/90 text-black font-bold px-10 py-4 text-base rounded-full mt-6 transition-colors">
-                Get Your Ticket
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
+      {/* Be Part Section */}
+      <Be_Part />
     </div>
   );
 };
