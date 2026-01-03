@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
 import Speakers from "./pages/Speakers";
+import SpeakerDetail from './pages/SpeakerDetail';
 import CreateDP from "./pages/CreateDP";
 import Payment from "./pages/Payment";
 import Contact from "./pages/Contact";
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/speakers" element={<Speakers />} />
+            <Route path="/speakers/:id" element={<SpeakerDetail />} />
             <Route path="/createdp" element={<CreateDP />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/merchandise" element={<Payment />} />

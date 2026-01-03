@@ -38,8 +38,6 @@ import {
   AccordionTrigger,
 } from "../components/ui/accordion";
 
-import Be_Part from '../components/Be_Part';
-
 const HomePage = () => {
 
   const speakers = [
@@ -623,9 +621,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      
-      {/* Be Part Section */}
-      <Be_Part />
 
       {/* Community Section */}
       <section className="py-16 md:py-[3rem] bg-white overflow-hidden">

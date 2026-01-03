@@ -337,9 +337,6 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Be Part Section */}
-      <Be_Part />
     </div>
   );
 };

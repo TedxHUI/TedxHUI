@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import Navigation from './Navigation';
 import Footer from './Footer';
+import Be_Part from '../components/Be_Part';
 
 interface LayoutProps {
   children: ReactNode;
@@ -12,6 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Navigation />
       <main className="flex-1">
         {children}
+        <Be_Part/>
       </main>
       <Footer />
     </div>
