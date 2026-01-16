@@ -11,13 +11,12 @@ import 'swiper/css/navigation';
 const TEAM_DATA = [
     { name: "Sherifat", role: "Co-Organiser", img: "/images/TeamMembers/Sherifat.jpeg",},
     { name: "Abubakar Abdullahi", role: "Design Lead", img: "images/TeamMembers/Abubakar Abdullahi.jpeg",},
-    { name: "Umar Yunusa", role: "Event Curators Lead", img: "/images/TeamMembers/UmarYunusa.jpeg",},
-    { name: "Mustapha Olawale", role: "Asst. Event Curators Lead", img: "/images/TeamMembers/Momentum_Ace.jpg",},
+    { name: "Mustapha Olawale", role: "Event Curators Lead", img: "/images/TeamMembers/Momentum_Ace.jpg",},
     { name: "Bashir Sultanat", role: "Technical Lead", img: "/images/TeamMembers/Bashir_Sultanat_Erinlola.png", email: "sultanat@tedxhui.com" },
     { name: "Marvellous Oluwatobiloba", role: "Ui/UX Designer", img: "/images/TeamMembers/Marvellous_Oluwatobiloba.jpg",},
-    { name: "Emmanuel Victor", role: "Backend Developer", img: "/images/TeamMembers/Emmanuel_Victor.png",},
     { name: "Gbaiye Baliqees", role: "Communications Lead", img: "/images/TeamMembers/Gbaiye Baliqees.jpg",},
     { name: "Akinnibi Adesewa Fahidat", role: "Asst. Communications Lead", img: "/images/TeamMembers/Fahidah.jpg",},
+    { name: "Naima Lemu", role: "Brand Ambassador", img: "/images/TeamMembers/Naima.jpeg",},
   
   // ... add more members
 ];
