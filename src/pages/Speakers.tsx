@@ -3,17 +3,8 @@ import { motion, Variants, TargetAndTransition } from 'framer-motion';
 import Elipse1 from "../assets/Ellipse 1.png";
 import { Link } from 'react-router-dom';
 import Unknown from "../assets/0ca30f5a418dacbe53b99b7bd4f3d02b42d11155.jpg";
+import { SPEAKERS_DATA } from '../data/speakers';
 
-const SPEAKERS = [
-  { id: "alhaji-ali", name: "Alhaji Ali", role: "Director General, Nigeria", img: "/images/Speakers/Ali.jpg" },
-  { id: "alhan-islam", name: "Alhan Islam", role: "UN Global Advocate For Peace", img: "/images/Speakers/Alhan.jpg" },
-  { id: "Ahmad-XM", name: "Ahmad XM", role: "CEO, XM Trading", img: "/images/Speakers/xm.jpg" },
-  { id: "maryam", name: "Maryam Apaokagi", role: "Content Creator", img: "/images/Speakers/taoma.jpg" },
-  { id: "khalil", name: "Khalil Halilu", role: "Executive Vice Chairman, NASENI", img: "/images/Speakers/Khalil.jpg" },
-  { id: "odunayo", name: "Odunayo Eweniyi", role: "Co-founder, PiggyVest", img: "/images/Speakers/odunayo.jpeg" },
-  { id: "hamzat", name: "Hamzat Lawal", role: "Founder of Connected Development (CODE)", img: "/images/Speakers/hamzat.jpeg" },
-  // Add more easily here...
-];
 
 const Speakers = () => {
 
@@ -26,7 +17,7 @@ const Speakers = () => {
       visible: {
         opacity: 1,
         transition: { 
-          staggerChildren: 0.12, // Faster stagger for text looks better
+          staggerChildren: 0.12, // Faster stagger ==
           delayChildren: 0.3 
         }
       }
@@ -108,12 +99,11 @@ const Speakers = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          // 3. Grid handles width and responsiveness perfectly
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto"
         >
-          {SPEAKERS.map((speaker, index) => (
+          {SPEAKERS_DATA.map((speaker, index) => (
             <motion.div key={index} variants={cardVariants} className="group">
-              {/* Image Container with fixed aspect ratio */}
+              {/* Image Container*/}
               <div className="aspect-square rounded-3xl overflow-hidden mb-5 bg-gray-100">
                 <img 
                   src={speaker.img} 
@@ -130,7 +120,7 @@ const Speakers = () => {
               </h4>
               
               <Link 
-                to={`/speakers/${speaker.id}`} // This points to the dynamic route
+                to={`/speakers/${speaker.id}`}
                 className="mt-4 inline-block border border-[#3F1212] text-[#3F1212] hover:bg-[#3F1212] hover:text-white transition-colors text-sm font-medium rounded-full px-6 py-2"
               >
                 Read Bio
@@ -139,32 +129,6 @@ const Speakers = () => {
           ))}
         </motion.div>
       </section>
- 
-      <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
-
-        {/* Decorative circles */}
-        <div className="absolute bottom-0 right-0 w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
-          <img src={Elipse1} alt="Elipse" />
-        </div>
-
-        <div className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-                Be Part of the First TEDxHUI Experience
-              </h2>
-              <p className="text-base md:text-lg text-gray-300 leading-relaxed">
-                Seats are limited, reserve yours today and witness history in the making.
-              </p>
-              <button className="bg-white hover:bg-primary/90 text-black font-bold px-10 py-4 text-base rounded-full mt-6 transition-colors">
-                Get Your Ticket
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
     </div>
   )
 }
