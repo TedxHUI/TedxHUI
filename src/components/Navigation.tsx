@@ -1,21 +1,21 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Menu, X, Beaker } from 'lucide-react';
-import { Button } from '../components/ui/button';
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Menu, X, Beaker } from "lucide-react";
+import { Button } from "../components/ui/button";
 import Logo from "../assets/DP Image.png";
-
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navItems = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/speakers', label: 'Speakers' },
-    { path: '/agenda', label: 'Agenda' },
-    { path: '/createdp', label: 'Create DP' },
-    { path: '/merchandise', label: 'Merchandise' },
-    { path: '/contact', label: 'Contact' },
+    { path: "/", label: "Home" },
+    { path: "/about", label: "About" },
+    { path: "/speakers", label: "Speakers" },
+    { path: "/agenda", label: "Agenda" },
+    { path: "/createdp", label: "Create DP" },
+    { path: "/merchandise", label: "Merchandise" },
+    { path: "/contact", label: "Contact" },
   ];
 
   return (
@@ -24,7 +24,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <NavLink to="/" className="flex items-center space-x-2 group">
-            <img className='w-30 h-12' src={Logo} alt="Logo" />
+            <img className="w-30 h-12" src={Logo} alt="Logo" />
             <span className="text-xl font-bold text-primary"></span>
           </NavLink>
 
@@ -37,8 +37,8 @@ const Navigation = () => {
                 className={({ isActive }) =>
                   `px-0 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                     isActive
-                      ? 'text-accent bg-accent-light'
-                      : 'text-foreground hover:text-accent hover:bg-accent-light/50'
+                      ? "text-accent bg-accent-light"
+                      : "text-foreground hover:text-accent hover:bg-accent-light/50"
                   }`
                 }
               >
@@ -48,7 +48,11 @@ const Navigation = () => {
           </div>
 
           <div className="nav_btn-container hidden lg:flex items-center space-x-8">
-            <Button variant="default" className="shadow-glow hover:gradient-primary rounded-full bg-[#EA1D2C]">
+            <Button
+              onClick={() => navigate("/book-ticket")}
+              variant="default"
+              className="shadow-glow hover:gradient-primary rounded-full bg-[#EA1D2C]"
+            >
               Register Now
             </Button>
           </div>
@@ -61,7 +65,11 @@ const Navigation = () => {
               onClick={() => setIsOpen(!isOpen)}
               className="text-foreground"
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </Button>
           </div>
         </div>
@@ -78,16 +86,22 @@ const Navigation = () => {
                   className={({ isActive }) =>
                     `px-3 py-2 rounded-md text-base font-medium transition-all ${
                       isActive
-                        ? 'text-accent bg-accent-light'
-                        : 'text-foreground hover:text-accent hover:bg-accent-light/50'
+                        ? "text-accent bg-accent-light"
+                        : "text-foreground hover:text-accent hover:bg-accent-light/50"
                     }`
                   }
                 >
                   {item.label}
                 </NavLink>
               ))}
-              <Button className="mt-4 bg-gradient-primary">
-                Get Quote
+              <Button
+                onClick={() => {
+                  setIsOpen(false);
+                  navigate("/book-ticket");
+                }}
+                className="mt-4 bg-[#EA1D2C] rounded-full"
+              >
+                Register Now
               </Button>
             </div>
           </div>

@@ -8,10 +8,13 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
 import Speakers from "./pages/Speakers";
-import SpeakerDetail from './pages/SpeakerDetail';
+import SpeakerDetail from "./pages/SpeakerDetail";
 import CreateDP from "./pages/CreateDP";
-import Payment from "./pages/Payment";
+import Merchandise from "./pages/Merchandise";
 import Contact from "./pages/Contact";
+import AdminDashboard from "./pages/AdminDashboard";
+import TicketBooking from "./pages/TicketBooking";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +32,10 @@ const App = () => (
             <Route path="/speakers/:id" element={<SpeakerDetail />} />
             <Route path="/createdp" element={<CreateDP />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/merchandise" element={<Payment />} />
+            <Route path="/merchandise" element={<Merchandise />} />
+            <Route path="/book-ticket" element={<TicketBooking />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
