@@ -81,7 +81,7 @@ export const merchandiseService = {
     if (uploadError) {
       if (uploadError.message === "Bucket not found") {
         throw new Error(
-          'Storage bucket "merchandise-images" not found. Please run the SQL provided or create the bucket manually in Supabase.'
+          'Storage bucket "merchandise-images" not found. Please run the SQL provided or create the bucket manually in Supabase.',
         );
       }
       throw uploadError;
@@ -94,15 +94,62 @@ export const merchandiseService = {
     return publicUrl;
   },
 
+  // Check stock availability
+  async checkStock(merchandiseId: string, quantity: number) {
+    const { data, error } = await supabase
+      .from("merchandise")
+      .select("stock_quantity, sold_count")
+      .eq("id", merchandiseId)
+      .single();
+
+    if (error) throw new Error("Failed to check stock availability");
+
+    const available = (data.stock_quantity || 0) - (data.sold_count || 0);
+    return available >= quantity;
+  },
+
   // 2. Create an order (Post-payment initialization)
   async createOrder(orderData: Omit<Order, "id">) {
+    // Check for duplicate payment reference
+    const { data: existing } = await supabase
+      .from("orders")
+      .select("id")
+      .eq("payment_reference", orderData.payment_reference)
+      .maybeSingle();
+
+    if (existing) {
+      throw new Error(
+        "An order with this payment reference already exists. If you believe this is an error, please contact support.",
+      );
+    }
+
+    // Check stock availability
+    const stockAvailable = await this.checkStock(
+      orderData.merchandise_id,
+      orderData.quantity,
+    );
+
+    if (!stockAvailable) {
+      throw new Error(
+        "Sorry, this item is out of stock or doesn't have enough quantity available.",
+      );
+    }
+
     const { data, error } = await supabase
       .from("orders")
       .insert([orderData])
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      if (error.code === "23505") {
+        // Unique constraint violation
+        throw new Error(
+          "This payment has already been processed. Please check your email for confirmation.",
+        );
+      }
+      throw new Error(`Failed to create order: ${error.message}`);
+    }
     return data;
   },
 
@@ -130,7 +177,7 @@ export const merchandiseService = {
           name,
           price
         )
-      `
+      `,
       )
       .order("created_at", { ascending: false });
 

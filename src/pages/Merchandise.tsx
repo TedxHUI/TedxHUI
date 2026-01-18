@@ -44,6 +44,11 @@ const MerchandisePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const savedEmail = localStorage.getItem("tedxhui_merch_email");
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+
     const fetchMerch = async () => {
       try {
         const data = await merchandiseService.getAllMerchandise();
@@ -114,6 +119,9 @@ const MerchandisePage = () => {
         description: `Thank you for supporting TEDxHUI! Order ref: ${reference.reference}`,
       });
 
+      // Clear saved form data
+      localStorage.removeItem("tedxhui_merch_email");
+
       navigate("/payment-success", {
         state: {
           type: "merch",
@@ -128,12 +136,14 @@ const MerchandisePage = () => {
 
       setEmail("");
       setQuantity(1);
-    } catch (error) {
+      setIsModalOpen(false);
+    } catch (error: any) {
       console.error("Purchase error:", error);
       toast({
         title: "Order Failed",
         description:
-          "Payment was successful but we failed to record your order. Please contact support with your reference.",
+          error.message ||
+          "Something went wrong. Please contact support with your payment reference.",
         variant: "destructive",
       });
     } finally {
@@ -145,9 +155,85 @@ const MerchandisePage = () => {
     setIsProcessing(false);
     toast({
       title: "Payment Cancelled",
-      description: "You closed the payment window.",
+      description: "You closed the payment window. Your email has been saved.",
       variant: "default",
     });
+  };
+
+  const handlePurchase = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedItem || !email) {
+      toast({
+        title: "Missing Information",
+        description: "Please select an item and enter your email.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!process.env.REACT_APP_PAYSTACK_PUBLIC_KEY) {
+      toast({
+        title: "Configuration Error",
+        description: "Paystack key is missing. Please contact admin.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      // 1. Double check stock before initializing payment
+      const hasStock = await merchandiseService.checkStock(
+        selectedItem.id,
+        quantity,
+      );
+      if (!hasStock) {
+        setIsProcessing(false);
+        toast({
+          title: "Out of Stock",
+          description:
+            "Sorry, this item just sold out or doesn't have enough stock.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // 2. Save email
+      localStorage.setItem("tedxhui_merch_email", email);
+
+      // 3. Initialize Paystack
+      const paymentTimeout = setTimeout(() => {
+        if (isProcessing) {
+          setIsProcessing(false);
+          toast({
+            title: "Payment Timeout",
+            description:
+              "Payment initialization took too long. Please try again.",
+            variant: "destructive",
+          });
+        }
+      }, 30000);
+
+      initializePayment({
+        onSuccess: (ref) => {
+          clearTimeout(paymentTimeout);
+          onSuccess(ref);
+        },
+        onClose: () => {
+          clearTimeout(paymentTimeout);
+          onClose();
+        },
+      });
+    } catch (error: any) {
+      setIsProcessing(false);
+      toast({
+        title: "Error",
+        description:
+          error.message || "Failed to initialize purchase. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleItemClick = (item: Merchandise) => {
@@ -290,30 +376,6 @@ const MerchandisePage = () => {
       </div>
     </div>
   );
-
-  const handlePurchase = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedItem || !email) {
-      toast({
-        title: "Missing Information",
-        description: "Please select an item and enter your email.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!process.env.REACT_APP_PAYSTACK_PUBLIC_KEY) {
-      toast({
-        title: "Configuration Error",
-        description: "Paystack key is missing. Please contact admin.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsProcessing(true);
-    initializePayment({ onSuccess, onClose });
-  };
 
   if (loading) {
     return (

@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { ticketService } from "../services/ticketService";
 import { notificationService } from "../services/notificationService";
 import { Button } from "../components/ui/button";
@@ -27,6 +27,16 @@ const TicketBooking = () => {
   const [email, setEmail] = useState("");
   const [ticketType, setTicketType] = useState("standard");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(() => {
+    const savedForm = localStorage.getItem("tedxhui_ticket_form");
+    if (savedForm) {
+      const { fullName, email, ticketType } = JSON.parse(savedForm);
+      setFullName(fullName || "");
+      setEmail(email || "");
+      setTicketType(ticketType || "standard");
+    }
+  }, []);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -74,6 +84,9 @@ const TicketBooking = () => {
         description: "Your ticket has been confirmed. Check your email!",
       });
 
+      // Clear saved form data
+      localStorage.removeItem("tedxhui_ticket_form");
+
       navigate("/payment-success", {
         state: {
           type: "ticket",
@@ -88,11 +101,13 @@ const TicketBooking = () => {
 
       setFullName("");
       setEmail("");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Booking error:", error);
       toast({
         title: "Booking Failed",
-        description: "Something went wrong. Please contact support.",
+        description:
+          error.message ||
+          "Something went wrong. Please contact support with your payment reference.",
         variant: "destructive",
       });
     } finally {
@@ -104,13 +119,15 @@ const TicketBooking = () => {
     setIsProcessing(false);
     toast({
       title: "Payment Cancelled",
-      description: "You closed the payment window.",
+      description:
+        "You closed the payment window. Your information has been saved.",
       variant: "default",
     });
   };
 
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!fullName || !email || !ticketType) {
       toast({
         title: "Missing Information",
@@ -129,8 +146,46 @@ const TicketBooking = () => {
       return;
     }
 
+    // Save form data before payment
+    localStorage.setItem(
+      "tedxhui_ticket_form",
+      JSON.stringify({ fullName, email, ticketType }),
+    );
+
     setIsProcessing(true);
-    initializePayment({ onSuccess, onClose });
+
+    // Set timeout for payment (30 seconds)
+    const paymentTimeout = setTimeout(() => {
+      if (isProcessing) {
+        setIsProcessing(false);
+        toast({
+          title: "Payment Timeout",
+          description: "Payment took too long. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }, 30000);
+
+    try {
+      initializePayment({
+        onSuccess: (ref) => {
+          clearTimeout(paymentTimeout);
+          onSuccess(ref);
+        },
+        onClose: () => {
+          clearTimeout(paymentTimeout);
+          onClose();
+        },
+      });
+    } catch (error) {
+      clearTimeout(paymentTimeout);
+      setIsProcessing(false);
+      toast({
+        title: "Payment Error",
+        description: "Failed to initialize payment. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

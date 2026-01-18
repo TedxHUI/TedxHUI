@@ -20,6 +20,7 @@ import TicketBooking from "./pages/TicketBooking";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import PendingApproval from "./pages/PendingApproval";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
               {/* Auth routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/pending-approval" element={<PendingApproval />} />
 
               {/* Protected admin route */}
               <Route

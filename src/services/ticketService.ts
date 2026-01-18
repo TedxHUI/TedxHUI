@@ -14,8 +14,21 @@ export interface Ticket {
 export const ticketService = {
   // 1. Generate unique ticket (Post-payment)
   async registerTicket(
-    ticketData: Omit<Ticket, "id" | "status" | "created_at">
+    ticketData: Omit<Ticket, "id" | "status" | "created_at">,
   ) {
+    // Check for duplicate payment reference
+    const { data: existing } = await supabase
+      .from("tickets")
+      .select("id")
+      .eq("payment_reference", ticketData.payment_reference)
+      .maybeSingle();
+
+    if (existing) {
+      throw new Error(
+        "A ticket with this payment reference already exists. If you believe this is an error, please contact support.",
+      );
+    }
+
     const { data, error } = await supabase
       .from("tickets")
       .insert([
@@ -27,7 +40,15 @@ export const ticketService = {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      if (error.code === "23505") {
+        // Unique constraint violation
+        throw new Error(
+          "This payment has already been processed. Please check your email for confirmation.",
+        );
+      }
+      throw new Error(`Failed to register ticket: ${error.message}`);
+    }
     return data;
   },
 

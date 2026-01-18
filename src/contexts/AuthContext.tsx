@@ -5,6 +5,7 @@ import { User } from "@supabase/supabase-js";
 interface AuthContextType {
   user: User | null;
   isAdmin: boolean;
+  isApproved: boolean;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, fullName: string) => Promise<void>;
@@ -20,16 +21,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const [isApproved, setIsApproved] = useState(false);
+
   useEffect(() => {
     // Check active session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        checkAdminStatus(session.user.id);
-      } else {
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          checkAdminStatus(session.user.id);
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Session check failed:", err);
         setLoading(false);
-      }
-    });
+      });
 
     // Listen for auth changes
     const {
@@ -40,6 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         checkAdminStatus(session.user.id);
       } else {
         setIsAdmin(false);
+        setIsApproved(false);
         setLoading(false);
       }
     });
@@ -51,13 +61,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const { data, error } = await supabase
         .from("admin_users")
-        .select("id")
+        .select("id, approved")
         .eq("id", userId)
         .single();
 
       setIsAdmin(!!data && !error);
+      setIsApproved(data?.approved ?? false);
     } catch (error) {
       setIsAdmin(false);
+      setIsApproved(false);
     } finally {
       setLoading(false);
     }
@@ -100,7 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ user, isAdmin, loading, signIn, signUp, signOut }}
+      value={{ user, isAdmin, isApproved, loading, signIn, signUp, signOut }}
     >
       {children}
     </AuthContext.Provider>

@@ -16,6 +16,7 @@ import { TicketsTab } from "../components/admin/TicketsTab";
 import { MerchandiseTab } from "../components/admin/MerchandiseTab";
 import { OrdersTab } from "../components/admin/OrdersTab";
 import { BroadcastTab } from "../components/admin/BroadcastTab";
+import { AdminsTab } from "../components/admin/AdminsTab";
 import {
   Tabs,
   TabsContent,
@@ -29,6 +30,7 @@ import {
   Ticket as TicketIcon,
   RefreshCw,
   ShoppingBag,
+  Shield,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { useToast } from "../hooks/use-toast";
@@ -844,6 +846,13 @@ const AdminDashboard = () => {
             <Megaphone className="w-4 h-4" />
             Broadcast
           </TabsTrigger>
+          <TabsTrigger
+            value="admins"
+            className="flex items-center gap-2 py-2 px-4"
+          >
+            <Shield className="w-4 h-4" />
+            Admins
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview">
@@ -930,6 +939,10 @@ const AdminDashboard = () => {
             broadcastSearch={broadcastSearch}
             setBroadcastSearch={setBroadcastSearch}
           />
+        </TabsContent>
+
+        <TabsContent value="admins">
+          <AdminsTab />
         </TabsContent>
       </Tabs>
     </div>
