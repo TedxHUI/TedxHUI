@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { usePaystackPayment } from "react-paystack";
 import {
   merchandiseService,
   Merchandise,
@@ -15,23 +17,8 @@ import {
   CardDescription,
 } from "../components/ui/card";
 import { useToast } from "../hooks/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "../components/ui/dialog";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-  DrawerFooter,
-} from "../components/ui/drawer";
-import { useNavigate } from "react-router-dom";
-import { usePaystackPayment } from "react-paystack";
+import { Dialog, DialogContent } from "../components/ui/dialog";
+import { Drawer, DrawerContent } from "../components/ui/drawer";
 import { useMediaQuery } from "../hooks/use-media-query";
 import {
   ShoppingCart,
@@ -56,9 +43,32 @@ const MerchandisePage = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchMerch = async () => {
+      try {
+        const data = await merchandiseService.getAllMerchandise();
+        setMerchandise(data);
+      } catch (error) {
+        console.error("Error fetching merchandise:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load merchandise. Please try again later.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMerch();
+  }, [toast]);
+
   const allImages = selectedItem
-    ? [selectedItem.image_url, ...(selectedItem.image_urls || [])].filter(
-        Boolean
+    ? Array.from(
+        new Set(
+          [selectedItem.image_url, ...(selectedItem.image_urls || [])].filter(
+            Boolean,
+          ),
+        ),
       )
     : [];
 
@@ -153,7 +163,7 @@ const MerchandisePage = () => {
 
   const prevImage = () => {
     setActiveImageIndex(
-      (prev) => (prev - 1 + allImages.length) % allImages.length
+      (prev) => (prev - 1 + allImages.length) % allImages.length,
     );
   };
 
@@ -370,7 +380,7 @@ const MerchandisePage = () => {
         </Dialog>
       ) : (
         <Drawer open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DrawerContent className="max-h-[90vh]">
+          <DrawerContent className="max-h-[80vh]">
             <div className="px-6 pb-8 overflow-y-auto">
               <MerchandiseContent />
             </div>

@@ -32,14 +32,34 @@ import {
   Area,
 } from "recharts";
 
+interface DashboardStats {
+  regCount: number;
+  attendance: {
+    total: number;
+    checkedIn: number;
+    attendanceRate: number;
+  };
+  merchStats: {
+    totalRevenue: number;
+    totalOrders: number;
+  };
+}
+
 interface OverviewTabProps {
-  stats: any;
-  registrationTrend: any[];
-  recentActivity: any[];
-  revenueData: any[];
-  ticketStats: any[];
-  merchSalesData: any[];
-  ticketTypeStats: any[];
+  stats: DashboardStats | null;
+  registrationTrend: { date: string; count: number }[];
+  recentActivity: {
+    id: string;
+    type: "registration" | "checkin" | "order";
+    title: string;
+    description: string;
+    time: Date;
+    status: string;
+  }[];
+  revenueData: { date: string; revenue: number }[];
+  ticketStats: { name: string; value: number; color: string }[];
+  merchSalesData: { name: string; value: number }[];
+  ticketTypeStats: { name: string; value: number; color: string }[];
 }
 
 export const OverviewTab: React.FC<OverviewTabProps> = ({
@@ -84,7 +104,8 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
               {stats?.attendance?.checkedIn || 0}
             </div>
             <p className="text-xs text-green-600 mt-1 font-medium">
-              {stats?.attendance?.attendanceRate.toFixed(1)}% attendance rate
+              {stats?.attendance?.attendanceRate?.toFixed(1) || "0.0"}%
+              attendance rate
             </p>
           </CardContent>
         </Card>
@@ -201,8 +222,8 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                         item.type === "registration"
                           ? "bg-blue-50 text-blue-600"
                           : item.type === "checkin"
-                          ? "bg-green-50 text-green-600"
-                          : "bg-purple-50 text-purple-600"
+                            ? "bg-green-50 text-green-600"
+                            : "bg-purple-50 text-purple-600"
                       }`}
                     >
                       {item.type === "registration" ? (

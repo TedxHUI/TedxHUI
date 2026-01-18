@@ -51,17 +51,25 @@ interface MerchandiseTabProps {
     image_url: string;
     image_urls: string[];
   };
-  setNewMerch: (merch: any) => void;
+  setNewMerch: (merch: {
+    name: string;
+    description: string;
+    price: number;
+    stock_quantity: number;
+    image_url: string;
+    image_urls: string[];
+  }) => void;
   isAddingMerch: boolean;
   isDialogOpen: boolean;
   setIsDialogOpen: (open: boolean) => void;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  imagePreview: string | null;
-  setSelectedFile: (file: File | null) => void;
-  setImagePreview: (preview: string | null) => void;
+  imagePreviews: string[];
+  setSelectedFiles: (files: File[]) => void;
+  setImagePreviews: (previews: string[]) => void;
   handleAddMerch: (e: React.FormEvent) => void;
   handleEditMerch: (item: Merchandise) => void;
   handleDeleteMerch: (id: string) => void;
+  removeSelectedFile: (index: number) => void;
   cancelEdit: () => void;
 }
 
@@ -77,12 +85,13 @@ export const MerchandiseTab: React.FC<MerchandiseTabProps> = ({
   isDialogOpen,
   setIsDialogOpen,
   handleFileChange,
-  imagePreview,
-  setSelectedFile,
-  setImagePreview,
+  imagePreviews,
+  setSelectedFiles,
+  setImagePreviews,
   handleAddMerch,
   handleEditMerch,
   handleDeleteMerch,
+  removeSelectedFile,
   cancelEdit,
 }) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -162,37 +171,58 @@ export const MerchandiseTab: React.FC<MerchandiseTabProps> = ({
               <ImageIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
             </div>
 
-            {newMerch.image_urls && newMerch.image_urls.length > 0 && (
-              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                {newMerch.image_urls.map((url, idx) => (
-                  <div
-                    key={idx}
-                    className="relative w-16 h-16 flex-shrink-0 border rounded-lg overflow-hidden group"
+            {/* Existing and New Previews */}
+            <div className="flex flex-wrap gap-2">
+              {/* Existing Images */}
+              {newMerch.image_urls?.map((url, idx) => (
+                <div
+                  key={`existing-${idx}`}
+                  className="relative w-16 h-16 border rounded-lg overflow-hidden group"
+                >
+                  <img
+                    src={url}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = newMerch.image_urls.filter(
+                        (_, i) => i !== idx,
+                      );
+                      setNewMerch({ ...newMerch, image_urls: updated });
+                    }}
+                    className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
                   >
-                    <img
-                      src={url}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const updated = newMerch.image_urls.filter(
-                          (_, i) => i !== idx
-                        );
-                        setNewMerch({
-                          ...newMerch,
-                          image_urls: updated,
-                        });
-                      }}
-                      className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="w-2.5 h-2.5" />
-                    </button>
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+
+              {/* New File Previews */}
+              {imagePreviews.map((preview, idx) => (
+                <div
+                  key={`new-${idx}`}
+                  className="relative w-16 h-16 border-2 border-primary/20 rounded-lg overflow-hidden group"
+                >
+                  <img
+                    src={preview}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-0 left-0 bg-primary text-[8px] text-white px-1 font-bold">
+                    NEW
                   </div>
-                ))}
-              </div>
-            )}
+                  <button
+                    type="button"
+                    onClick={() => removeSelectedFile(idx)}
+                    className="absolute top-0.5 right-0.5 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -209,8 +239,8 @@ export const MerchandiseTab: React.FC<MerchandiseTabProps> = ({
           {isAddingMerch
             ? "Saving..."
             : editingMerch
-            ? "Update Item"
-            : "Add Item"}
+              ? "Update Item"
+              : "Add Item"}
         </Button>
       </div>
     </form>
@@ -271,8 +301,8 @@ export const MerchandiseTab: React.FC<MerchandiseTabProps> = ({
                 Add Merchandise
               </Button>
             </DrawerTrigger>
-            <DrawerContent>
-              <div className="px-6 pb-8">
+            <DrawerContent className="max-h-[80vh]">
+              <div className="px-6 pb-8 overflow-y-auto">
                 <DrawerHeader className="px-0">
                   <DrawerTitle className="text-xl font-bold">
                     {editingMerch ? "Edit Merchandise" : "Add New Merchandise"}

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { analyticsService } from "../services/analyticsService";
-import { ticketService } from "../services/ticketService";
-import { notificationService } from "../services/notificationService";
 import {
   merchandiseService,
   Merchandise,
+  Order,
 } from "../services/merchandiseService";
+import { ticketService, Ticket } from "../services/ticketService";
+import {
+  notificationService,
+  Notification,
+} from "../services/notificationService";
+import { analyticsService } from "../services/analyticsService";
 import { OverviewTab } from "../components/admin/OverviewTab";
 import { TicketsTab } from "../components/admin/TicketsTab";
 import { MerchandiseTab } from "../components/admin/MerchandiseTab";
@@ -19,75 +23,43 @@ import {
   TabsTrigger,
 } from "../components/ui/tabs";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../components/ui/table";
-import { Badge } from "../components/ui/badge";
-import {
-  BarChart as ReBarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip as ReTooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Cell as ReCell,
-  LineChart,
-  Line,
-  AreaChart,
-  Area,
-} from "recharts";
-import {
   LayoutDashboard,
   Megaphone,
   Package,
   Ticket as TicketIcon,
-  CheckCircle,
-  Plus,
   RefreshCw,
-  Search,
-  DollarSign,
-  Users,
-  Trash2,
-  Edit2,
-  X,
-  Send,
-  Calendar,
   ShoppingBag,
-  Download,
-  Activity,
-  ArrowUpRight,
-  Clock,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "../components/ui/card";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
 import { useToast } from "../hooks/use-toast";
 
+interface DashboardStats {
+  regCount: number;
+  attendance: {
+    total: number;
+    checkedIn: number;
+    attendanceRate: number;
+  };
+  merchStats: {
+    totalRevenue: number;
+    totalOrders: number;
+  };
+}
+
+interface OrderWithMerch extends Order {
+  created_at: string;
+  merchandise?: {
+    name: string;
+    price: number;
+  };
+}
+
+interface AdminTicket extends Ticket {
+  created_at: string;
+}
+
 const AdminDashboard = () => {
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchId, setSearchId] = useState("");
   const [validating, setValidating] = useState(false);
@@ -95,10 +67,10 @@ const AdminDashboard = () => {
   const [broadcasting, setBroadcasting] = useState(false);
   const [sendingReminders, setSendingReminders] = useState(false);
   const [merchandise, setMerchandise] = useState<Merchandise[]>([]);
-  const [tickets, setTickets] = useState<any[]>([]);
+  const [tickets, setTickets] = useState<AdminTicket[]>([]);
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
-  const [orders, setOrders] = useState<any[]>([]);
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [orders, setOrders] = useState<OrderWithMerch[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [ticketSearch, setTicketSearch] = useState("");
   const [orderSearch, setOrderSearch] = useState("");
   const [merchSearch, setMerchSearch] = useState("");
@@ -120,8 +92,8 @@ const AdminDashboard = () => {
   });
   const [isAddingMerch, setIsAddingMerch] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [configStatus, setConfigStatus] = useState({
     bucketExists: false,
     resendKeySet: !!process.env.REACT_APP_RESEND_API_KEY,
@@ -139,7 +111,8 @@ const AdminDashboard = () => {
       image_url: item.image_url,
       image_urls: item.image_urls || [],
     });
-    setImagePreview(item.image_url);
+    setSelectedFiles([]);
+    setImagePreviews([]);
     setIsDialogOpen(true);
   };
 
@@ -153,8 +126,8 @@ const AdminDashboard = () => {
       image_url: "",
       image_urls: [],
     });
-    setSelectedFile(null);
-    setImagePreview(null);
+    setSelectedFiles([]);
+    setImagePreviews([]);
     setIsDialogOpen(false);
   };
 
@@ -162,7 +135,7 @@ const AdminDashboard = () => {
     try {
       const { data: buckets } = await supabase.storage.listBuckets();
       const exists = buckets?.some(
-        (b: { id: string }) => b.id === "merchandise-images"
+        (b: { id: string }) => b.id === "merchandise-images",
       );
       setConfigStatus((prev) => ({
         ...prev,
@@ -187,7 +160,7 @@ const AdminDashboard = () => {
   const fetchTickets = async () => {
     try {
       const data = await ticketService.getAllTickets();
-      setTickets(data);
+      setTickets(data as AdminTicket[]);
     } catch (error) {
       console.error("Error fetching tickets:", error);
     }
@@ -196,7 +169,7 @@ const AdminDashboard = () => {
   const fetchOrders = async () => {
     try {
       const data = await merchandiseService.getAllOrders();
-      setOrders(data);
+      setOrders(data as OrderWithMerch[]);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -215,7 +188,7 @@ const AdminDashboard = () => {
     const matchesSearch =
       ticket.full_name.toLowerCase().includes(ticketSearch.toLowerCase()) ||
       ticket.email.toLowerCase().includes(ticketSearch.toLowerCase()) ||
-      ticket.id.toLowerCase().includes(ticketSearch.toLowerCase());
+      (ticket.id || "").toLowerCase().includes(ticketSearch.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all" || ticket.status === statusFilter;
@@ -226,7 +199,7 @@ const AdminDashboard = () => {
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
       order.user_email.toLowerCase().includes(orderSearch.toLowerCase()) ||
-      order.id.toLowerCase().includes(orderSearch.toLowerCase()) ||
+      (order.id || "").toLowerCase().includes(orderSearch.toLowerCase()) ||
       (order.merchandise?.name || "")
         .toLowerCase()
         .includes(orderSearch.toLowerCase());
@@ -280,11 +253,11 @@ const AdminDashboard = () => {
 
     const revenueData = last7Days.map((date) => {
       const dayOrders = orders.filter(
-        (o) => o.payment_status === "paid" && o.created_at.startsWith(date)
+        (o) => o.payment_status === "paid" && o.created_at.startsWith(date),
       );
       const total = dayOrders.reduce(
         (sum, o) => sum + Number(o.total_price),
-        0
+        0,
       );
       return {
         date: new Date(date).toLocaleDateString([], {
@@ -330,7 +303,7 @@ const AdminDashboard = () => {
     const merchSalesData = merchandise
       .map((item) => {
         const itemOrders = orders.filter(
-          (o) => o.merchandise_id === item.id && o.payment_status === "paid"
+          (o) => o.merchandise_id === item.id && o.payment_status === "paid",
         );
         const totalSold = itemOrders.reduce((sum, o) => sum + o.quantity, 0);
         return {
@@ -341,20 +314,27 @@ const AdminDashboard = () => {
       .filter((item) => item.value > 0);
 
     // Recent Activity Feed
-    const combinedActivity = [
+    const combinedActivity: {
+      id: string;
+      type: "registration" | "checkin" | "order";
+      title: string;
+      description: string;
+      time: Date;
+      status: string;
+    }[] = [
       ...tickets.map((t) => ({
         id: `reg-${t.id}`,
-        type: "registration",
+        type: "registration" as const,
         title: "New Registration",
         description: `${t.full_name} registered for the event`,
-        time: new Date(t.created_at),
+        time: t.created_at ? new Date(t.created_at) : new Date(),
         status: t.status,
       })),
       ...tickets
         .filter((t) => t.checked_in_at)
         .map((t) => ({
           id: `in-${t.id}`,
-          type: "checkin",
+          type: "checkin" as const,
           title: "Attendee Check-in",
           description: `${t.full_name} has arrived`,
           time: new Date(t.checked_in_at!),
@@ -362,10 +342,10 @@ const AdminDashboard = () => {
         })),
       ...orders.map((o) => ({
         id: `ord-${o.id}`,
-        type: "order",
+        type: "order" as const,
         title: "New Merch Order",
         description: `${o.user_email} bought ${o.merchandise?.name || "merch"}`,
-        time: new Date(o.created_at),
+        time: o.created_at ? new Date(o.created_at) : new Date(),
         status: o.payment_status,
       })),
     ].sort((a, b) => b.time.getTime() - a.time.getTime());
@@ -418,7 +398,7 @@ const AdminDashboard = () => {
     link.setAttribute("href", encodedUri);
     link.setAttribute(
       "download",
-      `TEDxHUI_Attendees_${new Date().toISOString().split("T")[0]}.csv`
+      `TEDxHUI_Attendees_${new Date().toISOString().split("T")[0]}.csv`,
     );
     document.body.appendChild(link);
     link.click();
@@ -435,7 +415,7 @@ const AdminDashboard = () => {
       ]);
 
       setStats({
-        regCount,
+        regCount: regCount || 0,
         attendance,
         merchStats,
       });
@@ -467,7 +447,7 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const promises = selectedTickets.map((id) =>
-        ticketService.checkInAttendee(id)
+        ticketService.checkInAttendee(id),
       );
       await Promise.all(promises);
       toast({
@@ -493,19 +473,21 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const selectedEmails = tickets
-        .filter((t) => selectedTickets.includes(t.id))
+        .filter((t) => t.id && selectedTickets.includes(t.id))
         .map((t) => t.email);
 
-      const promises = selectedEmails.map((email) =>
-        notificationService.sendEmail(email, subject, content)
+      await notificationService.broadcastAnnouncement(
+        subject,
+        content,
+        selectedEmails,
       );
-      await Promise.all(promises);
 
       toast({
         title: "Emails Sent",
         description: `Sent emails to ${selectedEmails.length} attendees.`,
       });
       setSelectedTickets([]);
+      fetchNotifications();
     } catch (error) {
       console.error("Bulk email error:", error);
       toast({
@@ -558,7 +540,7 @@ const AdminDashboard = () => {
   const handleDeleteTicket = async (id: string) => {
     if (
       !window.confirm(
-        "Are you sure you want to PERMANENTLY delete this record? This cannot be undone."
+        "Are you sure you want to PERMANENTLY delete this record? This cannot be undone.",
       )
     )
       return;
@@ -589,7 +571,7 @@ const AdminDashboard = () => {
         toast({
           title: "Already Checked In",
           description: `${ticket.full_name} already checked in at ${new Date(
-            ticket.checked_in_at!
+            ticket.checked_in_at!,
           ).toLocaleString()}`,
           variant: "default",
         });
@@ -628,13 +610,14 @@ const AdminDashboard = () => {
     try {
       await notificationService.broadcastAnnouncement(
         broadcast.subject,
-        broadcast.content
+        broadcast.content,
       );
       toast({
         title: "Broadcast Successful",
         description: "Announcement has been queued for all ticket holders.",
       });
       setBroadcast({ subject: "", content: "" });
+      fetchNotifications();
     } catch (error) {
       console.error("Broadcast error:", error);
       toast({
@@ -652,12 +635,13 @@ const AdminDashboard = () => {
     try {
       await notificationService.broadcastAnnouncement(
         "Reminder: TEDxHUI 2026 is approaching!",
-        "Don't forget to join us for an inspiring day of ideas worth spreading. See you there!"
+        "Don't forget to join us for an inspiring day of ideas worth spreading. See you there!",
       );
       toast({
         title: "Reminders Sent",
         description: "Event reminders have been queued for all attendees.",
       });
+      fetchNotifications();
     } catch (error) {
       console.error("Reminder error:", error);
       toast({
@@ -670,6 +654,11 @@ const AdminDashboard = () => {
     }
   };
 
+  const removeSelectedFile = (index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleAddMerch = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsAddingMerch(true);
@@ -679,7 +668,7 @@ const AdminDashboard = () => {
 
       if (selectedFiles.length > 0) {
         const uploadPromises = selectedFiles.map((file) =>
-          merchandiseService.uploadImage(file)
+          merchandiseService.uploadImage(file),
         );
         const uploadedUrls = await Promise.all(uploadPromises);
 
@@ -697,7 +686,7 @@ const AdminDashboard = () => {
 
       const merchData = {
         ...newMerch,
-        image_url: finalImageUrl,
+        image_url: finalImageUrls[0] || finalImageUrl,
         image_urls: finalImageUrls,
       };
 
@@ -732,19 +721,18 @@ const AdminDashboard = () => {
     }
   };
 
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length > 0) {
       setSelectedFiles((prev) => [...prev, ...files]);
 
-      // Just preview the first one if needed, or handle multiple previews
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(files[0]);
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreviews((prev) => [...prev, reader.result as string]);
+        };
+        reader.readAsDataURL(file);
+      });
     }
   };
 
@@ -906,12 +894,13 @@ const AdminDashboard = () => {
             isDialogOpen={isDialogOpen}
             setIsDialogOpen={setIsDialogOpen}
             handleFileChange={handleFileChange}
-            imagePreview={imagePreview}
-            setSelectedFile={setSelectedFile}
-            setImagePreview={setImagePreview}
+            imagePreviews={imagePreviews}
+            setSelectedFiles={setSelectedFiles}
+            setImagePreviews={setImagePreviews}
             handleAddMerch={handleAddMerch}
             handleEditMerch={handleEditMerch}
             handleDeleteMerch={handleDeleteMerch}
+            removeSelectedFile={removeSelectedFile}
             cancelEdit={cancelEdit}
           />
         </TabsContent>

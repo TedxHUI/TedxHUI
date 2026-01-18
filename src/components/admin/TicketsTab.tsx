@@ -42,19 +42,30 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
+import { useMediaQuery } from "../../hooks/use-media-query";
 import { Textarea } from "../ui/textarea";
+
+import { Ticket } from "../../services/ticketService";
 
 interface TicketsTabProps {
   searchId: string;
   setSearchId: (id: string) => void;
   handleValidate: () => void;
   validating: boolean;
-  tickets: any[];
+  tickets: Ticket[];
   ticketSearch: string;
   setTicketSearch: (search: string) => void;
   statusFilter: "all" | "confirmed" | "checked_in";
   setStatusFilter: (filter: "all" | "confirmed" | "checked_in") => void;
-  filteredTickets: any[];
+  filteredTickets: Ticket[];
   exportAttendeesCSV: () => void;
   selectedTickets: string[];
   setSelectedTickets: (ids: string[]) => void;
@@ -85,6 +96,7 @@ export const TicketsTab: React.FC<TicketsTabProps> = ({
   handleCancelTicket,
   handleDeleteTicket,
 }) => {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const [emailDialog, setEmailDialog] = React.useState({
     open: false,
     subject: "",
@@ -103,9 +115,56 @@ export const TicketsTab: React.FC<TicketsTabProps> = ({
     if (selectedTickets.length === filteredTickets.length) {
       setSelectedTickets([]);
     } else {
-      setSelectedTickets(filteredTickets.map((t) => t.id));
+      setSelectedTickets(
+        filteredTickets
+          .map((t) => t.id)
+          .filter((id): id is string => id !== undefined),
+      );
     }
   };
+
+  const EmailForm = () => (
+    <div className="space-y-4 py-4">
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Subject</label>
+        <Input
+          placeholder="Email subject..."
+          value={emailDialog.subject}
+          onChange={(e) =>
+            setEmailDialog({ ...emailDialog, subject: e.target.value })
+          }
+        />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Message</label>
+        <Textarea
+          placeholder="Type your message here..."
+          className="min-h-[150px]"
+          value={emailDialog.content}
+          onChange={(e) =>
+            setEmailDialog({ ...emailDialog, content: e.target.value })
+          }
+        />
+      </div>
+      <div className="flex justify-end gap-3 pt-4 border-t">
+        <Button
+          variant="outline"
+          onClick={() => setEmailDialog({ ...emailDialog, open: false })}
+        >
+          Cancel
+        </Button>
+        <Button
+          disabled={!emailDialog.subject || !emailDialog.content}
+          onClick={() => {
+            handleBulkEmail(emailDialog.subject, emailDialog.content);
+            setEmailDialog({ open: false, subject: "", content: "" });
+          }}
+        >
+          Send Emails
+        </Button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="grid gap-6">
@@ -121,18 +180,22 @@ export const TicketsTab: React.FC<TicketsTabProps> = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Enter Ticket ID or Payment Reference"
-                className="pl-10"
+                className="pl-10 w-full"
                 value={searchId}
                 onChange={(e) => setSearchId(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleValidate()}
               />
             </div>
-            <Button onClick={handleValidate} disabled={validating}>
+            <Button
+              onClick={handleValidate}
+              disabled={validating}
+              className="w-full sm:w-auto"
+            >
               {validating ? "Validating..." : "Check In"}
             </Button>
           </div>
@@ -238,251 +301,243 @@ export const TicketsTab: React.FC<TicketsTabProps> = ({
             </div>
           </div>
 
-          <div className="rounded-md border overflow-x-auto">
-            <div className="min-w-[800px]">
-              <Table>
-                <TableHeader className="bg-gray-50/50">
-                  <TableRow>
-                    <TableHead className="w-12">
-                      <Checkbox
-                        checked={
-                          selectedTickets.length === filteredTickets.length &&
-                          filteredTickets.length > 0
-                        }
-                        onCheckedChange={toggleSelectAll}
-                      />
-                    </TableHead>
-                    <TableHead className="font-bold">Attendee Name</TableHead>
-                    <TableHead className="font-bold">Email Address</TableHead>
-                    <TableHead className="font-bold">Ticket ID</TableHead>
-                    <TableHead className="font-bold">Status</TableHead>
-                    <TableHead className="font-bold">
-                      Check-in Details
-                    </TableHead>
-                    <TableHead className="text-right font-bold">
-                      Actions
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredTickets.length > 0 ? (
-                    filteredTickets.map((ticket) => (
-                      <TableRow
-                        key={ticket.id}
-                        className={`hover:bg-gray-50/50 transition-colors ${
-                          selectedTickets.includes(ticket.id)
-                            ? "bg-primary/5"
-                            : ""
-                        }`}
-                      >
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedTickets.includes(ticket.id)}
-                            onCheckedChange={() =>
-                              toggleTicketSelection(ticket.id)
-                            }
-                          />
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          <div className="flex flex-col">
-                            <span>{ticket.full_name}</span>
-                            <span className="text-[10px] text-gray-400 font-normal md:hidden">
-                              {ticket.email}
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-gray-500 hidden md:table-cell">
-                          {ticket.email}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <code className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded uppercase font-mono">
-                              {ticket.id?.split("-")[0]}...
-                            </code>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              ticket.status === "checked_in"
-                                ? "default"
-                                : "secondary"
-                            }
-                            className={
-                              ticket.status === "checked_in"
-                                ? "bg-green-100 text-green-700 hover:bg-green-100 border-green-200 shadow-none text-[10px]"
-                                : ticket.status === "cancelled"
-                                ? "bg-red-100 text-red-700 hover:bg-red-100 border-red-200 shadow-none text-[10px]"
-                                : "bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-100 shadow-none text-[10px]"
-                            }
-                          >
-                            {ticket.status === "checked_in"
-                              ? "Checked In"
-                              : ticket.status === "cancelled"
-                              ? "Cancelled"
-                              : "Confirmed"}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-[11px] text-gray-500">
-                          {ticket.checked_in_at ? (
+          <div className="rounded-md border overflow-hidden">
+            <div className="overflow-x-auto">
+              <div className="min-w-[1000px] max-h-[600px] overflow-y-auto">
+                <Table>
+                  <TableHeader className="bg-gray-50/50 sticky top-0 z-10 shadow-sm">
+                    <TableRow>
+                      <TableHead className="w-12">
+                        <Checkbox
+                          checked={
+                            selectedTickets.length === filteredTickets.length &&
+                            filteredTickets.length > 0
+                          }
+                          onCheckedChange={toggleSelectAll}
+                        />
+                      </TableHead>
+                      <TableHead className="font-bold">Attendee Name</TableHead>
+                      <TableHead className="font-bold">Email Address</TableHead>
+                      <TableHead className="font-bold">Ticket ID</TableHead>
+                      <TableHead className="font-bold">Status</TableHead>
+                      <TableHead className="font-bold">
+                        Check-in Details
+                      </TableHead>
+                      <TableHead className="text-right font-bold">
+                        Actions
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredTickets.length > 0 ? (
+                      filteredTickets.map((ticket) => (
+                        <TableRow
+                          key={ticket.id}
+                          className={`hover:bg-gray-50/50 transition-colors ${
+                            ticket.id && selectedTickets.includes(ticket.id)
+                              ? "bg-primary/5"
+                              : ""
+                          }`}
+                        >
+                          <TableCell>
+                            <Checkbox
+                              checked={
+                                ticket.id
+                                  ? selectedTickets.includes(ticket.id)
+                                  : false
+                              }
+                              onCheckedChange={() =>
+                                ticket.id && toggleTicketSelection(ticket.id)
+                              }
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium">
                             <div className="flex flex-col">
-                              <span className="font-medium text-gray-700">
-                                {new Date(
-                                  ticket.checked_in_at
-                                ).toLocaleTimeString([], {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}
-                              </span>
-                              <span>
-                                {new Date(
-                                  ticket.checked_in_at
-                                ).toLocaleDateString()}
+                              <span>{ticket.full_name}</span>
+                              <span className="text-[10px] text-gray-400 font-normal md:hidden">
+                                {ticket.email}
                               </span>
                             </div>
-                          ) : (
-                            <span className="text-gray-300">
-                              Not checked in
-                            </span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end items-center gap-2">
-                            {ticket.status !== "checked_in" ? (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="h-8 text-xs border-primary/20 hover:bg-primary/5 hover:text-primary transition-all"
-                                onClick={() => handleCheckIn(ticket.id)}
-                              >
-                                Check In
-                              </Button>
-                            ) : (
-                              <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600">
-                                <CheckCircle className="w-4 h-4" />
+                          </TableCell>
+                          <TableCell className="text-gray-500 hidden md:table-cell">
+                            {ticket.email}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <code className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded uppercase font-mono">
+                                {ticket.id?.split("-")[0]}...
+                              </code>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                ticket.status === "checked_in"
+                                  ? "default"
+                                  : "secondary"
+                              }
+                              className={
+                                ticket.status === "checked_in"
+                                  ? "bg-green-100 text-green-700 hover:bg-green-100 border-green-200 shadow-none text-[10px]"
+                                  : ticket.status === "cancelled"
+                                    ? "bg-red-100 text-red-700 hover:bg-red-100 border-red-200 shadow-none text-[10px]"
+                                    : "bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-100 shadow-none text-[10px]"
+                              }
+                            >
+                              {ticket.status === "checked_in"
+                                ? "Checked In"
+                                : ticket.status === "cancelled"
+                                  ? "Cancelled"
+                                  : "Confirmed"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-[11px] text-gray-500">
+                            {ticket.checked_in_at ? (
+                              <div className="flex flex-col">
+                                <span className="font-medium text-gray-700">
+                                  {new Date(
+                                    ticket.checked_in_at,
+                                  ).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                                <span>
+                                  {new Date(
+                                    ticket.checked_in_at,
+                                  ).toLocaleDateString()}
+                                </span>
                               </div>
+                            ) : (
+                              <span className="text-gray-300">
+                                Not checked in
+                              </span>
                             )}
-
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex justify-end items-center gap-2">
+                              {ticket.status !== "checked_in" ? (
                                 <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-8 w-8"
+                                  variant="outline"
+                                  size="sm"
+                                  className="h-8 text-xs border-primary/20 hover:bg-primary/5 hover:text-primary transition-all"
+                                  onClick={() =>
+                                    ticket.id && handleCheckIn(ticket.id)
+                                  }
                                 >
-                                  <MoreVertical className="h-4 w-4" />
+                                  Check In
                                 </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                {ticket.status !== "cancelled" && (
+                              ) : (
+                                <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+                                  <CheckCircle className="w-4 h-4" />
+                                </div>
+                              )}
+
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8"
+                                  >
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  {ticket.status !== "cancelled" && (
+                                    <DropdownMenuItem
+                                      className="text-orange-600 flex items-center gap-2 cursor-pointer"
+                                      onClick={() =>
+                                        ticket.id &&
+                                        handleCancelTicket(ticket.id)
+                                      }
+                                    >
+                                      <UserX className="h-4 w-4" />
+                                      Cancel Ticket
+                                    </DropdownMenuItem>
+                                  )}
                                   <DropdownMenuItem
-                                    className="text-orange-600 flex items-center gap-2 cursor-pointer"
+                                    className="text-red-600 flex items-center gap-2 cursor-pointer"
                                     onClick={() =>
-                                      handleCancelTicket(ticket.id)
+                                      ticket.id && handleDeleteTicket(ticket.id)
                                     }
                                   >
-                                    <UserX className="h-4 w-4" />
-                                    Cancel Ticket
+                                    <Trash2 className="h-4 w-4" />
+                                    Delete Record
                                   </DropdownMenuItem>
-                                )}
-                                <DropdownMenuItem
-                                  className="text-red-600 flex items-center gap-2 cursor-pointer"
-                                  onClick={() => handleDeleteTicket(ticket.id)}
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                  Delete Record
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell
+                          colSpan={6}
+                          className="h-32 text-center text-gray-500"
+                        >
+                          <div className="flex flex-col items-center gap-2">
+                            <Search className="w-8 h-8 text-gray-200" />
+                            <p className="text-sm font-medium">
+                              No attendees match your search.
+                            </p>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setTicketSearch("");
+                                setStatusFilter("all");
+                              }}
+                            >
+                              Clear filters
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={6}
-                        className="h-32 text-center text-gray-500"
-                      >
-                        <div className="flex flex-col items-center gap-2">
-                          <Search className="w-8 h-8 text-gray-200" />
-                          <p className="text-sm font-medium">
-                            No attendees match your search.
-                          </p>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setTicketSearch("");
-                              setStatusFilter("all");
-                            }}
-                          >
-                            Clear filters
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Dialog
-        open={emailDialog.open}
-        onOpenChange={(open) => setEmailDialog({ ...emailDialog, open })}
-      >
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Send Bulk Email</DialogTitle>
-            <DialogDescription>
-              Send an email to the {selectedTickets.length} selected attendees.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Subject</label>
-              <Input
-                placeholder="Email subject..."
-                value={emailDialog.subject}
-                onChange={(e) =>
-                  setEmailDialog({ ...emailDialog, subject: e.target.value })
-                }
-              />
+      {isDesktop ? (
+        <Dialog
+          open={emailDialog.open}
+          onOpenChange={(open) => setEmailDialog({ ...emailDialog, open })}
+        >
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>Send Bulk Email</DialogTitle>
+              <DialogDescription>
+                Send an email to the {selectedTickets.length} selected
+                attendees.
+              </DialogDescription>
+            </DialogHeader>
+            <EmailForm />
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Drawer
+          open={emailDialog.open}
+          onOpenChange={(open) => setEmailDialog({ ...emailDialog, open })}
+        >
+          <DrawerContent className="max-h-[80vh]">
+            <div className="px-6 pb-8 overflow-y-auto">
+              <DrawerHeader className="px-0">
+                <DrawerTitle>Send Bulk Email</DrawerTitle>
+                <DrawerDescription>
+                  Email {selectedTickets.length} attendees.
+                </DrawerDescription>
+              </DrawerHeader>
+              <EmailForm />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Message</label>
-              <Textarea
-                placeholder="Type your message here..."
-                className="min-h-[150px]"
-                value={emailDialog.content}
-                onChange={(e) =>
-                  setEmailDialog({ ...emailDialog, content: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button
-              variant="outline"
-              onClick={() => setEmailDialog({ ...emailDialog, open: false })}
-            >
-              Cancel
-            </Button>
-            <Button
-              disabled={!emailDialog.subject || !emailDialog.content}
-              onClick={() => {
-                handleBulkEmail(emailDialog.subject, emailDialog.content);
-                setEmailDialog({ open: false, subject: "", content: "" });
-              }}
-            >
-              Send Emails
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DrawerContent>
+        </Drawer>
+      )}
     </div>
   );
 };

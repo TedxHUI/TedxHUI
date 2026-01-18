@@ -71,7 +71,7 @@ const HomePage = () => {
         "Tickets can be purchased directly on our website through our secure Paystack payment system using your debit/credit card or bank transfer.",
     },
     {
-      question: "When and where will TEDxHUI 2025 take place?",
+      question: "When and where will TEDxHUI 2026 take place?",
       answer:
         "The event is scheduled for Saturday, 17th January 2026, at Moot Court Atere, Al-Hikmah University, Ilorin. A detailed agenda will be available closer to the event date.",
     },

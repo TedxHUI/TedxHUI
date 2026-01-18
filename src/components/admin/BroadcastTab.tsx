@@ -12,15 +12,17 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Megaphone, Send, RefreshCw, Search } from "lucide-react";
 
+import { Notification } from "../../services/notificationService";
+
 interface BroadcastTabProps {
   broadcast: { subject: string; content: string };
-  setBroadcast: (broadcast: any) => void;
+  setBroadcast: (broadcast: { subject: string; content: string }) => void;
   broadcasting: boolean;
   handleBroadcast: () => void;
   handleSendReminders: () => void;
   sendingReminders: boolean;
-  notifications: any[];
-  filteredNotifications: any[];
+  notifications: Notification[];
+  filteredNotifications: Notification[];
   broadcastSearch: string;
   setBroadcastSearch: (search: string) => void;
 }
@@ -38,7 +40,7 @@ export const BroadcastTab: React.FC<BroadcastTabProps> = ({
   setBroadcastSearch,
 }) => {
   return (
-    <div className="grid lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2">
         <Card className="border-2 border-primary/10 h-full">
           <CardHeader>
@@ -130,7 +132,9 @@ export const BroadcastTab: React.FC<BroadcastTabProps> = ({
                         {n.user_email}
                       </span>
                       <span className="whitespace-nowrap">
-                        {new Date(n.created_at).toLocaleDateString()}
+                        {n.created_at
+                          ? new Date(n.created_at).toLocaleDateString()
+                          : ""}
                       </span>
                     </div>
                   </div>

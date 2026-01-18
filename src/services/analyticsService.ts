@@ -6,7 +6,7 @@ export const analyticsService = {
     const { count, error } = await supabase
       .from("tickets")
       .select("*", { count: "exact", head: true })
-      .eq("status", "confirmed");
+      .in("status", ["confirmed", "checked_in"]);
 
     if (error) throw error;
     return count;
@@ -14,7 +14,10 @@ export const analyticsService = {
 
   // 2. Attendance tracking (checked-in vs total)
   async getAttendanceStats() {
-    const { data, error } = await supabase.from("tickets").select("status");
+    const { data, error } = await supabase
+      .from("tickets")
+      .select("status")
+      .in("status", ["confirmed", "checked_in"]);
 
     if (error) throw error;
 
@@ -41,7 +44,7 @@ export const analyticsService = {
 
     const totalRevenue = data.reduce(
       (sum, order) => sum + Number(order.total_price),
-      0
+      0,
     );
     const totalOrders = data.length;
 

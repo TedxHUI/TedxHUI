@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS merchandise (
   price DECIMAL NOT NULL,
   stock_quantity INTEGER DEFAULT 0,
   image_url TEXT,
+  image_urls TEXT[] DEFAULT '{}',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 

@@ -52,14 +52,14 @@ export const notificationService = {
 
   // 2. Queue and Send a notification
   async queueNotification(
-    notification: Omit<Notification, "id" | "status" | "created_at">
+    notification: Omit<Notification, "id" | "status" | "created_at">,
   ) {
     // First, try to send the actual email
     try {
       await this.sendEmail(
         notification.user_email,
         notification.subject,
-        notification.content
+        notification.content,
       );
     } catch (e) {
       console.error("Email sending failed, but still queueing in DB", e);
@@ -93,17 +93,28 @@ export const notificationService = {
     return data;
   },
 
-  // 3. Send important announcements to all ticket holders
-  async broadcastAnnouncement(subject: string, content: string) {
-    // First get all unique emails from tickets
-    const { data: tickets, error: ticketError } = await supabase
-      .from("tickets")
-      .select("email")
-      .eq("status", "confirmed");
+  // 3. Send important announcements to all ticket holders or selected emails
+  async broadcastAnnouncement(
+    subject: string,
+    content: string,
+    targetEmails?: string[],
+  ) {
+    let emails: string[] = [];
 
-    if (ticketError) throw ticketError;
+    if (targetEmails && targetEmails.length > 0) {
+      emails = Array.from(new Set(targetEmails));
+    } else {
+      // First get all unique emails from tickets
+      const { data: tickets, error: ticketError } = await supabase
+        .from("tickets")
+        .select("email")
+        .in("status", ["confirmed", "checked_in"]);
 
-    const emails = Array.from(new Set(tickets.map((t) => t.email)));
+      if (ticketError) throw ticketError;
+      emails = Array.from(new Set(tickets.map((t) => t.email)));
+    }
+
+    if (emails.length === 0) return [];
 
     // Send emails in batches or one by one (Resend supports multiple recipients but for tracking individual status we do one by one or queue)
     // For simplicity in this demo, we send them and record them
@@ -116,7 +127,7 @@ export const notificationService = {
           console.error(`Failed to send broadcast to ${email}:`, e);
           return { email, success: false };
         }
-      })
+      }),
     );
 
     const notifications = emails.map((email, index) => {
