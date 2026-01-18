@@ -27,6 +27,8 @@ import {
   CheckSquare,
   Trash2,
   UserX,
+  X,
+  Clock,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -118,7 +120,7 @@ export const TicketsTab: React.FC<TicketsTabProps> = ({
       setSelectedTickets(
         filteredTickets
           .map((t) => t.id)
-          .filter((id): id is string => id !== undefined),
+          .filter((id): id is string => id !== undefined)
       );
     }
   };
@@ -167,7 +169,7 @@ export const TicketsTab: React.FC<TicketsTabProps> = ({
   );
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-6 overflow-hidden">
       {/* Ticket Validation Section */}
       <Card className="border-2 border-primary/20">
         <CardHeader>
@@ -180,7 +182,7 @@ export const TicketsTab: React.FC<TicketsTabProps> = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
@@ -194,7 +196,7 @@ export const TicketsTab: React.FC<TicketsTabProps> = ({
             <Button
               onClick={handleValidate}
               disabled={validating}
-              className="w-full sm:w-auto"
+              className="w-full md:w-auto shrink-0"
             >
               {validating ? "Validating..." : "Check In"}
             </Button>
@@ -203,303 +205,342 @@ export const TicketsTab: React.FC<TicketsTabProps> = ({
       </Card>
 
       {/* Attendees Table */}
-      <Card>
-        <CardHeader className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
-          <div>
-            <CardTitle>Registered Attendees</CardTitle>
-            <CardDescription>
-              Manage and view all registered participants.
-            </CardDescription>
-          </div>
-          <div className="flex flex-wrap gap-2 text-sm">
-            {selectedTickets.length > 0 && (
-              <div className="flex items-center gap-2 mr-4 bg-primary/5 px-3 py-1 rounded-full border border-primary/10">
-                <span className="font-bold text-primary">
-                  {selectedTickets.length} Selected
+      <Card className="max-w-[90vw]">
+        <CardHeader className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <CardTitle className="text-xl">Registered Attendees</CardTitle>
+              <CardDescription className="mt-1.5">
+                Manage and view all registered participants.
+              </CardDescription>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 rounded-lg border border-green-200 font-medium">
+                <div className="w-2 h-2 bg-green-500 rounded-full" />
+                <span className="font-semibold">
+                  {tickets.filter((t) => t.status === "checked_in").length}
                 </span>
-                <div className="h-4 w-px bg-primary/20 mx-1" />
+                <span className="hidden sm:inline">Checked In</span>
+              </span>
+              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg border border-blue-200 font-medium">
+                <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                <span className="font-semibold">
+                  {tickets.filter((t) => t.status === "confirmed").length}
+                </span>
+                <span className="hidden sm:inline">Pending</span>
+              </span>
+            </div>
+          </div>
+
+          {selectedTickets.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 p-3 bg-primary/5 rounded-lg border border-primary/20">
+              <div className="flex items-center gap-2">
+                <CheckSquare className="w-4 h-4 text-primary" />
+                <span className="font-semibold text-primary text-sm">
+                  {selectedTickets.length}{" "}
+                  {selectedTickets.length === 1 ? "ticket" : "tickets"} selected
+                </span>
+              </div>
+              <div className="h-4 w-px bg-primary/20 hidden sm:block" />
+              <div className="flex flex-wrap gap-2 flex-1">
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 text-xs px-2 hover:bg-primary/10 text-primary"
+                  className="h-8 text-xs px-3 hover:bg-primary/10 text-primary font-medium"
                   onClick={handleBulkCheckIn}
                 >
-                  Bulk Check-in
+                  <CheckSquare className="w-3.5 h-3.5 mr-1.5" />
+                  Check In All
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 text-xs px-2 hover:bg-primary/10 text-primary flex items-center gap-1"
+                  className="h-8 text-xs px-3 hover:bg-primary/10 text-primary font-medium"
                   onClick={() => setEmailDialog({ ...emailDialog, open: true })}
                 >
-                  <Mail className="w-3 h-3" />
-                  Email
+                  <Mail className="w-3.5 h-3.5 mr-1.5" />
+                  Send Email
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 text-xs px-2 hover:bg-red-50 text-red-600"
+                  className="h-8 text-xs px-3 hover:bg-red-50 text-red-600 font-medium ml-auto"
                   onClick={() => setSelectedTickets([])}
                 >
-                  Cancel
+                  Clear Selection
                 </Button>
               </div>
-            )}
-            <span className="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full border border-green-100 font-medium">
-              <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-              {tickets.filter((t) => t.status === "checked_in").length} Checked
-              In
-            </span>
-            <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100 font-medium">
-              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-              {tickets.filter((t) => t.status === "confirmed").length} Pending
-            </span>
-          </div>
+            </div>
+          )}
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="relative flex-1">
+          <div className="flex flex-col gap-3">
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Search by name, email, or ID..."
-                className="pl-10"
+                className="pl-10 h-10"
                 value={ticketSearch}
                 onChange={(e) => setTicketSearch(e.target.value)}
               />
             </div>
-            <div className="flex gap-2">
-              <Button
-                variant={statusFilter === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setStatusFilter("all")}
-              >
-                All
-              </Button>
-              <Button
-                variant={statusFilter === "confirmed" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setStatusFilter("confirmed")}
-              >
-                Pending
-              </Button>
-              <Button
-                variant={statusFilter === "checked_in" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setStatusFilter("checked_in")}
-              >
-                Checked In
-              </Button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex gap-2 overflow-x-auto pb-2 -mb-2 sm:pb-0 sm:mb-0 custom-scrollbar">
+                <Button
+                  variant={statusFilter === "all" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setStatusFilter("all")}
+                  className="flex-1 sm:flex-none h-9 whitespace-nowrap min-w-[80px]"
+                >
+                  All ({tickets.length})
+                </Button>
+                <Button
+                  variant={statusFilter === "confirmed" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setStatusFilter("confirmed")}
+                  className="flex-1 sm:flex-none h-9 whitespace-nowrap min-w-[100px]"
+                >
+                  Pending (
+                  {tickets.filter((t) => t.status === "confirmed").length})
+                </Button>
+                <Button
+                  variant={
+                    statusFilter === "checked_in" ? "default" : "outline"
+                  }
+                  size="sm"
+                  onClick={() => setStatusFilter("checked_in")}
+                  className="flex-1 sm:flex-none h-9 whitespace-nowrap min-w-[110px]"
+                >
+                  Checked In (
+                  {tickets.filter((t) => t.status === "checked_in").length})
+                </Button>
+              </div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={exportAttendeesCSV}
-                className="flex items-center gap-2"
+                className="flex items-center justify-center gap-2 h-9 w-full sm:w-auto whitespace-nowrap shrink-0 sm:ml-auto"
               >
                 <Download className="w-4 h-4" />
-                Export
+                <span>Export CSV</span>
               </Button>
             </div>
           </div>
 
-          <div className="rounded-md border overflow-hidden">
-            <div className="overflow-x-auto">
-              <div className="min-w-[1000px] max-h-[600px] overflow-y-auto">
-                <Table>
-                  <TableHeader className="bg-gray-50/50 sticky top-0 z-10 shadow-sm">
-                    <TableRow>
-                      <TableHead className="w-12">
+          <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-scroll custom-scrollbar">
+            <Table className="min-w-full md:min-w-[900px]">
+              <TableHeader className="bg-gray-50 sticky top-0 z-10 border-b-2 border-gray-200">
+                <TableRow>
+                  <TableHead className="w-12 pl-4">
+                    <Checkbox
+                      checked={
+                        selectedTickets.length === filteredTickets.length &&
+                        filteredTickets.length > 0
+                      }
+                      onCheckedChange={toggleSelectAll}
+                    />
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700">
+                    Attendee
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700 hidden md:table-cell">
+                    Email
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700">
+                    Ticket ID
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700">
+                    Status
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700 hidden md:table-cell">
+                    Check-in Time
+                  </TableHead>
+                  <TableHead className="text-right font-semibold text-gray-700 pr-4 hidden sm:table-cell">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredTickets.length > 0 ? (
+                  filteredTickets.map((ticket) => (
+                    <TableRow
+                      key={ticket.id}
+                      className={`hover:bg-gray-50/50 transition-colors ${
+                        ticket.id && selectedTickets.includes(ticket.id)
+                          ? "bg-primary/5"
+                          : ""
+                      }`}
+                    >
+                      <TableCell className="w-12 pl-4">
                         <Checkbox
                           checked={
-                            selectedTickets.length === filteredTickets.length &&
-                            filteredTickets.length > 0
+                            ticket.id
+                              ? selectedTickets.includes(ticket.id)
+                              : false
                           }
-                          onCheckedChange={toggleSelectAll}
+                          onCheckedChange={() =>
+                            ticket.id && toggleTicketSelection(ticket.id)
+                          }
                         />
-                      </TableHead>
-                      <TableHead className="font-bold">Attendee Name</TableHead>
-                      <TableHead className="font-bold">Email Address</TableHead>
-                      <TableHead className="font-bold">Ticket ID</TableHead>
-                      <TableHead className="font-bold">Status</TableHead>
-                      <TableHead className="font-bold">
-                        Check-in Details
-                      </TableHead>
-                      <TableHead className="text-right font-bold">
-                        Actions
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredTickets.length > 0 ? (
-                      filteredTickets.map((ticket) => (
-                        <TableRow
-                          key={ticket.id}
-                          className={`hover:bg-gray-50/50 transition-colors ${
-                            ticket.id && selectedTickets.includes(ticket.id)
-                              ? "bg-primary/5"
-                              : ""
-                          }`}
-                        >
-                          <TableCell>
-                            <Checkbox
-                              checked={
-                                ticket.id
-                                  ? selectedTickets.includes(ticket.id)
-                                  : false
-                              }
-                              onCheckedChange={() =>
-                                ticket.id && toggleTicketSelection(ticket.id)
-                              }
-                            />
-                          </TableCell>
-                          <TableCell className="font-medium">
-                            <div className="flex flex-col">
-                              <span>{ticket.full_name}</span>
-                              <span className="text-[10px] text-gray-400 font-normal md:hidden">
-                                {ticket.email}
-                              </span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-gray-500 hidden md:table-cell">
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-sm font-semibold text-gray-900">
+                            {ticket.full_name}
+                          </span>
+                          <span className="text-xs text-gray-500 md:hidden">
                             {ticket.email}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <code className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded uppercase font-mono">
-                                {ticket.id?.split("-")[0]}...
-                              </code>
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm text-gray-600 hidden md:table-cell">
+                        {ticket.email}
+                      </TableCell>
+                      <TableCell>
+                        <code className="text-xs bg-gray-100 px-2 py-1 rounded font-mono text-gray-700">
+                          {ticket.id?.split("-")[0]}
+                        </code>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center justify-center">
+                          {ticket.status === "checked_in" ? (
+                            <div
+                              className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center border border-green-200"
+                              title="Checked In"
+                            >
+                              <CheckCircle className="w-4 h-4 text-green-600" />
                             </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              variant={
-                                ticket.status === "checked_in"
-                                  ? "default"
-                                  : "secondary"
-                              }
-                              className={
-                                ticket.status === "checked_in"
-                                  ? "bg-green-100 text-green-700 hover:bg-green-100 border-green-200 shadow-none text-[10px]"
-                                  : ticket.status === "cancelled"
-                                    ? "bg-red-100 text-red-700 hover:bg-red-100 border-red-200 shadow-none text-[10px]"
-                                    : "bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-100 shadow-none text-[10px]"
+                          ) : ticket.status === "cancelled" ? (
+                            <div
+                              className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center border border-red-200"
+                              title="Cancelled"
+                            >
+                              <X className="w-4 h-4 text-red-600" />
+                            </div>
+                          ) : (
+                            <div
+                              className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-200"
+                              title="Confirmed"
+                            >
+                              <Clock className="w-4 h-4 text-blue-600" />
+                            </div>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-xs text-gray-600 hidden md:table-cell">
+                        {ticket.checked_in_at ? (
+                          <div className="flex flex-col gap-0.5">
+                            <span className="font-semibold text-gray-900">
+                              {new Date(
+                                ticket.checked_in_at
+                              ).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </span>
+                            <span className="text-gray-500">
+                              {new Date(
+                                ticket.checked_in_at
+                              ).toLocaleDateString()}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-gray-400 italic">
+                            Not checked in
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right pr-4">
+                        <div className="flex justify-end items-center gap-2">
+                          {ticket.status !== "checked_in" && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-9 text-xs border-primary/30 hover:bg-primary hover:text-white hover:border-primary transition-all hidden sm:flex font-medium"
+                              onClick={() =>
+                                ticket.id && handleCheckIn(ticket.id)
                               }
                             >
-                              {ticket.status === "checked_in"
-                                ? "Checked In"
-                                : ticket.status === "cancelled"
-                                  ? "Cancelled"
-                                  : "Confirmed"}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-[11px] text-gray-500">
-                            {ticket.checked_in_at ? (
-                              <div className="flex flex-col">
-                                <span className="font-medium text-gray-700">
-                                  {new Date(
-                                    ticket.checked_in_at,
-                                  ).toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })}
-                                </span>
-                                <span>
-                                  {new Date(
-                                    ticket.checked_in_at,
-                                  ).toLocaleDateString()}
-                                </span>
-                              </div>
-                            ) : (
-                              <span className="text-gray-300">
-                                Not checked in
-                              </span>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end items-center gap-2">
-                              {ticket.status !== "checked_in" ? (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-8 text-xs border-primary/20 hover:bg-primary/5 hover:text-primary transition-all"
+                              <CheckCircle className="w-3.5 h-3.5 mr-1.5" />
+                              Check In
+                            </Button>
+                          )}
+
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-9 w-9 hover:bg-gray-100"
+                              >
+                                <MoreVertical className="h-4 w-4 text-gray-600" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              {ticket.status !== "checked_in" && (
+                                <DropdownMenuItem
+                                  className="flex items-center gap-2 cursor-pointer sm:hidden"
                                   onClick={() =>
                                     ticket.id && handleCheckIn(ticket.id)
                                   }
                                 >
+                                  <CheckSquare className="h-4 w-4 text-green-600" />
                                   Check In
-                                </Button>
-                              ) : (
-                                <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600">
-                                  <CheckCircle className="w-4 h-4" />
-                                </div>
+                                </DropdownMenuItem>
                               )}
-
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                  >
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  {ticket.status !== "cancelled" && (
-                                    <DropdownMenuItem
-                                      className="text-orange-600 flex items-center gap-2 cursor-pointer"
-                                      onClick={() =>
-                                        ticket.id &&
-                                        handleCancelTicket(ticket.id)
-                                      }
-                                    >
-                                      <UserX className="h-4 w-4" />
-                                      Cancel Ticket
-                                    </DropdownMenuItem>
-                                  )}
-                                  <DropdownMenuItem
-                                    className="text-red-600 flex items-center gap-2 cursor-pointer"
-                                    onClick={() =>
-                                      ticket.id && handleDeleteTicket(ticket.id)
-                                    }
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                    Delete Record
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell
-                          colSpan={6}
-                          className="h-32 text-center text-gray-500"
+                              {ticket.status !== "cancelled" && (
+                                <DropdownMenuItem
+                                  className="text-orange-600 flex items-center gap-2 cursor-pointer"
+                                  onClick={() =>
+                                    ticket.id && handleCancelTicket(ticket.id)
+                                  }
+                                >
+                                  <UserX className="h-4 w-4" />
+                                  Cancel Ticket
+                                </DropdownMenuItem>
+                              )}
+                              <DropdownMenuItem
+                                className="text-red-600 flex items-center gap-2 cursor-pointer"
+                                onClick={() =>
+                                  ticket.id && handleDeleteTicket(ticket.id)
+                                }
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                Delete Record
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={6}
+                      className="h-32 text-center text-gray-500"
+                    >
+                      <div className="flex flex-col items-center gap-2">
+                        <Search className="w-8 h-8 text-gray-200" />
+                        <p className="text-sm font-medium">
+                          No attendees match your search.
+                        </p>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setTicketSearch("");
+                            setStatusFilter("all");
+                          }}
                         >
-                          <div className="flex flex-col items-center gap-2">
-                            <Search className="w-8 h-8 text-gray-200" />
-                            <p className="text-sm font-medium">
-                              No attendees match your search.
-                            </p>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => {
-                                setTicketSearch("");
-                                setStatusFilter("all");
-                              }}
-                            >
-                              Clear filters
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
+                          Clear filters
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </div>
         </CardContent>
       </Card>
