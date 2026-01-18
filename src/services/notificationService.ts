@@ -17,49 +17,22 @@ export interface Notification {
 export const notificationService = {
   // 1. Send an actual email via Resend
   async sendEmail(to: string, subject: string, content: string) {
-    const apiKey = process.env.REACT_APP_RESEND_API_KEY;
-    if (!apiKey) {
-      console.error("Missing REACT_APP_RESEND_API_KEY in .env");
-      return;
-    }
-
-    try {
-      const response = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          from: "TEDxHUI <notifications@tedxhui.com>",
-          to: [to],
-          subject: subject,
-          html: `<div>${content}</div>`,
-        }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("Failed to send email:", error);
-      throw error;
-    }
+    // This function is now handled by a Database Trigger.
+    // When a notification is inserted into the 'notifications' table,
+    // Supabase will automatically call the Resend API.
+    return { success: true, message: "Queued in database for trigger" };
   },
 
   // 2. Queue and Send a notification
   async queueNotification(
-    notification: Omit<Notification, "id" | "status" | "created_at">,
+    notification: Omit<Notification, "id" | "status" | "created_at">
   ) {
     // First, try to send the actual email
     try {
       await this.sendEmail(
         notification.user_email,
         notification.subject,
-        notification.content,
+        notification.content
       );
     } catch (e) {
       console.error("Email sending failed, but still queueing in DB", e);
@@ -97,7 +70,7 @@ export const notificationService = {
   async broadcastAnnouncement(
     subject: string,
     content: string,
-    targetEmails?: string[],
+    targetEmails?: string[]
   ) {
     let emails: string[] = [];
 
@@ -127,7 +100,7 @@ export const notificationService = {
           console.error(`Failed to send broadcast to ${email}:`, e);
           return { email, success: false };
         }
-      }),
+      })
     );
 
     const notifications = emails.map((email, index) => {
