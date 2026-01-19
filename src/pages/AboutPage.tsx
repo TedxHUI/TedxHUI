@@ -1,41 +1,15 @@
-import React from "react";
-import { motion, Variants, TargetAndTransition } from "framer-motion";
+import { motion, TargetAndTransition, Variants } from "framer-motion";
 import { Button } from "../components/ui/button";
-import { Card, CardContent } from "../components/ui/card";
-import {
-  User,
-  MapPin,
-  Award,
-  Target,
-  Heart,
-  Lightbulb,
-  Users,
-  ShieldCheck,
-  ArrowRight,
-  CheckCircle,
-} from "lucide-react";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Navigation,
-  Pagination,
-  Autoplay,
-  EffectCoverflow,
-} from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css";
+import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/effect-coverflow";
 
-import Elipse1 from "../assets/Ellipse 1.png";
-import TedwhiteSpeaker from "../assets/2d0ce2fb734db790a93563a83d7299d6126715ac.jpg";
-import Unknown from "../assets/unknown.jpg";
-import { unknown } from "zod";
 
 import TeamSlider from "../components/About/TeamSlider";
-import Be_Part from "../components/Be_Part";
 
 const AboutPage = () => {
   const sentence = "Discover the Story Behind TEDxHUI";
