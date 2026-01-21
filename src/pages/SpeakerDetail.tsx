@@ -1,13 +1,11 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import React from "react";
 import {
   FiArrowLeft,
-  FiInstagram,
-  FiLinkedin,
   FiCalendar,
   FiMapPin,
 } from "react-icons/fi";
+import { Link, useParams } from "react-router-dom";
 import { SPEAKERS_DATA } from "../data/speakers";
 
 const SpeakerDetail = () => {

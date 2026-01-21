@@ -1,8 +1,5 @@
-import React from 'react'
-import { motion, Variants, TargetAndTransition } from 'framer-motion';
-import Elipse1 from "../assets/Ellipse 1.png";
+import { motion, Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import Unknown from "../assets/0ca30f5a418dacbe53b99b7bd4f3d02b42d11155.jpg";
 import { SPEAKERS_DATA } from '../data/speakers';
 
 
