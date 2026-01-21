@@ -71,9 +71,9 @@ const HomePage = () => {
         "Tickets can be purchased directly on our website through our secure Paystack payment system using your debit/credit card or bank transfer.",
     },
     {
-      question: "When and where will TEDxHUI 2026 take place?",
+      question: "When and where will TEDxHUI 2025 take place?",
       answer:
-        "The event is scheduled for Saturday, 17th January 2026, at Moot Court Atere, Al-Hikmah University, Ilorin. A detailed agenda will be available closer to the event date.",
+        "The event is scheduled for Thursday, June 5th, 2025, at Moot Court, Atere Campus, Al-Hikmah University, Ìlọrin. A detailed agenda will be available closer to the event date.",
     },
     {
       question: "What is the dress code?",
@@ -552,9 +552,13 @@ const HomePage = () => {
             {/* Details Grid */}
             <div className="grid md:grid-cols-3 gap-6 md:gap-8">
               {[
-                { title: "Location", detail: "AL-Hikmah University, Ilorin" },
-                { title: "Date", detail: "Saturday, 17th January 2026" },
-                { title: "Time", detail: "10:00 AM - 4:00 PM WAT" },
+                {
+                  title: "Location",
+                  detail:
+                    "Moot Court, Atere Campus, AL-Hikmah University, Ilorin",
+                },
+                { title: "Date", detail: "Thursday, June 5th, 2025" },
+                { title: "Time", detail: "9:00 AM - 12:00 PM WAT" },
               ].map((item, i) => (
                 <motion.div
                   key={i}

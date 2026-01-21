@@ -3,11 +3,13 @@ import { motion } from "framer-motion";
 import {
   Facebook,
   Twitter,
-  Youtube,
-  Linkedin,
   Instagram,
+  Linkedin,
+  Youtube,
   Send,
+  Music2, // For TikTok
 } from "lucide-react";
+// Custom X and TikTok icons would be better but let's use Lucide for now
 import { Link } from "react-router-dom";
 import Logo from "../assets/Frame 32.png";
 
@@ -32,7 +34,6 @@ const Footer = () => {
     { label: "Agenda", path: "/agenda" },
     { label: "Create DP", path: "/createdp" },
     { label: "Contact", path: "/contact" },
-    { label: "Merchandise", path: "/merchandise" },
     { label: "Join Community", path: "/community" },
   ];
 
@@ -67,20 +68,22 @@ const Footer = () => {
                   exclusive TEDxHUI updates in your inbox.
                 </p>
 
-                {/* Newsletter Input with focus animation */}
-                <div className="relative group max-w-sm">
-                  <input
-                    type="email"
-                    placeholder="enter email address"
-                    className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/20 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#EA1D2C] transition-all text-sm"
-                  />
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="absolute right-2 top-1.5 bottom-1.5 px-6 bg-white text-[#EA1D2C] rounded-full font-bold text-sm shadow-lg hover:bg-[#EA1D2C] hover:text-white transition-colors"
-                  >
-                    Subscribe
-                  </motion.button>
+                {/* Newsletter Input */}
+                <div className="relative max-w-lg">
+                  <div className="flex flex-col sm:flex-row items-center gap-3 p-1.5 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full">
+                    <input
+                      type="email"
+                      placeholder="enter email address"
+                      className="w-full px-6 py-3 bg-transparent border-none text-white placeholder:text-gray-500 focus:outline-none text-sm"
+                    />
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full sm:w-auto px-8 py-3 bg-white text-[#EA1D2C] rounded-full font-black text-sm shadow-xl hover:bg-gray-100 transition-all whitespace-nowrap"
+                    >
+                      Subscribe
+                    </motion.button>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -118,10 +121,11 @@ const Footer = () => {
                 <span className="text-gray-400 text-sm mb-4">Follow Us on</span>
                 <div className="flex gap-3">
                   {[
-                    { Icon: Facebook, link: "#" },
-                    { Icon: Twitter, link: "#" },
+                    { Icon: Instagram, link: "#" },
+                    { Icon: Twitter, link: "https://x.com" },
                     { Icon: Linkedin, link: "#" },
-                    { Icon: Youtube, link: "#" },
+                    { Icon: Facebook, link: "#" },
+                    { Icon: Music2, link: "#" }, // TikTok
                   ].map(({ Icon, link }, i) => (
                     <motion.a
                       key={i}
@@ -131,9 +135,9 @@ const Footer = () => {
                         backgroundColor: "#EA1D2C",
                         color: "#fff",
                       }}
-                      className="w-9 h-9 rounded-lg bg-white text-black flex items-center justify-center transition-all shadow-md"
+                      className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center transition-all shadow-md"
                     >
-                      <Icon className="w-4 h-4" />
+                      <Icon className="w-5 h-5" />
                     </motion.a>
                   ))}
                 </div>
@@ -157,6 +161,13 @@ const Footer = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Large Background Text */}
+      <div className="relative mt-20 opacity-10 pointer-events-none select-none">
+        <h2 className="text-[20vw] font-bold text-white text-center leading-[0.7] font-glancyr whitespace-nowrap">
+          TED<span className="text-[#EA1D2C]">X</span>HUI
+        </h2>
       </div>
     </footer>
   );

@@ -253,7 +253,7 @@ const AboutPage = () => {
             </motion.div>
 
             <motion.div variants={contentVariants}>
-              At TEDxHUI 2026, our theme “The Gift” is a call to recognize and
+              At TEDxHUI 2025, our theme “The Gift” is a call to recognize and
               celebrate these treasures. Gifts of knowledge. Gifts of
               creativity. Gifts of resilience. Gifts of perspective. Life itself
               is a gift, and within it, each individual has something unique to
