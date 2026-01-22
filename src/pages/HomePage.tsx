@@ -1,45 +1,37 @@
-import { Button } from "../components/ui/button";
-import { motion, Variants, AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import { AnimatePresence, motion, Variants } from "framer-motion";
+import { Minus, Plus } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Minus } from "lucide-react";
+import { Button } from "../components/ui/button";
 
 import Typewriter from "typewriter-effect";
 
-import { Swiper, SwiperSlide } from "swiper/react";
 import {
-  Navigation,
-  Pagination,
   Autoplay,
   EffectCoverflow,
+  Navigation,
+  Pagination,
 } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
+import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/effect-coverflow";
 
-import { MapPin, Calendar, Clock } from "lucide-react";
-import tedxCrystal from "../assets/Component 35.png";
-import tedxGiftLogo from "../assets/Facebook cover photo.png";
-import speaker1 from "../assets/Frame 163.png";
-import kfcLogo from "../assets/Group@2x.png";
+import LastImg from "../assets/0315491aa2291cff2fc0788336df59d5f2687320.jpg";
 import AmazonLogo from "../assets/amazon.png";
-import GoogleLogo from "../assets/google.png";
-import kudaLogo from "../assets/Group 3.png";
 import CNNLogo from "../assets/cnn.png";
-import giftThemeBanner from "../assets/Frame 35.png";
 import HeroTEDImage from "../assets/Component 26.png";
+import tedxCrystal from "../assets/Component 35.png";
 import Elipse1 from "../assets/Ellipse 1.png";
 import Elipse2 from "../assets/Ellipse 3.png";
-import LastImg from "../assets/0315491aa2291cff2fc0788336df59d5f2687320.jpg";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../components/ui/accordion";
+import speaker1 from "../assets/Frame 163.png";
+import giftThemeBanner from "../assets/Frame 35.png";
+import GoogleLogo from "../assets/google.png";
+import kudaLogo from "../assets/Group 3.png";
+import kfcLogo from "../assets/Group@2x.png";
 
 const HomePage = () => {
   const navigate = useNavigate();

@@ -1,12 +1,12 @@
 import { motion, Variants } from "framer-motion";
 
-const SessionOne = () => {
+const SessionTwo = () => {
   const items = [
-    { time: "9:20 AM - 09:32 AM", title: "Sirkin Mota", desc: "Selling Trust in a Market That Doesn’t" },
-    { time: "9:32 AM - 09:44 AM", title: "Ahmad XM", desc: "Wealth Begins with Understanding" },
-    { time: "9:44 AM - 09:56 AM", title: "Victory Ashaka", desc: "Creativity as a Voice for Justice" },
-    { time: "09:56 AM - 10:08 AM", title: "Adesina", desc: "What Are Your Real Assets?" },
-    { time: "10:08 AM - 10:28 AM", title: "Networking Break", desc: "" },
+    { time: "10:28 AM - 11:40 AM", title: "Adesina", desc: "What Are Your Real Assets?" },
+    { time: "10:40 AM - 10:52 AM", title: "Adesina", desc: "What Are Your Real Assets?" },
+    { time: "10:52 AM - 11:04 AM", title: "Adesina", desc: "What Are Your Real Assets?" },
+    { time: "11:04 AM - 11:16 AM", title: "Adesina", desc: "What Are Your Real Assets?" },
+    { time: "11:16 AM - 11:36 AM", title: "Performer Session", desc: "" },
   ];
 
   const containerVariants = {
@@ -19,10 +19,7 @@ const SessionOne = () => {
     visible: { 
       opacity: 1, 
       y: 0, 
-      transition: { 
-        duration: 0.5, 
-        ease: "easeOut"
-      } 
+      transition: { duration: 0.5, ease: "easeOut" } 
     },
   };
 
@@ -34,11 +31,11 @@ const SessionOne = () => {
       whileInView="visible"
       viewport={{ once: true }}
     >
-      {/* Floating Speaker Badge */}
+      {/* Speaker Badge 2 */}
       <div className="absolute -right-2 md:-right-8 -top-10 z-20 w-24 md:w-40 pointer-events-none">
         <motion.img 
-          src="/images/Speakers/speaker-badge-1.svg" 
-          alt="Speaker Session I" 
+          src="/images/Speakers/speaker-badge-2.svg" 
+          alt="Speaker Session II" 
           className="w-full h-full drop-shadow-xl"
           whileHover={{ rotate: 5 }} 
         />
@@ -46,7 +43,7 @@ const SessionOne = () => {
 
       <div className="space-y-[-0.8rem] md:space-y-[-1.2rem]">
         {items.map((item, index) => {
-          const isBreak = item.title === "Networking Break";
+          const isLastItem = index === items.length - 1;
 
           return (
             <motion.div 
@@ -54,12 +51,12 @@ const SessionOne = () => {
               variants={itemVariants}
               whileHover={{ y: -5, scale: 1.01, zIndex: 10 }}
               className={`flex flex-col md:flex-row py-6 px-5 lg:p-[3.125rem] rounded-[1.5rem] md:rounded-[1.9rem] border border-dashed border-[#EA1D2C]/20 transition-all relative ${
-                isBreak ? 'bg-[#FFF5F5]' : 'bg-white'
+                isLastItem ? 'bg-[#FFF5F5]' : 'bg-white'
               }`}
             >
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 w-full">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 w-full relative">
                 
-                {/* TIME COLUMN*/}
+                {/* TIME COLUMN */}
                 <div className="text-[#EA1D2C] font-normal font-glancyr text-lg md:text-[1.8rem] lg:text-[2rem] min-w-fit md:min-w-[180px] lg:min-w-[220px] md:border-r border-dashed border-[#EA1D2C]/30 md:pr-8 lg:pr-[5rem] flex items-center">
                   <span className="whitespace-pre-line leading-tight">
                     {item.time.split(/[-–—]/)[0].trim()}
@@ -79,10 +76,14 @@ const SessionOne = () => {
                   )}
                 </div>
 
-                {/* Networking Illustration */}
-                {isBreak && (
-                  <div className="absolute right-4 bottom-4 hidden lg:block w-28">
-                    <img src="images/Speakers/networking.svg" alt="Networking" className="opacity-90" />
+                {/* Performer Illustration*/}
+                {isLastItem && (
+                  <div className="absolute right-0 bottom-[-10px] hidden lg:block w-32">
+                    <img 
+                      src="/images/icons/performing.svg" 
+                      alt="Performer Illustration" 
+                      className="opacity-100" 
+                    />
                   </div>
                 )}
               </div>
@@ -94,4 +95,4 @@ const SessionOne = () => {
   );
 };
 
-export default SessionOne;
+export default SessionTwo;

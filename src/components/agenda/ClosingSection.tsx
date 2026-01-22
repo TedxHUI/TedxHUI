@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 
-const ArrivalSection = () => {
+const ClosingSection = () => {
   const items = [
-    { time: "8:00 AM - 9:00 AM", title: "Arrival & Registration of Guests", desc: "" },
-    { time: "9:00 AM - 9:10 AM", title: "Welcome Address & Official TEDx Intro Video", desc: "Host" },
-    { time: "9:10 AM - 9:20 AM", title: "University Welcome Address", desc: "Vice Chancellor or University Representative" },
+    { time: "8:00 AM - 9:00 AM", title: "Lunch Break", desc: "" },
+    { time: "9:00 AM - 9:10 AM", title: "Certificate Presentation", desc: "" },
+    { time: "9:10 AM - 9:20 AM", title: "Closing Remarks & Vote of Thanks", desc: "By Curator" },
+    { time: "9:10 AM - 9:20 AM", title: "Group Photographs", desc: "" },
   ];
 
   const containerVariants = {
@@ -52,22 +53,14 @@ const ArrivalSection = () => {
                     {item.title}
                   </h4>
 
-                  {item.desc && item.desc.length < 10 && (
                     <motion.span 
-                      initial={{ rotate: 0 }}
-                      whileInView={{ rotate: -12 }} 
-                      className="inline-flex justify-center items-center bg-[#FFF5F5] text-[#EA1D2C] rounded-full text-[0.75rem] md:text-[0.9rem] shadow-md border border-[#EA1D2C]/10 font-normal px-3 py-0.5 md:px-4 md:py-1 h-fit"
+                        initial={{ rotate: 0 }}
+                        whileInView={{ rotate: -12 }} 
+                        className="inline-flex justify-center items-center bg-[#FFF5F5] text-[#EA1D2C] rounded-full text-[0.75rem] md:text-[0.9rem] shadow-md border border-[#EA1D2C]/10 font-normal px-3 py-0.5 md:px-4 md:py-1 h-fit"
                     >
-                      {item.desc}
+                        {item.desc}
                     </motion.span>
-                  )}
                 </div>
-
-                {item.desc && item.desc.length >= 10 && (
-                  <p className="text-[#444444] font-normal mt-1 md:mt-2 text-[0.95rem] md:text-[1.1rem] opacity-70 leading-relaxed">
-                    {item.desc}
-                  </p>
-                )}
               </div>
             </div>
           </motion.div>
@@ -77,4 +70,4 @@ const ArrivalSection = () => {
   );
 };
 
-export default ArrivalSection;
+export default ClosingSection;
