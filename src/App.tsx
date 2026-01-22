@@ -21,6 +21,9 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PendingApproval from "./pages/PendingApproval";
+import Checkout from "./pages/Checkout";
+
+import { CartProvider } from "./contexts/CartContext";
 
 const queryClient = new QueryClient();
 
@@ -31,38 +34,41 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/speakers" element={<Speakers />} />
-              <Route path="/agenda" element={<Agenda />} />
-              <Route path="/speakers/:id" element={<SpeakerDetail />} />
-              <Route path="/createdp" element={<CreateDP />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/merchandise" element={<Merchandise />} />
-              <Route path="/book-ticket" element={<TicketBooking />} />
-              <Route path="/payment-success" element={<PaymentSuccess />} />
+          <CartProvider>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/speakers" element={<Speakers />} />
+                <Route path="/agenda" element={<Agenda />} />
+                <Route path="/speakers/:id" element={<SpeakerDetail />} />
+                <Route path="/createdp" element={<CreateDP />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/merchandise" element={<Merchandise />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/book-ticket" element={<TicketBooking />} />
+                <Route path="/payment-success" element={<PaymentSuccess />} />
 
-              {/* Auth routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/pending-approval" element={<PendingApproval />} />
+                {/* Auth routes */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/pending-approval" element={<PendingApproval />} />
 
-              {/* Protected admin route */}
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Protected admin route */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Layout>
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Layout>
+          </CartProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

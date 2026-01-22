@@ -1,165 +1,76 @@
 import React from "react";
-import { useLocation, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  CheckCircle,
-  ArrowRight,
-  Download,
-  Mail,
-  ShoppingBag,
-  Ticket,
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "../components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "../components/ui/card";
-import Elipse1 from "../assets/Ellipse 1.png";
+import Footer from "../components/Footer";
 
 const PaymentSuccess = () => {
-  const location = useLocation();
-  const { type, data, reference } = location.state || { type: "unknown" };
-
-  const isTicket = type === "ticket";
-  const isMerch = type === "merch";
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen pt-24 pb-12 bg-white relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-2xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card className="border-2 border-green-100 shadow-xl overflow-hidden">
-              <div className="bg-green-500 h-2 w-full" />
-              <CardHeader className="text-center pt-10">
-                <div className="flex justify-center mb-4">
-                  <div className="bg-green-100 p-3 rounded-full">
-                    <CheckCircle className="w-12 h-12 text-green-600" />
-                  </div>
-                </div>
-                <CardTitle className="text-3xl font-bold font-glancyr">
-                  Payment Successful!
-                </CardTitle>
-                <CardDescription className="text-lg">
-                  Thank you for your purchase. Your transaction has been
-                  completed.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6 px-8">
-                <div className="bg-gray-50 rounded-2xl p-6 space-y-4">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Payment Reference</span>
-                    <span className="font-mono font-bold">{reference}</span>
-                  </div>
-                  <div className="h-px bg-gray-200" />
-
-                  {isTicket && (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="bg-primary/10 p-2 rounded-lg">
-                          <Ticket className="w-5 h-5 text-primary" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">
-                            Ticket Type
-                          </p>
-                          <p className="font-bold">
-                            {data.ticket_type.toUpperCase()}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="bg-blue-100 p-2 rounded-lg">
-                          <Mail className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">
-                            Sent to
-                          </p>
-                          <p className="font-bold">{data.email}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {isMerch && (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="bg-primary/10 p-2 rounded-lg">
-                          <ShoppingBag className="w-5 h-5 text-primary" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">
-                            Product
-                          </p>
-                          <p className="font-bold">
-                            {data.name} (x{data.quantity})
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="bg-blue-100 p-2 rounded-lg">
-                          <Mail className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">
-                            Receipt Sent to
-                          </p>
-                          <p className="font-bold">{data.email}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="text-center space-y-2">
-                  <p className="text-sm text-gray-500">
-                    A confirmation email has been sent to your inbox. Please
-                    check your spam folder if you don't see it.
-                  </p>
-                </div>
-              </CardContent>
-              <CardFooter className="flex flex-col gap-3 pb-10 px-8">
-                <Button asChild className="w-full h-12 rounded-full font-bold">
-                  <Link to="/">
-                    Return Home <ArrowRight className="ml-2 w-4 h-4" />
-                  </Link>
-                </Button>
-                <div className="flex gap-3 w-full">
-                  <Button
-                    variant="outline"
-                    className="flex-1 h-12 rounded-full font-bold"
-                  >
-                    <Download className="mr-2 w-4 h-4" /> Print Receipt
-                  </Button>
-                  {isTicket && (
-                    <Button
-                      variant="outline"
-                      className="flex-1 h-12 rounded-full font-bold border-primary text-primary hover:bg-primary/5"
-                    >
-                      View Ticket
-                    </Button>
-                  )}
-                </div>
-              </CardFooter>
-            </Card>
-          </motion.div>
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Header */}
+      <header className="p-6 md:p-8 flex justify-between items-center bg-white sticky top-0 z-50">
+        <div className="flex items-center gap-2">
+          <span className="text-[#EA1D2C] font-black text-2xl font-glancyr tracking-tighter">
+            TED<span className="text-black">X</span>HUI
+          </span>
         </div>
-      </div>
+        <button
+          onClick={() => navigate("/")}
+          className="px-8 py-2.5 rounded-full border border-gray-100 text-sm font-bold text-gray-500 hover:text-black hover:border-black transition-all"
+        >
+          Close
+        </button>
+      </header>
 
-      <div className="fixed bottom-0 right-0 w-64 h-64 -z-10 opacity-10 pointer-events-none">
-        <img src={Elipse1} alt="" />
-      </div>
-      <div className="fixed top-20 left-0 w-64 h-64 -z-10 opacity-10 pointer-events-none rotate-180">
-        <img src={Elipse1} alt="" />
-      </div>
+      {/* Main Content */}
+      <main className="flex-grow flex flex-col items-center justify-center py-12 md:py-20 px-6 text-center">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", damping: 15 }}
+          className="w-48 h-48 md:w-64 md:h-64 bg-[#FFF5F5] rounded-full flex items-center justify-center mb-8 md:mb-12 shadow-inner"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.3, type: "spring" }}
+            className="w-24 h-24 md:w-32 md:h-32 bg-[#EA1D2C] rounded-full flex items-center justify-center shadow-2xl shadow-red-200"
+          >
+            <Check
+              className="text-white w-10 h-10 md:w-16 md:h-16"
+              strokeWidth={4}
+            />
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="max-w-2xl mx-auto"
+        >
+          <h1 className="text-3xl md:text-6xl font-black font-glancyr mb-4 tracking-tight">
+            Payment Successful
+          </h1>
+          <p className="text-gray-500 text-xs md:text-base font-bold max-w-sm md:max-w-md mx-auto leading-relaxed mb-10 md:mb-12">
+            Thank you for purchasing TEDxHUI Merch! A confirmation email has
+            been sent to you with your receipt details.
+          </p>
+
+          <Button
+            asChild
+            className="h-12 md:h-14 px-10 md:px-12 rounded-full bg-[#EA1D2C] hover:bg-[#ff2b3a] font-bold text-sm md:text-base shadow-xl shadow-red-100 transition-all active:scale-95 w-full md:w-auto"
+          >
+            <Link to="/">Go Home</Link>
+          </Button>
+        </motion.div>
+      </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
