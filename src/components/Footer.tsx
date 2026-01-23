@@ -1,13 +1,10 @@
-import React from "react";
 import { motion } from "framer-motion";
 import {
   Facebook,
-  Twitter,
   Instagram,
   Linkedin,
-  Youtube,
-  Send,
-  Music2, // For TikTok
+  Music2,
+  Twitter
 } from "lucide-react";
 // Custom X and TikTok icons would be better but let's use Lucide for now
 import { Link } from "react-router-dom";

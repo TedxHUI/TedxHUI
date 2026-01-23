@@ -143,16 +143,17 @@ const HomePage = () => {
         <div className="absolute bottom-0 left-0 right-0 h-20 md:h-24 flex items-end pointer-events-none overflow-hidden z-[2]">
           <motion.div
             className="flex whitespace-nowrap"
-            animate={{ x: [0, -1000] }} // Adjust based on image width
+            animate={{ x: [0, -1000] }}
             transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
           >
             <img src={HeroTEDImage} alt="Hero TED" className="h-full" />
-            <img src={HeroTEDImage} alt="Hero TED" className="h-full" />{" "}
-            {/* Duplicate for seamless loop */}
+            <img src={HeroTEDImage} alt="Hero TED" className="h-full" />
+            <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
+            <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
           </motion.div>
         </div>
 
-        {/* 2. ROTATING CRYSTAL (Slow Loop) */}
+        {/* 2. ROTATING CRYSTAL */}
         <motion.div
           className="absolute top-[-30px] right-[-30px] w-[150px] h-[150px] md:w-[250px] md:h-[250px] opacity-30 md:opacity-80 z-[1]"
           animate={{ rotate: 360 }}

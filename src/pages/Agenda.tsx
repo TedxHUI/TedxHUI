@@ -1,4 +1,5 @@
 import { motion, Variants } from 'framer-motion';
+import HeroTEDImage from "../assets/Component 26.png";
 import tedxCrystal from "../assets/Component 35.png";
 import ArrivalSection from '../components/agenda/ArrivalSection';
 import ClosingSection from '../components/agenda/ClosingSection';
@@ -104,6 +105,22 @@ const Agenda = () => {
                 <ClosingSection/>
             </div>
         </section>
+
+        {/*MOVING GIFT BOXES PATTERN */}
+        <div className="w-full bg-black overflow-hidden relative">
+            <div className="flex pointer-events-none">
+              <motion.div
+                className="flex whitespace-nowrap gap-4"
+                animate={{ x: [0, -1000] }}
+                transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+              >
+                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
+                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
+                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
+                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
+              </motion.div>
+            </div>
+        </div>
     </div>
   );
 };

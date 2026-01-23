@@ -1,27 +1,25 @@
-﻿import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+﻿import { AnimatePresence, motion } from "framer-motion";
 import {
-  ChevronDown,
-  ChevronUp,
-  Ticket as TicketIcon,
-  MapPin,
-  Calendar,
-  Clock,
-  ChevronLeft,
-  Plus,
-  Minus,
-  Lock,
-  Check,
   ArrowRight,
+  Calendar,
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  ChevronUp,
+  Clock,
+  Lock,
+  MapPin,
+  Minus,
+  Plus,
+  Ticket as TicketIcon,
 } from "lucide-react";
-import { Button } from "../components/ui/button";
+import React, { useState } from "react";
 import { usePaystackPayment } from "react-paystack";
 import { useNavigate } from "react-router-dom";
-import { ticketService } from "../services/ticketService";
-import { notificationService } from "../services/notificationService";
+import { Button } from "../components/ui/button";
 import { useToast } from "../hooks/use-toast";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
+import { notificationService } from "../services/notificationService";
+import { ticketService } from "../services/ticketService";
 
 const TICKETS = [
   {

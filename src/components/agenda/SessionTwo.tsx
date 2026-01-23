@@ -1,4 +1,5 @@
 import { motion, Variants } from "framer-motion";
+import tedxCrystal from "../../assets/Component 35.png";
 
 const SessionTwo = () => {
   const items = [
@@ -31,6 +32,17 @@ const SessionTwo = () => {
       whileInView="visible"
       viewport={{ once: true }}
     >
+      {/* 1. CRYSTAL POSITIONED TO THE LEFT */}
+      <div className="absolute -left-12 md:-left-20 top-1/2 -translate-y-1/2 w-32 md:w-48 z-20 pointer-events-none">
+        <motion.img 
+          src={tedxCrystal} 
+          alt="Decorative Crystal"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }} 
+          className="w-full h-full object-contain drop-shadow-2xl" 
+        />
+      </div>
+
       {/* Speaker Badge 2 */}
       <div className="absolute -right-2 md:-right-8 -top-10 z-20 w-24 md:w-40 pointer-events-none">
         <motion.img 
@@ -76,13 +88,13 @@ const SessionTwo = () => {
                   )}
                 </div>
 
-                {/* Performer Illustration*/}
+                {/* Performer Illustration (Fixed Visibility) */}
                 {isLastItem && (
-                  <div className="absolute right-0 bottom-[-10px] hidden lg:block w-32">
+                  <div className="absolute right-0 bottom-[-10px] hidden lg:block w-32 z-30">
                     <img 
                       src="/images/icons/performing.svg" 
                       alt="Performer Illustration" 
-                      className="opacity-100" 
+                      className="w-full h-full opacity-100" 
                     />
                   </div>
                 )}

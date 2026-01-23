@@ -1,13 +1,47 @@
+import {
+  CheckCircle,
+  CheckSquare,
+  Clock,
+  Download,
+  Mail,
+  MoreVertical,
+  Search,
+  Trash2,
+  UserX,
+  X,
+} from "lucide-react";
 import React from "react";
+import { useMediaQuery } from "../../hooks/use-media-query";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "../ui/card";
+import { Checkbox } from "../ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from "../ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle
+} from "../ui/drawer";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import {
   Table,
   TableBody,
@@ -16,43 +50,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Badge } from "../ui/badge";
-import { Checkbox } from "../ui/checkbox";
-import {
-  Search,
-  CheckCircle,
-  Download,
-  Mail,
-  MoreVertical,
-  CheckSquare,
-  Trash2,
-  UserX,
-  X,
-  Clock,
-} from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../ui/drawer";
-import { useMediaQuery } from "../../hooks/use-media-query";
 import { Textarea } from "../ui/textarea";
 
 import { Ticket } from "../../services/ticketService";

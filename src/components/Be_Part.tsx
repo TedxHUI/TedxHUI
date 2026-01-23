@@ -1,9 +1,7 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import Elipse1 from "../assets/Ellipse 1.png";
-import Elipse2 from "../assets/Ellipse 3.png";
 
 const Be_Part = () => {
   const navigate = useNavigate();

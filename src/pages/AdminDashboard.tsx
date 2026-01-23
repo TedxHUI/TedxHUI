@@ -1,39 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
 import {
-  merchandiseService,
-  Merchandise,
-  Order,
-} from "../services/merchandiseService";
-import { ticketService, Ticket } from "../services/ticketService";
-import {
-  notificationService,
-  Notification,
-} from "../services/notificationService";
-import { analyticsService } from "../services/analyticsService";
-import { OverviewTab } from "../components/admin/OverviewTab";
-import { TicketsTab } from "../components/admin/TicketsTab";
+  LayoutDashboard,
+  Megaphone,
+  Package,
+  RefreshCw,
+  Shield,
+  ShoppingBag,
+  Ticket as TicketIcon,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { AdminsTab } from "../components/admin/AdminsTab";
+import { BroadcastTab } from "../components/admin/BroadcastTab";
 import { MerchandiseTab } from "../components/admin/MerchandiseTab";
 import { OrdersTab } from "../components/admin/OrdersTab";
-import { BroadcastTab } from "../components/admin/BroadcastTab";
-import { AdminsTab } from "../components/admin/AdminsTab";
+import { OverviewTab } from "../components/admin/OverviewTab";
+import { TicketsTab } from "../components/admin/TicketsTab";
+import { Button } from "../components/ui/button";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import {
-  LayoutDashboard,
-  Megaphone,
-  Package,
-  Ticket as TicketIcon,
-  RefreshCw,
-  ShoppingBag,
-  Shield,
-} from "lucide-react";
-import { Button } from "../components/ui/button";
 import { useToast } from "../hooks/use-toast";
+import { supabase } from "../lib/supabase";
+import { analyticsService } from "../services/analyticsService";
+import {
+  Merchandise,
+  merchandiseService,
+  Order,
+} from "../services/merchandiseService";
+import {
+  Notification,
+  notificationService,
+} from "../services/notificationService";
+import { Ticket, ticketService } from "../services/ticketService";
 
 interface DashboardStats {
   regCount: number;

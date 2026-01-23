@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import Navigation from "./Navigation";
-import Footer from "./Footer";
 import Be_Part from "./Be_Part";
+import Footer from "./Footer";
+import Navigation from "./Navigation";
 
 interface LayoutProps {
   children: ReactNode;

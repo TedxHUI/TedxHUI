@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { Check, RefreshCw, Shield, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useToast } from "../../hooks/use-toast";
 import { supabase } from "../../lib/supabase";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import {
   Table,
   TableBody,
@@ -8,11 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import { Check, X, Shield, RefreshCw } from "lucide-react";
-import { useToast } from "../../hooks/use-toast";
-import { useAuth } from "../../contexts/AuthContext";
 
 interface AdminUser {
   id: string;

@@ -1,10 +1,10 @@
-import { useState, useCallback } from "react";
+import { Image } from "lucide-react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Input } from "../components/ui/input";
-import { Button } from "../components/ui/button";
-import { Image, Upload } from "lucide-react";
-import { useToast } from "../hooks/use-toast";
 import Elipse1 from "../assets/Ellipse 1.png";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { useToast } from "../hooks/use-toast";
 
 const CreateDP = () => {
 

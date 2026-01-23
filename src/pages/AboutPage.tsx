@@ -1,4 +1,4 @@
-import { motion, TargetAndTransition, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Button } from "../components/ui/button";
 
 
@@ -50,16 +50,6 @@ const AboutPage = () => {
     },
   };
 
-  // Animation for the Moot Court image
-  const imageAnimation: TargetAndTransition = {
-    y: [0, -8, 0],
-    transition: {
-      duration: 6,
-      repeat: Infinity,
-      ease: "easeInOut",
-    },
-  };
-
   // Staggered fade-up for paragraphs
   const contentVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
@@ -81,26 +71,6 @@ const AboutPage = () => {
         duration: 0.8,
         ease: "backOut",
       },
-    },
-  };
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15, // Delay between each card
-      },
-    },
-  };
-
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.8, y: 20 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: { type: "spring", stiffness: 100, damping: 15 }, // Smooth pop
     },
   };
 

@@ -1,12 +1,12 @@
-import { MapPin, Mail, MessageCircle, ArrowUpRight } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowUpRight } from "lucide-react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import Elipse1 from "../assets/Ellipse 1.png";
+import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
-import { Button } from "../components/ui/button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { useToast } from "../hooks/use-toast";
-import Elipse1 from "../assets/Ellipse 1.png";
 import { notificationService } from "../services/notificationService";
 
 const contactSchema = z.object({
