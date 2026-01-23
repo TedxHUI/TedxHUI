@@ -106,22 +106,6 @@ const HomePage = () => {
 
   const [activeId, setActiveId] = useState<number | null>(0); // Default first one open
 
-  // Animation variants for the text container
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2, // Delay between each text element
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-  };
-
   const cardVariants: Variants = {
     // Add the type here
     hidden: { opacity: 0, y: 30 },

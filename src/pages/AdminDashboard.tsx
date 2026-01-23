@@ -7,7 +7,7 @@ import {
   ShoppingBag,
   Ticket as TicketIcon,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AdminsTab } from "../components/admin/AdminsTab";
 import { BroadcastTab } from "../components/admin/BroadcastTab";
 import { MerchandiseTab } from "../components/admin/MerchandiseTab";
@@ -407,42 +407,34 @@ const AdminDashboard = () => {
     document.body.removeChild(link);
   };
 
-  const fetchStats = async () => {
-    setLoading(true);
+  const fetchStats = useCallback(async () => {
     try {
       const [regCount, attendance, merchStats] = await Promise.all([
-        analyticsService.getRegistrationStats(),
-        analyticsService.getAttendanceStats(),
-        analyticsService.getMerchandiseStats(),
-      ]);
+          analyticsService.getRegistrationStats(),
+          analyticsService.getAttendanceStats(),
+          analyticsService.getMerchandiseStats(),
+        ]);
 
-      setStats({
-        regCount: regCount || 0,
-        attendance,
-        merchStats,
-      });
-      await Promise.all([
-        fetchMerchandise(),
-        fetchTickets(),
-        fetchOrders(),
-        fetchNotifications(),
-        checkConfig(),
-      ]);
+        setStats({
+          regCount: regCount || 0,
+          attendance,
+          merchStats,
+        });
+        await Promise.all([
+          fetchMerchandise(),
+          fetchTickets(),
+          fetchOrders(),
+          fetchNotifications(),
+          checkConfig(),
+        ]);
     } catch (error) {
       console.error("Error fetching stats:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load dashboard statistics",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
     }
-  };
+  }, []); 
 
   useEffect(() => {
     fetchStats();
-  }, []);
+  }, [fetchStats]);
 
   const handleBulkCheckIn = async () => {
     if (selectedTickets.length === 0) return;

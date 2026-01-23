@@ -118,11 +118,11 @@ const Footer = () => {
                 <span className="text-gray-400 text-sm mb-4">Follow Us on</span>
                 <div className="flex gap-3">
                   {[
-                    { Icon: Instagram, link: "#" },
+                    { Icon: Instagram, link: "https://x.com" },
                     { Icon: Twitter, link: "https://x.com" },
-                    { Icon: Linkedin, link: "#" },
-                    { Icon: Facebook, link: "#" },
-                    { Icon: Music2, link: "#" }, // TikTok
+                    { Icon: Linkedin, link: "https://x.com" },
+                    { Icon: Facebook, link: "https://x.com" },
+                    { Icon: Music2, link: "https://x.com" }, // TikTok
                   ].map(({ Icon, link }, i) => (
                     <motion.a
                       key={i}

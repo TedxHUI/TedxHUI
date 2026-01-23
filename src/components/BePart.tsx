@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import Elipse1 from "../assets/Ellipse 1.png";
 
-const Be_Part = () => {
+const BePart = () => {
   const navigate = useNavigate();
   return (
     <section className="relative flex items-center bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
@@ -79,4 +79,4 @@ const Be_Part = () => {
   );
 };
 
-export default Be_Part;
+export default BePart;

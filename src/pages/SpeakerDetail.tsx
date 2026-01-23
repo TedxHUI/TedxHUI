@@ -9,13 +9,6 @@ import { Link, useParams } from "react-router-dom";
 import { SPEAKERS_DATA } from "../data/speakers";
 
 const SpeakerDetail = () => {
-  const Icon = ({
-    icon: IconComponent,
-    size = 20,
-  }: {
-    icon: any;
-    size?: number;
-  }) => <IconComponent size={size} />;
 
   const { id } = useParams();
   const speaker = SPEAKERS_DATA.find((s) => s.id === id);

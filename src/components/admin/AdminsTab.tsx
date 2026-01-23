@@ -1,5 +1,5 @@
 import { Check, RefreshCw, Shield, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react"; // Added useCallback
 import { useAuth } from "../../contexts/AuthContext";
 import { useToast } from "../../hooks/use-toast";
 import { supabase } from "../../lib/supabase";
@@ -28,7 +28,8 @@ export const AdminsTab = () => {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const fetchAdmins = async () => {
+  // Wrap fetchAdmins in useCallback to stabilize the function reference
+  const fetchAdmins = useCallback(async () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
@@ -48,11 +49,12 @@ export const AdminsTab = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
+  
   useEffect(() => {
     fetchAdmins();
-  }, []);
+  }, [fetchAdmins]);
 
   const handleToggleApproval = async (
     adminId: string,
@@ -80,7 +82,6 @@ export const AdminsTab = () => {
         description: `Admin account ${!currentStatus ? "activated" : "paused"}.`,
       });
 
-      // Update local state directly for speed
       setAdmins((prev) =>
         prev.map((a) =>
           a.id === adminId ? { ...a, approved: !currentStatus } : a,
