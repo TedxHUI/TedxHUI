@@ -6,7 +6,6 @@ import {
   Music2,
   Twitter
 } from "lucide-react";
-// Custom X and TikTok icons would be better but let's use Lucide for now
 import { Link } from "react-router-dom";
 import Logo from "../assets/Frame 32.png";
 
@@ -37,7 +36,7 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-t from-[#040001] via-[#0B0002] to-[#590A10] text-white pt-12 pb-6 md:pt-16 md:pb-8 overflow-hidden">
       <div className="container mx-auto px-4">
-        {/* Centered Logo with Scale-in Animation */}
+        {/* Centered Logo*/}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -49,7 +48,7 @@ const Footer = () => {
 
         <div className="max-w-6xl mx-auto mt-16 md:mt-24">
           <div className="grid md:grid-cols-2 gap-12 mb-12">
-            {/* Left Section: Newsletter */}
+            {/*Newsletter */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -85,7 +84,7 @@ const Footer = () => {
               </div>
             </motion.div>
 
-            {/* Right Section: Links & Socials */}
+            {/*Links & Socials */}
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <ul className="space-y-3 text-sm text-gray-300">
@@ -118,11 +117,11 @@ const Footer = () => {
                 <span className="text-gray-400 text-sm mb-4">Follow Us on</span>
                 <div className="flex gap-3">
                   {[
-                    { Icon: Instagram, link: "https://x.com" },
-                    { Icon: Twitter, link: "https://x.com" },
-                    { Icon: Linkedin, link: "https://x.com" },
-                    { Icon: Facebook, link: "https://x.com" },
-                    { Icon: Music2, link: "https://x.com" }, // TikTok
+                    { Icon: Instagram, link: "https://www.instagram.com/tedxhui" },
+                    { Icon: Twitter, link: "https://x.com/tedxhui" },
+                    { Icon: Linkedin, link: "https://www.linkedin.com/company/tedxhui" },
+                    { Icon: Facebook, link: "https://www.facebook.com/tedxhui" },
+                    { Icon: Music2, link: "https://www.tiktok.com/@tedxhui" }, // TikTok
                   ].map(({ Icon, link }, i) => (
                     <motion.a
                       key={i}
@@ -142,17 +141,17 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Bottom Copyright */}
+          {/*Copyright */}
           <div className="border-t border-white/10 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
             <p>
               © {new Date().getFullYear()} TEDxHUI. This independently organized
               TEDx event is operated under license from TED.
             </p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-white">
+              <a href="https/privacy" className="hover:text-white">
                 Privacy Policy
               </a>
-              <a href="#" className="hover:text-white">
+              <a href="hhtp:/terms" className="hover:text-white">
                 Terms of Service
               </a>
             </div>
