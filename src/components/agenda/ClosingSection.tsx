@@ -21,13 +21,13 @@ const ClosingSection = () => {
 
   return (
     <motion.div 
-      className="mb-[5rem] relative px-4 md:px-0" 
+      className="relative px-4 md:px-0" 
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
     >
-      {/* 1. CRYSTAL POSITIONED TO THE BOTTOM RIGHT */}
+      {/*CRYSTAL*/}
       <div className="absolute -right-12 md:-right-16 bottom-0 w-32 md:w-48 z-20 pointer-events-none">
         <motion.img 
           src={tedxCrystal} 
@@ -40,7 +40,7 @@ const ClosingSection = () => {
 
       <div className="space-y-[-0.8rem] md:space-y-[-1.2rem]">
         {items.map((item, index) => {
-          const isLastItem = index === items.length - 1; // Always target the last item
+          const isLastItem = index === items.length - 1; 
 
           return (
             <motion.div 
@@ -67,8 +67,6 @@ const ClosingSection = () => {
                     <h4 className="text-lg md:text-[2rem] font-normal text-[#000000] leading-tight">
                       {item.title}
                     </h4>
-
-                    {/* Badge styling for descriptions (e.g., "By Curator") */}
                     {item.desc && (
                       <motion.span 
                         initial={{ rotate: 0 }}

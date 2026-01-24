@@ -161,9 +161,7 @@ const Footer = () => {
 
       {/* Large Background Text */}
       <div className="relative mt-20 opacity-10 pointer-events-none select-none">
-        <h2 className="text-[20vw] font-bold text-white text-center leading-[0.7] font-glancyr whitespace-nowrap">
-          TED<span className="text-[#EA1D2C]">X</span>HUI
-        </h2>
+      <img src="/images/icons/watermark.svg" alt="TEDxhui WaterMark" />     
       </div>
     </footer>
   );

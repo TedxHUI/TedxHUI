@@ -132,8 +132,6 @@ const HomePage = () => {
           >
             <img src={HeroTEDImage} alt="Hero TED" className="h-full" />
             <img src={HeroTEDImage} alt="Hero TED" className="h-full" />
-            <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
-            <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
           </motion.div>
         </div>
 

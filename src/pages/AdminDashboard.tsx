@@ -98,7 +98,7 @@ const AdminDashboard = () => {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [configStatus, setConfigStatus] = useState({
     bucketExists: false,
-    resendKeySet: !!process.env.REACT_APP_RESEND_API_KEY,
+    resendKeySet: typeof process !== 'undefined' ? !!process.env.REACT_APP_RESEND_API_KEY : false,
     checking: true,
   });
   const { toast } = useToast();

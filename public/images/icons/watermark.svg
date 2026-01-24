@@ -1,0 +1,28 @@
+<svg width="1433" height="294" viewBox="0 0 1433 294" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g opacity="0.5">
+<path d="M121.923 368.196V190.851H55V133.967H252.422V190.851H185.499V368.196H121.923Z" fill="#EA1D2C"/>
+<path d="M259.231 368.196V133.967H453.307V190.851H322.808V222.639H439.922V279.523H322.808V311.312H456.653V368.196H259.231Z" fill="#EA1D2C"/>
+<path d="M470.011 368.196V133.967H568.722C650.033 133.967 689.183 173.786 689.183 251.081C689.183 328.377 650.033 368.196 568.722 368.196H470.011ZM533.588 311.312H568.722C606.199 311.312 623.933 290.9 623.933 250.747C623.933 211.263 606.199 190.851 568.722 190.851H533.588V311.312Z" fill="#EA1D2C"/>
+<path d="M791.785 185.752L834.807 245.505H784.615L766.69 220.648L748.764 245.505H698.572L741.594 185.752L698.572 126H748.764L766.69 150.857L784.615 126H834.807L791.785 185.752Z" fill="#EA1D2C"/>
+<path d="M924.037 363.165V128.39H938.713V237.393H1085.47V128.39H1100.15V363.165H1085.47V254.162H938.713V363.165H924.037Z" fill="white"/>
+<path d="M1216.73 351.426C1262.52 351.426 1289.23 329.626 1289.23 272.944V128.39H1303.9V271.267C1303.9 345.725 1263.69 368.196 1216.73 368.196C1169.77 368.196 1129.56 345.725 1129.56 271.267V128.39H1144.23V272.944C1144.23 329.626 1170.94 351.426 1216.73 351.426Z" fill="white"/>
+<path d="M1333.2 363.165V128.39H1347.88V363.165H1333.2Z" fill="white"/>
+</g>
+<g opacity="0.5">
+<rect width="1440" height="368" fill="url(#pattern0_627_1204)"/>
+<rect width="1440" height="368" fill="url(#paint0_linear_627_1204)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_627_1204" x1="720" y1="0" x2="720" y2="368" gradientUnits="userSpaceOnUse">
+<stop/>
+<stop offset="1" stop-opacity="0"/>
+</linearGradient>
+<pattern id="pattern0_627_1204" patternUnits="userSpaceOnUse" patternTransform="matrix(49 0 0 28 716.5 0)" preserveAspectRatio="none" viewBox="0 0 49 28" width="1" height="1">
+<use xlink:href="#pattern0_627_1204_inner" transform="translate(0 -28)"/>
+<use xlink:href="#pattern0_627_1204_inner" transform="translate(24.5 -14)"/>
+<g id="pattern0_627_1204_inner">
+<ellipse cx="3.5" cy="4" rx="3.5" ry="4" fill="white" fill-opacity="0.5"/>
+</g>
+<use xlink:href="#pattern0_627_1204_inner" transform="translate(24.5 14)"/>
+</pattern></defs>
+</svg>

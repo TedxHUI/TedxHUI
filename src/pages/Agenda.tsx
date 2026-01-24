@@ -106,19 +106,20 @@ const Agenda = () => {
             </div>
         </section>
 
-        {/*MOVING GIFT BOXES PATTERN */}
-        <div className="w-full bg-black overflow-hidden relative">
-            <div className="flex pointer-events-none">
-              <motion.div
-                className="flex whitespace-nowrap gap-4"
+        {/* MOVING GIFT BOXES PATTERN */}
+        <div className="w-full bg-transparent overflow-hidden relative leading-[0]"> 
+            <div className="flex pointer-events-none h-fit">
+            <motion.div
+                className="flex h-fit items-end" 
                 animate={{ x: [0, -1000] }}
                 transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-              >
-                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
-                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
-                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
-                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28" />
-              </motion.div>
+            >
+                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28 flex-shrink-0 object-contain block" />
+                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28 flex-shrink-0 object-contain block" />
+                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28 flex-shrink-0 object-contain block" />
+                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28 flex-shrink-0 object-contain block" />
+                <img src={HeroTEDImage} alt="Hero TED" className="h-20 md:h-28 flex-shrink-0 object-contain block" />
+            </motion.div>
             </div>
         </div>
     </div>
