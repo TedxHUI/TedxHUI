@@ -1,27 +1,28 @@
-import { Toaster } from "./components/ui/toaster";
-import { Toaster as Sonner } from "./components/ui/sonner";
-import { TooltipProvider } from "./components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
-import { ProtectedRoute } from "./components/ProtectedRoute";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
-import HomePage from "./pages/HomePage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import ScrollToTop from "./components/ScrollToTop";
+import { Toaster as Sonner } from "./components/ui/sonner";
+import { Toaster } from "./components/ui/toaster";
+import { TooltipProvider } from "./components/ui/tooltip";
+import { AuthProvider } from "./contexts/AuthContext";
 import AboutPage from "./pages/AboutPage";
-import NotFound from "./pages/NotFound";
-import Speakers from "./pages/Speakers";
-import Agenda from "./pages/Agenda";
-import SpeakerDetail from "./pages/SpeakerDetail";
-import CreateDP from "./pages/CreateDP";
-import Merchandise from "./pages/Merchandise";
-import Contact from "./pages/Contact";
 import AdminDashboard from "./pages/AdminDashboard";
-import TicketBooking from "./pages/TicketBooking";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import PendingApproval from "./pages/PendingApproval";
+import Agenda from "./pages/Agenda";
 import Checkout from "./pages/Checkout";
+import Contact from "./pages/Contact";
+import CreateDP from "./pages/CreateDP";
+import HomePage from "./pages/HomePage";
+import Login from "./pages/Login";
+import Merchandise from "./pages/Merchandise";
+import NotFound from "./pages/NotFound";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PendingApproval from "./pages/PendingApproval";
+import Signup from "./pages/Signup";
+import SpeakerDetail from "./pages/SpeakerDetail";
+import Speakers from "./pages/Speakers";
+import TicketBooking from "./pages/TicketBooking";
 
 import { CartProvider } from "./contexts/CartContext";
 
@@ -33,6 +34,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <AuthProvider>
           <CartProvider>
             <Layout>

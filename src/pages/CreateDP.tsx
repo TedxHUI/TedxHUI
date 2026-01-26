@@ -1,184 +1,181 @@
-import { Image } from "lucide-react";
-import { useCallback, useState } from "react";
+import confetti from "canvas-confetti";
+import { Variants } from 'framer-motion';
+import { toPng } from "html-to-image";
+import { Download, Upload } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import Elipse1 from "../assets/Ellipse 1.png";
+
+import { motion } from 'framer-motion';
+import { CropModal } from "../components/dp/CropModal";
+import { DPPreview } from "../components/dp/DPPreview";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { useToast } from "../hooks/use-toast";
 
 const CreateDP = () => {
 
+  const sentence = "A Day of Ideas Worth Spreading";
+  const words = sentence.split(" ");
+  // Variants for the container to stagger the words
+  const container: Variants = {
+  hidden: { opacity: 0 },
+  visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.04 * i },
+  }),
+  };
+  
+  // Variants for each individual word
+  const child: Variants = {
+  visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+      type: "spring", 
+      damping: 12,
+      stiffness: 100,
+      },
+  },
+  hidden: {
+      opacity: 0,
+      y: 20,
+  },
+  };
+  
   const [name, setName] = useState("");
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [rawImage, setRawImage] = useState<string | null>(null);
+  const [isDone, setIsDone] = useState(false);
+  const [isCropOpen, setIsCropOpen] = useState(false);
+  
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const previewRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      const file = acceptedFiles[0];
-      if (file.size > 10 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please upload an image under 10MB",
-          variant: "destructive",
-        });
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUploadedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  }, [toast]);
+  const onDrop = useCallback((files: File[]) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setRawImage(reader.result as string);
+      setIsCropOpen(true);
+    };
+    reader.readAsDataURL(files[0]);
+  }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      'image/jpeg': ['.jpg', '.jpeg'],
-      'image/png': ['.png'],
-      'image/webp': ['.webp']
-    },
-    maxFiles: 1
-  });
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: 1 });
 
-  const handleGenerate = () => {
-    if (!name.trim()) {
-      toast({
-        title: "Name required",
-        description: "Please enter your name",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (!uploadedImage) {
-      toast({
-        title: "Photo required",
-        description: "Please upload a profile photo",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    toast({
-      title: "DP Generated!",
-      description: "Your display picture has been created successfully.",
-    });
+  const handleDownload = async () => {
+    if (!previewRef.current) return;
+    const dataUrl = await toPng(previewRef.current, { quality: 1, pixelRatio: 2 });
+    const link = document.createElement('a');
+    link.download = `TEDxHUI-DP-${name || 'Attendee'}.png`;
+    link.href = dataUrl;
+    link.click();
+    toast({ title: "Downloaded!", description: "Share it on your socials!" });
   };
 
+  const finalizeCrop = () => {
+    setIsCropOpen(false);
+    setIsDone(true);
+    confetti({ particleCount: 150, spread: 60, colors: ['#ff2b06', '#ffffff', '#000000'] });
+  };
 
   return (
-    <div>
+    <section className="bg-white min-h-screen font-glancyr">
       {/* Hero Section */}
-      <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
-        <div className="py-24 md:py-36">
-          <div className="container mx-auto px-4">
-            <div className="max-w-1xl mx-auto text-center space-y-6">
-              <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-                Show Your <span className="text-primary">TEDx</span> Spirit
-              </h2>
-            </div>
+      <section className="relative min-h-[50vh] flex items-center bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
+  
+          {/* Shimmer/Glow Background Effect */}
+          <motion.div 
+              animate={{ 
+              opacity: [0.2, 0.4, 0.2],
+              scale: [1, 1.1, 1] 
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#EA1D2C_0%,_transparent_50%)] opacity-20 pointer-events-none"
+          />
+          <div className="container mx-auto px-4 relative z-10">
+              <div className="max-w-4xl mx-auto text-center">
+              <motion.h2 
+                  className="text-4xl md:text-6xl font-bold text-white leading-tight font-glancyr flex flex-wrap justify-center gap-x-4"
+                  variants={container}
+                  initial="hidden"
+                  animate="visible"
+              >
+                  {words.map((word, index) => (
+                  <motion.span
+                      variants={child}
+                      key={index}
+                      className={word === "Day" ? "text-[#EA1D2C]" : "text-white"}
+                  >
+                      {word}
+                  </motion.span>
+                  ))}
+              </motion.h2>
+              
+              {/* Subtle underline for the "Story" word */}
+              <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: "100px" }}
+                  transition={{ delay: 1, duration: 0.8 }}
+                  className="h-1 bg-[#EA1D2C] mx-auto mt-4 rounded-full"
+              />
+              </div>
           </div>
-        </div>
       </section>
-
-
-
-    <section className="py-16 md:py-24 bg-">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-black border-2 border-primary rounded-3xl p-8 md:p-12">
+      <div className="min-h-screen bg-black text-white pb-20 pt-10">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* FORM SIDE */}
             <div className="space-y-8">
-              {/* Name Field */}
-              <div>
-                <label className="block text-white font-bold text-lg mb-4">Name</label>
-                <Input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter name/nickname etc..."
-                  className="bg-black border-2 border-white/20 rounded-xl h-14 text-white placeholder:text-gray-500 focus:border-primary"
+              <h1 className="text-5xl font-extrabold leading-tight">
+                Create Your <br/><span className="text-primary">Attendee Badge</span>
+              </h1>
+              
+              <div className="space-y-4">
+                <label className="text-xs uppercase tracking-widest text-zinc-500 font-bold">
+                  Step 1: Your Name
+                </label>
+                <Input 
+                  value={name} onChange={(e) => setName(e.target.value)}
+                  placeholder="How should it appear?" 
+                  className="h-14 bg-zinc-900 border-zinc-800 text-lg focus:border-primary"
                 />
               </div>
 
-              {/* Profile Photo Upload */}
-              <div>
-                <label className="block text-white font-bold text-lg mb-4">Profile Photo</label>
-                <div
-                  {...getRootProps()}
-                  className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-colors ${
-                    isDragActive 
-                      ? 'border-primary bg-primary/10' 
-                      : 'border-white/20 hover:border-primary/50'
-                  }`}
-                >
+              <div className="space-y-4">
+                <label className="text-xs uppercase tracking-widest text-zinc-500 font-bold">
+                  Step 2: Your Photo
+                </label>
+                <div {...getRootProps()} className="group border-2 border-dashed border-zinc-800 rounded-2xl p-10 text-center hover:border-primary/50 hover:bg-zinc-900/50 cursor-pointer transition-all">
                   <input {...getInputProps()} />
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="w-16 h-16 rounded-xl bg-primary/20 flex items-center justify-center">
-                      <Image className="w-8 h-8 text-primary" />
-                    </div>
-                    {uploadedImage ? (
-                      <div className="space-y-2">
-                        <img 
-                          src={uploadedImage} 
-                          alt="Preview" 
-                          className="w-32 h-32 object-cover rounded-xl mx-auto"
-                        />
-                        <p className="text-white text-lg">Image uploaded successfully</p>
-                        <p className="text-gray-400 text-sm">Click or drag to change</p>
-                      </div>
-                    ) : (
-                      <>
-                        <p className="text-white text-lg">
-                          Drag and drop or click to upload
-                        </p>
-                        <p className="text-gray-400 text-sm">
-                          JPG, PNG, WebP up to 10MB
-                        </p>
-                      </>
-                    )}
-                  </div>
+                  <Upload className="mx-auto w-10 h-10 text-zinc-600 group-hover:text-primary mb-4" />
+                  <p className="text-zinc-400">Click to upload your profile picture</p>
                 </div>
               </div>
 
-              {/* Generate Button */}
-              <Button
-                onClick={handleGenerate}
-                className="w-full h-14 rounded-full font-bold text-lg"
-              >
-                Generate DP
-              </Button>
+              {isDone && (
+                <Button onClick={handleDownload} className="w-full h-16 rounded-full text-xl font-black uppercase tracking-tighter shadow-lg shadow-primary/20">
+                  <Download className="mr-2" /> 
+                  Download DP
+                </Button>
+              )}
             </div>
+
+            {/* PREVIEW SIDE */}
+            <DPPreview ref={previewRef} image={rawImage} name={name} crop={crop} zoom={zoom} />
           </div>
         </div>
+
+        <CropModal 
+          isOpen={isCropOpen} image={rawImage} crop={crop} zoom={zoom}
+          onCropChange={setCrop} onZoomChange={setZoom}
+          onCropComplete={() => {}} 
+          onApply={finalizeCrop} onClose={() => setIsCropOpen(false)}
+        />
       </div>
     </section>
+  );
+};
 
-      
-      <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
-
-        {/* Decorative circles */}
-        <div className="absolute bottom-0 right-0 w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56">
-          <img src={Elipse1} alt="Elipse" />
-        </div>
-
-        <div className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
-                Be Part of the First TEDxHUI Experience
-              </h2>
-              <p className="text-base md:text-lg text-gray-300 leading-relaxed">
-                Seats are limited, reserve yours today and witness history in the making.
-              </p>
-              <button className="bg-white hover:bg-primary/90 text-black font-bold px-10 py-4 text-base rounded-full mt-6 transition-colors">
-                Get Your Ticket
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </section>
-    </div>
-  )
-}
-
-export default CreateDP
+export default CreateDP;
