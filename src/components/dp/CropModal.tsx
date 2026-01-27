@@ -19,7 +19,7 @@ export const CropModal = ({ isOpen, image, crop, zoom, onCropChange, onZoomChang
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-zinc-900 border-white/10 text-white max-w-2xl">
+      <DialogContent className="bg-[#0000001A] border-white/10 text-white max-w-2xl">
         <DialogHeader>
           <DialogTitle>Adjust Your Photo</DialogTitle>
         </DialogHeader>
@@ -39,7 +39,7 @@ export const CropModal = ({ isOpen, image, crop, zoom, onCropChange, onZoomChang
           <input 
             type="range" value={zoom} min={1} max={3} step={0.1}
             onChange={(e) => onZoomChange(Number(e.target.value))}
-            className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-primary"
+            className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#EA1D2C]"
           />
         </div>
         <Button onClick={onApply} className="w-full py-6 text-lg font-bold">

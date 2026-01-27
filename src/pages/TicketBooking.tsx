@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import {
   ArrowRight,
   Calendar,
@@ -229,6 +229,35 @@ const SelectionStep = ({
   toggleDetails,
   setStep,
 }: any) => {
+  const sentence = "Secure Your Spot at TEDxHUI";
+  const words = sentence.split(" ");
+
+  // Container variants for staggering
+  const container: Variants = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.04 * i },
+    }),
+  };
+
+  // INDIVIDUAL WORD VARIANTS (This was what was missing!)
+  const child: Variants = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        damping: 12,
+        stiffness: 100,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -236,20 +265,39 @@ const SelectionStep = ({
       exit={{ opacity: 0, x: 20 }}
       className="pb-24"
     >
-      {/* Desktop Hero Section */}
-      <div className="relative h-[50vh] min-h-[400px] w-full bg-black overflow-hidden flex items-center justify-center text-center px-6">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#EA1D2C]/10 to-black z-10" />
-        <div className="relative z-20 max-w-4xl">
-          <h1 className="text-5xl md:text-8xl font-black font-glancyr mb-6 text-white leading-tight">
-            <span className="text-[#EA1D2C]">Secure</span> Your Spot
-            <br />
-            at TEDxHUI
-          </h1>
-          <p className="text-gray-400 text-sm md:text-xl mb-10 max-w-2xl mx-auto">
-            Choose your ticket category and be part of an unforgettable
-            experience.
-          </p>
-          <Button
+      {/* Hero Section */}
+      <section className="relative min-h-[50vh] flex items-center bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden">
+        {/* Shimmer/Glow Background Effect */}
+        <motion.div 
+          animate={{ 
+          opacity: [0.2, 0.4, 0.2],
+          scale: [1, 1.1, 1] 
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#EA1D2C_0%,_transparent_50%)] opacity-20 pointer-events-none"
+        />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-[46.8rem] mx-auto text-center">
+            <motion.h2 
+                className="text-4xl md:text-6xl font-bold text-white leading-tight font-glancyr flex flex-wrap justify-center gap-x-4"
+                variants={container}
+                initial="hidden"
+                animate="visible"
+            >
+              {words.map((word, index) => (
+              <motion.span
+                  variants={child}
+                  key={index}
+                  className={word === "Secure" ? "text-[#EA1D2C]" : "text-white"}
+              >
+                  {word}
+              </motion.span>
+              ))}
+            </motion.h2>
+            <p className="text-[#FFFFFF] font-normal font-glancyr text-[1.25rem] ">
+              Create your personalized display picture in seconds and let the world know you’re part of TEDxHUI!
+            </p>
+            <Button
             onClick={() => {
               const el = document.getElementById("tickets-grid");
               el?.scrollIntoView({ behavior: "smooth" });
@@ -259,8 +307,19 @@ const SelectionStep = ({
             Get tickets{" "}
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Button>
+          
+            {/* Subtle underline */}
+            <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: "100px" }}
+                transition={{ delay: 1, duration: 0.8 }}
+                className="h-1 bg-[#EA1D2C] mx-auto mt-4 rounded-full"
+            />
+          </div>
         </div>
-      </div>
+      </section>
+
+
 
       <div className="max-w-7xl mx-auto px-6">
         {/* Countdown - Centered for Desktop */}
