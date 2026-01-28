@@ -23,31 +23,47 @@ const TICKETS = [
     name: "Essence Ticket",
     subName: "(General Access)",
     price: 10000,
-    color: "bg-[#FFF5F5]",
-    textColor: "text-[#EA1D2C]",
-    buttonColor: "bg-white text-gray-800 border-2 border-gray-100",
-    features: ["Standard entry", "Speaker sessions", "Networking", "Event photos", "Wallpapers"],
+    features: [
+      "Standard entry to TEDxHUI",
+      "Access to all speaker sessions",
+      "Community networking opportunities",
+      "Access to official event photos",
+      "TEDxHUI-themed mobile wallpapers",
+    ],
   },
   {
     id: "legacy-ticket",
     name: "Legacy Ticket",
     subName: "(VIP Experience)",
     price: 50000,
-    color: "bg-[#EA1D2C]",
-    textColor: "text-white",
-    buttonColor: "bg-white text-[#EA1D2C]",
     isPopular: true,
-    features: ["VIP seating", "Meet & Greet", "Behind-the-scenes", "Gift Pack", "Mentorship"],
+    features: [
+      "Everything in the Inspire Ticket",
+      "Front-row VIP seating with premium comfort",
+      "Meet & Greet with select speakers backstage",
+      "Behind-the-scenes tour of TEDxHUI production",
+      "Exclusive access to TEDxHUI-curated playlist",
+      "Early access to event talk recordings",
+      "Signed thank-you note from the TEDxHUI team",
+      "Upgraded TEDxHUI Gift Pack (T-shirt, Tote Bag)",
+      "Access to one-on-one mentorship session",
+      "Invitation to pre-event rehearsal & dinner",
+    ],
   },
   {
     id: "inspire-ticket",
     name: "Inspire Ticket",
     subName: "(Premium Access)",
     price: 25000,
-    color: "bg-[#FFF5F5]",
-    textColor: "text-[#EA1D2C]",
-    buttonColor: "bg-white text-gray-800 border-2 border-gray-100",
-    features: ["Fast-track entry", "Swag bag", "Q&A session", "Certificate", "eBook"],
+    features: [
+      "Everything in the Essence Ticket",
+      "Fast-track entry & priority seating",
+      "Exclusive TEDxHUI swag bag (Notebook, Pen)",
+      "Access to an exclusive Q&A session",
+      "Personalized certificate of attendance",
+      "Refreshments & light snacks",
+      "TEDxHUI eBook (Key insights)",
+    ],
   },
 ];
 
@@ -112,8 +128,12 @@ const TicketBooking = () => {
               <ThemeSection />
               
               <div className="text-center mb-16" id="tickets-grid">
-                <h3 className="text-4xl md:text-6xl font-black mb-4">Choose Your <span className="text-[#EA1D2C]">Ticket</span></h3>
-                <p className="text-gray-500 text-lg">Select the tier that best fits your experience.</p>
+                <h3 className="text-4xl md:text-[3rem] font-medium font-glancyr mb-4">
+                  Choose Your <span className="text-[#EA1D2C]">Ticket</span>
+                </h3>
+                <p className="text-black/70 font-medium text-[1.25rem]">
+                  Select the tier that best fits your experience.
+                </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-stretch">
