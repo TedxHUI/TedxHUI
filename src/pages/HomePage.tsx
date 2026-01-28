@@ -107,7 +107,6 @@ const HomePage = () => {
   const [activeId, setActiveId] = useState<number | null>(0); // Default first one open
 
   const cardVariants: Variants = {
-    // Add the type here
     hidden: { opacity: 0, y: 30 },
     visible: (i: number) => ({
       opacity: 1,
@@ -115,13 +114,14 @@ const HomePage = () => {
       transition: {
         delay: i * 0.1,
         duration: 0.5,
-        ease: "easeOut", // TypeScript will now accept this
+        ease: "easeOut",
       },
     }),
   };
 
   return (
     <>
+      {/* Hero Section */}
       <section className="relative max-h-screen bg-gradient-to-br from-[#330609] via-[#000000] to-[#330609] text-white overflow-hidden pb-[80px]">
         {/* MOVING GIFT BOXES PATTERN (Infinite Loop) */}
         <div className="absolute bottom-0 left-0 right-0 h-20 md:h-24 flex items-end pointer-events-none overflow-hidden z-[2]">
@@ -225,7 +225,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
+      
+      {/* Why Attend Section */}
       <section className="py-[3rem] md:py-[4rem] bg-white overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
@@ -334,6 +335,7 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Meet Seasoned Speakers */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-[#1A0404] to-[#2C0808]">
         <div className="container mx-auto px-4">
           <div className="container mx-auto px-4">
@@ -431,6 +433,7 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Amazing Sponsors and Partners */}
       <section className="pt-16 md:pt-[3rem] bg-white overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
@@ -485,6 +488,7 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Event Details */}
       <section className="py-16 md:py-24 bg-white overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
