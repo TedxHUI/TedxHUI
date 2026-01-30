@@ -1,5 +1,4 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { Button } from "../components/ui/button";
@@ -7,6 +6,21 @@ import Footer from "../components/Footer";
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { type, data } = location.state || { type: "merch" };
+
+  const getMessage = () => {
+    switch (type) {
+      case "ticket":
+        return `Thank you for purchasing your TEDxHUI ticket! A confirmation email has been sent to ${data?.email || "you"} with your ticket details.`;
+      case "merch":
+        return `Thank you for supporting TEDxHUI with your merchandise purchase! A confirmation email has been sent to ${data?.email || "you"} with your order details.`;
+      case "ticket_and_merch":
+        return `Success! Your ticket and merchandise order have been confirmed. We've sent the details to ${data?.email || "you"}. See you at TEDxHUI!`;
+      default:
+        return "Thank you for your purchase! A confirmation email has been sent to you with your details.";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -56,8 +70,7 @@ const PaymentSuccess = () => {
             Payment Successful
           </h1>
           <p className="text-gray-500 text-xs md:text-base font-bold max-w-sm md:max-w-md mx-auto leading-relaxed mb-10 md:mb-12">
-            Thank you for purchasing TEDxHUI Merch! A confirmation email has
-            been sent to you with your receipt details.
+            {getMessage()}
           </p>
 
           <Button
