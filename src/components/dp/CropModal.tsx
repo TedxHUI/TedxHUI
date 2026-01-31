@@ -14,7 +14,17 @@ interface CropModalProps {
   onClose: () => void;
 }
 
-export const CropModal = ({ isOpen, image, crop, zoom, onCropChange, onZoomChange, onCropComplete, onApply, onClose }: CropModalProps) => {
+export const CropModal = ({
+  isOpen,
+  image,
+  crop,
+  zoom,
+  onCropChange,
+  onZoomChange,
+  onCropComplete,
+  onApply,
+  onClose,
+}: CropModalProps) => {
   if (!image) return null;
 
   return (
@@ -29,15 +39,22 @@ export const CropModal = ({ isOpen, image, crop, zoom, onCropChange, onZoomChang
             crop={crop}
             zoom={zoom}
             aspect={1}
+            cropShape="round"
             onCropChange={onCropChange}
             onZoomChange={onZoomChange}
             onCropComplete={onCropComplete}
           />
         </div>
         <div className="space-y-2 py-4">
-          <label className="text-xs text-gray-400 uppercase tracking-widest">Zoom Level</label>
-          <input 
-            type="range" value={zoom} min={1} max={3} step={0.1}
+          <label className="text-xs text-gray-400 uppercase tracking-widest">
+            Zoom Level
+          </label>
+          <input
+            type="range"
+            value={zoom}
+            min={1}
+            max={3}
+            step={0.1}
             onChange={(e) => onZoomChange(Number(e.target.value))}
             className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#EA1D2C]"
           />
